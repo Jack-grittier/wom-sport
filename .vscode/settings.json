@@ -3,6 +3,7 @@
     "**/.yarn": true,
     "**/.pnp.*": true
   },
+  "eslint.nodePath": "wes-frontend/.yarn/sdks",
   "typescript.tsdk": "wes-frontend/.yarn/sdks/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true
 }
