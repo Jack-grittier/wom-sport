@@ -1,0 +1,10 @@
+/.yarn/
+/docs/
+/public/favicon/
+/.env.local.example
+/.gitignore
+/.nvmrc
+/.pnp.*
+/package.json
+/.yarnrc.yml
+/yarn.lock
