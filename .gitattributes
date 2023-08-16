@@ -1,2 +1,2 @@
-/wes-frontend/.yarn/releases/** binary
-/wes-frontend/.yarn/plugins/** binary
+/client/.yarn/releases/** binary
+/client/.yarn/plugins/** binary

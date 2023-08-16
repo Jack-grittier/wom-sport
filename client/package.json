@@ -7,7 +7,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier . -w",
-    "postinstall": "cd .. && husky install wes-frontend/.husky",
+    "postinstall": "cd .. && husky install client/.husky",
     "gql-gen": "graphql-codegen --config codegen.ts",
     "gql-gen:watch": "yarn gql-gen --watch"
   },

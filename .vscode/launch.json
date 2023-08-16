@@ -9,7 +9,7 @@
       "type": "node-terminal",
       "request": "launch",
       "command": "yarn dev",
-      "cwd": "${workspaceFolder}/wes-frontend",
+      "cwd": "${workspaceFolder}/client",
       "serverReadyAction": {
         "pattern": "started server on .+, url: (https?://.+)",
         "uriFormat": "%s",
