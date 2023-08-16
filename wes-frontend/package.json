@@ -1,12 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next",
+    "dev": "concurrently --kill-others \"next\" \"yarn gql-gen:watch\"",
+    "dev:no-gql-gen": "next",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier . -w",
-    "postinstall": "cd .. && husky install wes-frontend/.husky"
+    "postinstall": "cd .. && husky install wes-frontend/.husky",
+    "gql-gen": "graphql-codegen --config codegen.ts",
+    "gql-gen:watch": "yarn gql-gen --watch"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.1.5",
@@ -33,6 +36,7 @@
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
     "autoprefixer": "10.4.14",
+    "concurrently": "^8.2.0",
     "eslint": "^8.46.0",
     "eslint-config-next": "13.4.10",
     "eslint-config-prettier": "^8.8.0",
