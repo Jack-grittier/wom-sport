@@ -10,8 +10,8 @@ const config: CodegenConfig = {
       preset: "client",
       plugins: [],
       presetConfig: {
-        // disable fragment masking for the moment,
-        // as example api is written in a single file
+        // disable fragment masking as api is in a single file
+        // TODO: refactor api into co-located framgments and components
         fragmentMasking: false
         // prevents ESLint complaining about React hooks
         // fragmentMasking: { unmaskFunctionName: 'getFragmentData' }
