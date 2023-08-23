@@ -102,7 +102,6 @@ class PostObjectCreate {
 		}
 
 		if ( post_type_supports( $post_type_object->name, 'trackbacks' ) ) {
-
 			$fields['pinged'] = [
 				'type'        => [
 					'list_of' => 'String',
@@ -123,10 +122,14 @@ class PostObjectCreate {
 			];
 		}
 
-		if ( $post_type_object->hierarchical || in_array( $post_type_object->name, [
-			'attachment',
-			'revision',
-		], true ) ) {
+		if ( $post_type_object->hierarchical || in_array(
+			$post_type_object->name,
+			[
+				'attachment',
+				'revision',
+			],
+			true 
+		) ) {
 			$fields['parentId'] = [
 				'type'        => 'ID',
 				'description' => __( 'The ID of the parent object', 'wp-graphql' ),
@@ -147,7 +150,12 @@ class PostObjectCreate {
 			// If the taxonomy is in the array of taxonomies registered to the post_type
 			if ( in_array( $tax_object->name, get_object_taxonomies( $post_type_object->name ), true ) ) {
 				$fields[ $tax_object->graphql_plural_name ] = [
-					'description' => sprintf( __( 'Set connections between the %1$s and %2$s', 'wp-graphql' ), $post_type_object->graphql_single_name, $tax_object->graphql_plural_name ),
+					'description' => sprintf(
+						// translators: %1$s is the post type GraphQL name, %2$s is the taxonomy GraphQL name.
+						__( 'Set connections between the %1$s and %2$s', 'wp-graphql' ),
+						$post_type_object->graphql_single_name,
+						$tax_object->graphql_plural_name
+					),
 					'type'        => ucfirst( $post_type_object->graphql_single_name ) . ucfirst( $tax_object->graphql_plural_name ) . 'Input',
 				];
 			}
@@ -168,8 +176,7 @@ class PostObjectCreate {
 			$post_type_object->graphql_single_name => [
 				'type'        => $post_type_object->graphql_single_name,
 				'description' => __( 'The Post object mutation type.', 'wp-graphql' ),
-				'resolve'     => function ( $payload, $args, AppContext $context, ResolveInfo $info ) {
-
+				'resolve'     => static function ( $payload, $args, AppContext $context, ResolveInfo $info ) {
 					if ( empty( $payload['postObjectId'] ) || ! absint( $payload['postObjectId'] ) ) {
 						return null;
 					}
@@ -189,7 +196,7 @@ class PostObjectCreate {
 	 * @return callable
 	 */
 	public static function mutate_and_get_payload( $post_type_object, $mutation_name ) {
-		return function ( $input, AppContext $context, ResolveInfo $info ) use ( $post_type_object, $mutation_name ) {
+		return static function ( $input, AppContext $context, ResolveInfo $info ) use ( $post_type_object, $mutation_name ) {
 
 			/**
 			 * Throw an exception if there's no input
@@ -260,10 +267,14 @@ class PostObjectCreate {
 			 * If the current user cannot publish posts but their intent was to publish,
 			 * default the status to pending.
 			 */
-			if ( ( ! isset( $post_type_object->cap->publish_posts ) || ! current_user_can( $post_type_object->cap->publish_posts ) ) && ! in_array( $intended_post_status, [
-				'draft',
-				'pending',
-			], true ) ) {
+			if ( ( ! isset( $post_type_object->cap->publish_posts ) || ! current_user_can( $post_type_object->cap->publish_posts ) ) && ! in_array(
+				$intended_post_status,
+				[
+					'draft',
+					'pending',
+				],
+				true 
+			) ) {
 				$intended_post_status = 'pending';
 			}
 
@@ -335,8 +346,9 @@ class PostObjectCreate {
 				 * If the post was deleted by a side effect action before getting here,
 				 * don't proceed.
 				 */
-				if ( ! $new_post = get_post( $post_id ) ) {
-					throw new UserError( sprintf( __( 'The status of the post could not be set', 'wp-graphql' ) ) );
+				$new_post = get_post( $post_id );
+				if ( empty( $new_post ) ) {
+					throw new UserError( __( 'The status of the post could not be set', 'wp-graphql' ) );
 				}
 
 				/**

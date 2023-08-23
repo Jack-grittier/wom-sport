@@ -1,12 +1,9 @@
 <?php
 namespace WPGraphQL\Type;
 
-use Closure;
-use Exception;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
 use WPGraphQL\Registry\TypeRegistry;
-use WPGraphQL\Utils\Utils;
 
 /**
  * Class WPMutationType
@@ -130,25 +127,29 @@ class WPMutationType {
 	 * @return bool
 	 */
 	protected function is_config_valid( array $config ): bool {
-
 		$is_valid = true;
 
 		if ( ! array_key_exists( 'name', $config ) || ! is_string( $config['name'] ) ) {
-			graphql_debug( __( 'Mutation config needs to have a valid name.', 'wp-graphql' ), [
-				'config' => $config,
-			] );
+			graphql_debug(
+				__( 'Mutation config needs to have a valid name.', 'wp-graphql' ),
+				[
+					'config' => $config,
+				] 
+			);
 			$is_valid = false;
 		}
 
 		if ( ! array_key_exists( 'mutateAndGetPayload', $config ) || ! is_callable( $config['mutateAndGetPayload'] ) ) {
-			graphql_debug( __( 'Mutation config needs to have "mutateAndGetPayload" defined as a callable.', 'wp-graphql' ), [
-				'config' => $config,
-			] );
+			graphql_debug(
+				__( 'Mutation config needs to have "mutateAndGetPayload" defined as a callable.', 'wp-graphql' ),
+				[
+					'config' => $config,
+				] 
+			);
 			$is_valid = false;
 		}
 
 		return (bool) $is_valid;
-
 	}
 
 	/**
@@ -268,6 +269,7 @@ class WPMutationType {
 		$this->type_registry->register_input_type(
 			$input_name,
 			[
+				// translators: %s is the name of the mutation.
 				'description'       => sprintf( __( 'Input for the %1$s mutation.', 'wp-graphql' ), $this->mutation_name ),
 				'fields'            => $this->input_fields,
 				'deprecationReason' => ! empty( $this->config['deprecationReason'] ) ? $this->config['deprecationReason'] : null,
@@ -285,6 +287,7 @@ class WPMutationType {
 		$this->type_registry->register_object_type(
 			$object_name,
 			[
+				// translators: %s is the name of the mutation.
 				'description'       => sprintf( __( 'The payload for the %s mutation.', 'wp-graphql' ), $this->mutation_name ),
 				'fields'            => $this->output_fields,
 				'deprecationReason' => ! empty( $this->config['deprecationReason'] ) ? $this->config['deprecationReason'] : null,
@@ -298,17 +301,19 @@ class WPMutationType {
 	 * @throws \Exception
 	 */
 	protected function register_mutation_field() : void {
-
-		$field_config = array_merge( $this->config,
+		$field_config = array_merge(
+			$this->config,
 			[
 				'args'        => [
 					'input' => [
 						'type'              => [ 'non_null' => $this->mutation_name . 'Input' ],
+						// translators: %s is the name of the mutation.
 						'description'       => sprintf( __( 'Input for the %s mutation', 'wp-graphql' ), $this->mutation_name ),
 						'deprecationReason' => ! empty( $this->config['deprecationReason'] ) ? $this->config['deprecationReason'] : null,
 					],
 				],
 				'auth'        => $this->auth,
+				// translators: %s is the name of the mutation.
 				'description' => ! empty( $this->config['description'] ) ? $this->config['description'] : sprintf( __( 'The %s mutation', 'wp-graphql' ), $this->mutation_name ),
 				'isPrivate'   => $this->is_private,
 				'type'        => $this->mutation_name . 'Payload',

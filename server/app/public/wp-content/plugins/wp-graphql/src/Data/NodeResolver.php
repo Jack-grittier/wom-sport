@@ -2,9 +2,7 @@
 
 namespace WPGraphQL\Data;
 
-use Exception;
 use GraphQL\Deferred;
-use WP;
 use WP_Post;
 use WPGraphQL\AppContext;
 use GraphQL\Error\UserError;
@@ -44,8 +42,6 @@ class NodeResolver {
 	 * @return \WP_Post|null
 	 */
 	public function validate_post( WP_Post $post ) {
-
-
 		if ( isset( $this->wp->query_vars['post_type'] ) && ( $post->post_type !== $this->wp->query_vars['post_type'] ) ) {
 			return null;
 		}
@@ -74,9 +70,9 @@ class NodeResolver {
 			return $post;
 		}
 
-		// if the uri doesn't have the post's name or ID in it, we must've found something we didn't expect
+		// if the uri doesn't have the post's urlencoded name or ID in it, we must've found something we didn't expect
 		// so we will return null
-		if ( false === strpos( $this->wp->query_vars['uri'], $post->post_name ) && false === strpos( $this->wp->query_vars['uri'], (string) $post->ID ) ) {
+		if ( false === strpos( $this->wp->query_vars['uri'], (string) $post->ID ) && false === strpos( $this->wp->query_vars['uri'], urldecode( sanitize_title( $post->post_name ) ) ) ) {
 			return null;
 		}
 
@@ -210,6 +206,7 @@ class NodeResolver {
 			return $node;
 		}
 
+
 		// Resolve Post Objects.
 		if ( $queried_object instanceof WP_Post ) {
 			// If Page for Posts is set, we need to return the Page archive, not the page.
@@ -300,9 +297,12 @@ class NodeResolver {
 		$parsed_url = wp_parse_url( $uri );
 
 		if ( false === $parsed_url ) {
-			graphql_debug( __( 'Cannot parse provided URI', 'wp-graphql' ), [
-				'uri' => $uri,
-			] );
+			graphql_debug(
+				__( 'Cannot parse provided URI', 'wp-graphql' ),
+				[
+					'uri' => $uri,
+				] 
+			);
 			return null;
 		}
 
@@ -323,9 +323,12 @@ class NodeResolver {
 				],
 				true
 			) ) {
-				graphql_debug( __( 'Cannot return a resource for an external URI', 'wp-graphql' ), [
-					'uri' => $uri,
-				] );
+				graphql_debug(
+					__( 'Cannot return a resource for an external URI', 'wp-graphql' ),
+					[
+						'uri' => $uri,
+					] 
+				);
 				return null;
 			}
 		}
@@ -429,7 +432,6 @@ class NodeResolver {
 						preg_match( "#^$match#", $request_match, $matches ) ||
 						preg_match( "#^$match#", urldecode( $request_match ), $matches )
 					) {
-
 						if ( $wp_rewrite->use_verbose_page_rules && preg_match( '/pagename=\$matches\[([0-9]+)\]/', $query, $varmatch ) ) {
 							// This is a verbose page match, let's check to be sure about it.
 							$page = get_page_by_path( $matches[ $varmatch[1] ] ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.get_page_by_path_get_page_by_path
@@ -496,7 +498,6 @@ class NodeResolver {
 		}
 
 		foreach ( $this->wp->public_query_vars as $wpvar ) {
-
 			$parsed_query = [];
 			if ( isset( $parsed_url['query'] ) ) {
 				parse_str( $parsed_url['query'], $parsed_query );
@@ -531,7 +532,7 @@ class NodeResolver {
 		}
 
 		// Convert urldecoded spaces back into '+'.
-		foreach ( get_taxonomies( [ 'show_in_graphql' => true ], 'objects' ) as $taxonomy => $t ) {
+		foreach ( get_taxonomies( [ 'show_in_graphql' => true ], 'objects' ) as $t ) {
 			if ( $t->query_var && isset( $this->wp->query_vars[ $t->query_var ] ) ) {
 				$this->wp->query_vars[ $t->query_var ] = str_replace( ' ', '+', $this->wp->query_vars[ $t->query_var ] );
 			}
@@ -599,7 +600,6 @@ class NodeResolver {
 
 		// If the homepage is a static page, return the page.
 		if ( 'page' === $show_on_front && ! empty( $page_id ) ) {
-
 			$page = get_post( $page_id );
 
 			if ( empty( $page ) ) {

@@ -2,7 +2,6 @@
 
 namespace WPGraphQL\Mutation;
 
-use Exception;
 use GraphQL\Error\UserError;
 use WPGraphQL\Data\DataSource;
 use WPGraphQL\Registry\TypeRegistry;
@@ -35,7 +34,7 @@ class UpdateSettings {
 			[
 				'inputFields'         => $input_fields,
 				'outputFields'        => $output_fields,
-				'mutateAndGetPayload' => function ( $input ) use ( $type_registry ) {
+				'mutateAndGetPayload' => static function ( $input ) use ( $type_registry ) {
 					return self::mutate_and_get_payload( $input, $type_registry );
 				},
 			]
@@ -61,7 +60,6 @@ class UpdateSettings {
 			 * for the individual settings
 			 */
 			foreach ( $allowed_settings as $key => $setting ) {
-
 				if ( ! isset( $setting['type'] ) || ! $type_registry->get_type( $setting['type'] ) ) {
 					continue;
 				}
@@ -124,25 +122,24 @@ class UpdateSettings {
 		$output_fields['allSettings'] = [
 			'type'        => 'Settings',
 			'description' => __( 'Update all settings.', 'wp-graphql' ),
-			'resolve'     => function () {
+			'resolve'     => static function () {
 				return true;
 			},
 		];
 
 		if ( ! empty( $allowed_setting_groups ) && is_array( $allowed_setting_groups ) ) {
 			foreach ( $allowed_setting_groups as $group => $setting_type ) {
-
 				$setting_type      = DataSource::format_group_name( $group );
 				$setting_type_name = Utils::format_type_name( $setting_type . 'Settings' );
 
 				$output_fields[ Utils::format_field_name( $setting_type_name ) ] = [
 					'type'        => $setting_type_name,
+					// translators: %s is the setting type name
 					'description' => sprintf( __( 'Update the %s setting.', 'wp-graphql' ), $setting_type_name ),
-					'resolve'     => function () use ( $setting_type_name ) {
+					'resolve'     => static function () use ( $setting_type_name ) {
 						return $setting_type_name;
 					},
 				];
-
 			}
 		}
 		return $output_fields;
@@ -198,7 +195,6 @@ class UpdateSettings {
 				'option' => $key,
 				'group'  => $setting['group'],
 			];
-
 		}
 
 		foreach ( $input as $key => $value ) {

@@ -2,10 +2,7 @@
 
 namespace WPGraphQL\Mutation;
 
-use Exception;
 use GraphQL\Error\UserError;
-use GraphQL\Type\Definition\ResolveInfo;
-use WP_User;
 use WPGraphQL\AppContext;
 
 class SendPasswordResetEmail {
@@ -55,7 +52,7 @@ class SendPasswordResetEmail {
 				'type'              => 'User',
 				'description'       => __( 'The user that the password reset email was sent to', 'wp-graphql' ),
 				'deprecationReason' => __( 'This field will be removed in a future version of WPGraphQL', 'wp-graphql' ),
-				'resolve'           => function ( $payload, $args, AppContext $context ) {
+				'resolve'           => static function ( $payload, $args, AppContext $context ) {
 					return ! empty( $payload['id'] ) ? $context->get_loader( 'user' )->load_deferred( $payload['id'] ) : null;
 				},
 			],
@@ -72,7 +69,7 @@ class SendPasswordResetEmail {
 	 * @return callable
 	 */
 	public static function mutate_and_get_payload() : callable {
-		return function ( $input ) {
+		return static function ( $input ) {
 			if ( ! self::was_username_provided( $input ) ) {
 				throw new UserError( __( 'Enter a username or email address.', 'wp-graphql' ) );
 			}
@@ -148,7 +145,6 @@ class SendPasswordResetEmail {
 	 */
 	private static function get_user_data( $username ) {
 		if ( self::is_email_address( $username ) ) {
-
 			$username = wp_unslash( $username );
 
 			if ( ! is_string( $username ) ) {

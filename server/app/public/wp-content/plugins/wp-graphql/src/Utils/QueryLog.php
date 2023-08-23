@@ -2,8 +2,6 @@
 
 namespace WPGraphQL\Utils;
 
-use WPGraphQL\WPSchema;
-
 /**
  * Class QueryLog
  *
@@ -34,7 +32,7 @@ class QueryLog {
 
 		// Check whether Query Logs have been enabled from the settings page
 		$enabled                  = get_graphql_setting( 'query_logs_enabled', 'off' );
-		$this->query_logs_enabled = 'on' === $enabled ? true : false;
+		$this->query_logs_enabled = 'on' === $enabled;
 
 		$this->query_log_user_role = get_graphql_setting( 'query_log_user_role', 'manage_options' );
 
@@ -65,7 +63,6 @@ class QueryLog {
 	 * @return boolean
 	 */
 	public function user_can_see_logs() {
-
 		$can_see = false;
 
 		// If logs are disabled, user cannot see logs
@@ -94,7 +91,6 @@ class QueryLog {
 		 * @param boolean $can_see Whether the requestor can see the logs or not
 		 */
 		return apply_filters( 'graphql_user_can_see_query_logs', $can_see );
-
 	}
 
 	/**
@@ -109,7 +105,6 @@ class QueryLog {
 	 * @return array
 	 */
 	public function show_results( $response, $schema, $operation_name, $request, $variables ) {
-
 		$query_log = $this->get_query_log();
 
 		// If the user cannot see the logs, return the response as-is without the logs
@@ -127,7 +122,6 @@ class QueryLog {
 		}
 
 		return $response;
-
 	}
 
 	/**
@@ -139,19 +133,26 @@ class QueryLog {
 		global $wpdb;
 
 		$save_queries_value = defined( 'SAVEQUERIES' ) && true === SAVEQUERIES ? 'true' : 'false';
-		$default_message    = sprintf( __( 'Query Logging has been disabled. The \'SAVEQUERIES\' Constant is set to \'%s\' on your server.', 'wp-graphql' ), $save_queries_value );
+		$default_message    = sprintf(
+			// translators: %s is the value of the SAVEQUERIES constant
+			__( 'Query Logging has been disabled. The \'SAVEQUERIES\' Constant is set to \'%s\' on your server.', 'wp-graphql' ),
+			$save_queries_value
+		);
 
 		// Default message
 		$trace = [ $default_message ];
 
 		if ( ! empty( $wpdb->queries ) && is_array( $wpdb->queries ) ) {
-			$queries = array_map( function ( $query ) {
-				return [
-					'sql'   => $query[0],
-					'time'  => $query[1],
-					'stack' => $query[2],
-				];
-			}, $wpdb->queries );
+			$queries = array_map(
+				static function ( $query ) {
+					return [
+						'sql'   => $query[0],
+						'time'  => $query[1],
+						'stack' => $query[2],
+					];
+				},
+				$wpdb->queries 
+			);
 
 			$times      = wp_list_pluck( $queries, 'time' );
 			$total_time = array_sum( $times );
@@ -169,7 +170,6 @@ class QueryLog {
 		 * @param \WPGraphQL\Utils\QueryLog $instance The QueryLog class instance
 		 */
 		return apply_filters( 'graphql_tracing_response', $trace, $this );
-
 	}
 
 }

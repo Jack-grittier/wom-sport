@@ -7,8 +7,6 @@ use GraphQL\Deferred;
 use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
-use WPGraphQL\Data\Loader\AbstractDataLoader;
-use WPGraphQL\Model\Model;
 use WPGraphQL\Model\Post;
 
 /**
@@ -198,7 +196,6 @@ abstract class AbstractConnectionResolver {
 		 * @param array                      $unfiltered_args Array of arguments input in the field as part of the GraphQL query.
 		 */
 		$this->query_args = apply_filters( 'graphql_connection_query_args', $this->get_query_args(), $this, $args );
-
 	}
 
 	/**
@@ -400,10 +397,13 @@ abstract class AbstractConnectionResolver {
 	 * @return array the array of IDs.
 	 */
 	public function get_ids_from_query() {
-		throw new Exception( sprintf(
-			__( 'Class %s does not implement a valid method `get_ids_from_query()`.', 'wp-graphql' ),
-			get_class( $this )
-		) );
+		throw new Exception(
+			sprintf(
+				// translators: %s is the name of the connection resolver class.
+				__( 'Class %s does not implement a valid method `get_ids_from_query()`.', 'wp-graphql' ),
+				static::class
+			)
+		);
 	}
 
 	/**
@@ -447,7 +447,6 @@ abstract class AbstractConnectionResolver {
 		$max_query_amount = apply_filters( 'graphql_connection_max_query_amount', 100, $this->source, $this->args, $this->context, $this->info );
 
 		return min( $max_query_amount, absint( $this->get_amount_requested() ) );
-
 	}
 
 	/**
@@ -504,7 +503,6 @@ abstract class AbstractConnectionResolver {
 		 * @param \WPGraphQL\Data\Connection\AbstractConnectionResolver $resolver Instance of the connection resolver class
 		 */
 		return max( 0, apply_filters( 'graphql_connection_amount_requested', $amount_requested, $this ) );
-
 	}
 
 	/**
@@ -570,7 +568,6 @@ abstract class AbstractConnectionResolver {
 
 		// First we slice the array from the front.
 		if ( ! empty( $this->args['after'] ) ) {
-
 			$offset = $this->get_offset_for_cursor( $this->args['after'] );
 			$index  = $this->get_array_index_for_offset( $offset, $ids );
 
@@ -818,7 +815,6 @@ abstract class AbstractConnectionResolver {
 
 		// The nodes are already ordered, sliced, and populated. What's left is to populate the edge data for each one.
 		foreach ( $this->nodes as $id => $node ) {
-
 			$edge = [
 				'cursor'     => $this->get_cursor_for_node( $id ),
 				'node'       => $node,
@@ -857,7 +853,6 @@ abstract class AbstractConnectionResolver {
 	 * @return array
 	 */
 	public function get_page_info() {
-
 		$page_info = [
 			'startCursor'     => $this->get_start_cursor(),
 			'endCursor'       => $this->get_end_cursor(),
@@ -893,7 +888,6 @@ abstract class AbstractConnectionResolver {
 		 * });
 		 */
 		return apply_filters( 'graphql_connection_page_info', $page_info, $this );
-
 	}
 
 	/**
@@ -966,7 +960,6 @@ abstract class AbstractConnectionResolver {
 		$this->loader->buffer( $this->ids );
 
 		return $this->ids;
-
 	}
 
 	/**
@@ -979,7 +972,6 @@ abstract class AbstractConnectionResolver {
 	 * @throws \Exception
 	 */
 	public function get_connection() {
-
 		$this->execute_and_get_ids();
 
 		/**
@@ -988,7 +980,6 @@ abstract class AbstractConnectionResolver {
 		 */
 		return new Deferred(
 			function () {
-
 				if ( ! empty( $this->ids ) ) {
 					$this->loader->load_many( $this->ids );
 				}
@@ -1033,10 +1024,8 @@ abstract class AbstractConnectionResolver {
 				 * @param \WPGraphQL\Data\Connection\AbstractConnectionResolver $connection_resolver The instance of the connection resolver
 				 */
 				return apply_filters( 'graphql_connection', $connection, $this );
-
 			}
 		);
-
 	}
 
 }

@@ -69,7 +69,6 @@ class PostObjectCursor extends AbstractCursor {
 	 * {@inheritDoc}
 	 */
 	public function to_sql() {
-
 		$orderby = isset( $this->query_vars['orderby'] ) ? $this->query_vars['orderby'] : null;
 
 		$orderby_should_not_convert_to_sql = isset( $orderby ) && in_array(
@@ -109,7 +108,6 @@ class PostObjectCursor extends AbstractCursor {
 
 		if ( 'menu_order' === $orderby ) {
 			if ( '>' === $this->compare ) {
-
 				$order         = 'DESC';
 				$this->compare = '<';
 			} elseif ( '<' === $this->compare ) {
@@ -132,7 +130,6 @@ class PostObjectCursor extends AbstractCursor {
 			 * If $orderby is just a string just compare with it directly as DESC
 			 */
 			$this->compare_with( $orderby, $order );
-
 		}
 
 		/**
@@ -156,7 +153,6 @@ class PostObjectCursor extends AbstractCursor {
 	 * @return void
 	 */
 	private function compare_with( $by, $order ) {
-
 		switch ( $by ) {
 			case 'author':
 			case 'title':
@@ -169,13 +165,13 @@ class PostObjectCursor extends AbstractCursor {
 				break;
 		}
 
-		$value = $this->cursor_node->{$by} ?? null;
+		$value     = $this->cursor_node->{$by} ?? null;
+		$cursor_id = $this->cursor_node->ID ?? null;
 
 		/**
 		 * Compare by the post field if the key matches a value
 		 */
-		if ( ! empty( $value ) ) {
-
+		if ( ! empty( $value ) && ! empty( $cursor_id ) && ! metadata_exists( 'post', $cursor_id, $by ) ) {
 			$this->builder->add_field( "{$this->wpdb->posts}.{$by}", $value, null, $order );
 
 			return;
@@ -188,7 +184,6 @@ class PostObjectCursor extends AbstractCursor {
 		if ( $meta_key ) {
 			$this->compare_with_meta_field( $meta_key, $order );
 		}
-
 	}
 
 	/**
@@ -217,13 +212,20 @@ class PostObjectCursor extends AbstractCursor {
 		/**
 		 * WP uses mt1, mt2 etc. style aliases for additional meta value joins.
 		 */
-		if ( 0 !== $this->meta_join_alias ) {
-			$key = "mt{$this->meta_join_alias}.meta_value";
+		$meta_query = $this->get_query_var( 'meta_query' );
+		if ( ! empty( $meta_query ) && is_array( $meta_query ) ) {
+			if ( ! empty( $meta_query['relation'] ) ) {
+				unset( $meta_query['relation'] );
+			}
 
+			$meta_keys = array_column( $meta_query, 'key' );
+			$index     = array_search( $meta_key, $meta_keys, true );
+
+			if ( 1 < count( $meta_query ) && false !== $index ) {
+				$key = "mt{$index}.meta_value";
+			}
 		}
-
-		$this->meta_join_alias ++;
-
+		
 		$this->builder->add_field( $key, $meta_value, $meta_type, $order, $this );
 	}
 
@@ -235,7 +237,6 @@ class PostObjectCursor extends AbstractCursor {
 	 * @return string|null
 	 */
 	private function get_meta_key( $by ) {
-
 		if ( 'meta_value' === $by || 'meta_value_num' === $by ) {
 			return $this->get_query_var( 'meta_key' );
 		}
