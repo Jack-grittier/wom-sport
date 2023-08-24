@@ -1,4 +1,4 @@
-import Alert from './alert'
+import PreviewAlert from './preview-alert'
 import Footer from './footer'
 import Meta from './meta'
 
@@ -7,7 +7,7 @@ export default function Layout({ preview, children }) {
     <>
       <Meta />
       <div>
-        <Alert preview={preview} />
+        {preview && <PreviewAlert />}
         <main>{children}</main>
       </div>
       <Footer />
