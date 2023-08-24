@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Head from 'next/head'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import Container from '../../components/container'
 import PostBody from '../../components/post-body'
 import MoreStories from '../../components/more-stories'
 import Header from '../../components/header'
@@ -24,40 +23,38 @@ export default function Post({ post, posts, preview }) {
 
   return (
     <Layout preview={preview}>
-      <Container>
-        <Header />
-        {router.isFallback ? (
-          <PostTitle>Loading…</PostTitle>
-        ) : (
-          <>
-            <article>
-              <Head>
-                <title>
-                  {`${post.title} | Next.js Blog Example with ${CMS_NAME}`}
-                </title>
-                <meta
-                  property="og:image"
-                  content={post.featuredImage?.node.sourceUrl}
-                />
-              </Head>
-              <PostHeader
-                title={post.title}
-                coverImage={post.featuredImage}
-                date={post.date}
-                author={post.author}
-                categories={post.categories}
+      <Header />
+      {router.isFallback ? (
+        <PostTitle>Loading…</PostTitle>
+      ) : (
+        <>
+          <article>
+            <Head>
+              <title>
+                {`${post.title} | Next.js Blog Example with ${CMS_NAME}`}
+              </title>
+              <meta
+                property="og:image"
+                content={post.featuredImage?.node.sourceUrl}
               />
-              <PostBody content={post.content} />
-              <footer>
-                {post.tags.edges.length > 0 && <Tags tags={post.tags} />}
-              </footer>
-            </article>
+            </Head>
+            <PostHeader
+              title={post.title}
+              coverImage={post.featuredImage}
+              date={post.date}
+              author={post.author}
+              categories={post.categories}
+            />
+            <PostBody content={post.content} />
+            <footer>
+              {post.tags.edges.length > 0 && <Tags tags={post.tags} />}
+            </footer>
+          </article>
 
-            <SectionSeparator />
-            {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-          </>
-        )}
-      </Container>
+          <SectionSeparator />
+          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+        </>
+      )}
     </Layout>
   )
 }
