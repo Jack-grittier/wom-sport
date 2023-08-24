@@ -19,7 +19,10 @@ export default async function preview(
   }
 
   // Fetch WordPress to check if the provided `id` or `slug` exists
-  const post = await getPreviewPost({ id: id ?? slug, idType: id ? PostIdType.DatabaseId : PostIdType.Slug})
+  const post = await getPreviewPost({
+    id: id ?? slug,
+    idType: id ? PostIdType.DatabaseId : PostIdType.Slug,
+  })
 
   // If the post doesn't exist prevent preview mode from being enabled
   if (!post) {

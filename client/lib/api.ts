@@ -1,19 +1,30 @@
 import { GraphQLClient, Variables } from 'graphql-request'
 import { graphql } from '../lib/gql'
-import { Post, PostIdType, PreviewPostQueryVariables, TypedDocumentString } from './gql/graphql'
+import {
+  Post,
+  PostIdType,
+  PreviewPostQueryVariables,
+  TypedDocumentString,
+} from './gql/graphql'
 
 const headers = {
   'Content-Type': 'application/json',
-  'Authorization': `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`
+  Authorization: `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`,
 }
 
 const API_URL = process.env.WORDPRESS_API_URL
 
 const graphQLClient = new GraphQLClient(API_URL!, { headers })
 
-async function fetchAPI<TResult, TVariables extends Variables>(query: TypedDocumentString<TResult, TVariables>, variables?: TVariables) {
+async function fetchAPI<TResult, TVariables extends Variables>(
+  query: TypedDocumentString<TResult, TVariables>,
+  variables?: TVariables,
+) {
   try {
-    const data = await graphQLClient.request<TResult>(query.toString() as string, variables)
+    const data = await graphQLClient.request<TResult>(
+      query.toString() as string,
+      variables,
+    )
     return data
   } catch (error) {
     console.error(error)
@@ -21,7 +32,10 @@ async function fetchAPI<TResult, TVariables extends Variables>(query: TypedDocum
   }
 }
 
-export async function getPreviewPost({ id, idType }: PreviewPostQueryVariables){
+export async function getPreviewPost({
+  id,
+  idType,
+}: PreviewPostQueryVariables) {
   const document = graphql(`
     query PreviewPost($id: ID!, $idType: PostIdType!) {
       post(id: $id, idType: $idType) {
@@ -29,7 +43,8 @@ export async function getPreviewPost({ id, idType }: PreviewPostQueryVariables){
         slug
         status
       }
-    }`)
+    }
+  `)
   const data = await fetchAPI(document, { id, idType })
   return data.post
 }
@@ -83,29 +98,33 @@ export async function getAllPostsForHome() {
   // the example passed {onlyEnabled: !preview, preview,} but I can't see what it would do
   const data = await fetchAPI(document)
   return data?.posts
-} 
+}
 
-export async function getPostAndMorePosts(id: number | string, previewData?: { post: Post }) {
+export async function getPostAndMorePosts(
+  id: number | string,
+  previewData?: { post: Post },
+) {
   const postPreview = previewData?.post
   // The slug may be the id of an unpublished post
-  const isSamePost = typeof id === "number"
-    ? id === postPreview?.databaseId
-    : id === postPreview?.slug
+  const isSamePost =
+    typeof id === 'number'
+      ? id === postPreview?.databaseId
+      : id === postPreview?.slug
   const isDraft = isSamePost && postPreview?.status === 'draft'
   const isRevision = isSamePost && postPreview?.status === 'publish'
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const authorFieldsFragment = graphql(`
-  fragment AuthorFields on User {
-    name
-    firstName
-    lastName
-    avatar {
-      url
+    fragment AuthorFields on User {
+      name
+      firstName
+      lastName
+      avatar {
+        url
+      }
     }
-  }
   `)
-  
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const postFieldsFragment = graphql(`
     fragment PostFields on Post {
@@ -141,13 +160,16 @@ export async function getPostAndMorePosts(id: number | string, previewData?: { p
     }
   `)
   // original example had revision fields only if isRevision was true
-  // but this doesn't work with graphql-codegen, so revisions are 
+  // but this doesn't work with graphql-codegen, so revisions are
   // always queried
   const document = graphql(`
     query PostBySlug($id: ID!, $idType: PostIdType!) {
       post(id: $id, idType: $idType) {
         ...PostFields
-        revisions(first: 1, where: { orderby: { field: MODIFIED, order: DESC } }) {
+        revisions(
+          first: 1
+          where: { orderby: { field: MODIFIED, order: DESC } }
+        ) {
           edges {
             node {
               title
