@@ -9,7 +9,7 @@ export default function Avatar({ author }) {
   return (
     <div>
       <div>
-        <Image src={author.node.avatar.url} width="48" height="48" alt={name} />
+        <Image src={author.node.avatar.url} width='48' height='48' alt={name} />
       </div>
       <div>{name}</div>
     </div>

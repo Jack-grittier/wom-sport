@@ -98,24 +98,24 @@ export default function Header() {
   return (
     <Flex
       bg={isMobileNavOpen ? 'primary.brand' : 'white'}
-      borderBottom="1px solid"
-      borderColor="primary.100"
-      direction="column"
-      align="center"
-      position="sticky"
+      borderBottom='1px solid'
+      borderColor='primary.100'
+      direction='column'
+      align='center'
+      position='sticky'
       top={0}
     >
       <Flex
         h={20}
-        align="center"
-        justify="space-between"
+        align='center'
+        justify='space-between'
         px={6}
-        maxW="80rem"
-        w="full"
+        maxW='80rem'
+        w='full'
       >
         {/* Mobile button */}
         <IconButton
-          size="md"
+          size='md'
           icon={
             isMobileNavOpen ? (
               <CloseIcon w={5} h={5} color={buttonColor} />
@@ -123,10 +123,10 @@ export default function Header() {
               <HamburgerIcon w={7} h={7} color={buttonColor} />
             )
           }
-          aria-label="Menu Toggle"
+          aria-label='Menu Toggle'
           display={{ md: 'none' }}
           onClick={isMobileNavOpen ? onMobileNavClose : onMobileNavOpen}
-          variant="ghost"
+          variant='ghost'
           _hover={buttonActive}
           _active={buttonActive}
         />
@@ -139,25 +139,25 @@ export default function Header() {
                 ? wesLogoEmpty as string
                 : wesLogoFull as string
             }
-            alt="WomEmpSports Logo"
+            alt='WomEmpSports Logo'
             w={16}
             as={NextImage}
           />
         </Link>
 
-        <Flex alignItems="center">
+        <Flex alignItems='center'>
           {/* Desktop nav */}
           <HStack
-            as="nav"
+            as='nav'
             spacing={4}
             display={{ base: 'none', md: 'flex' }}
             pr={9}
-            aria-label="Desktop Navigation"
+            aria-label='Desktop Navigation'
           >
             {links.map((link) => (
               <NavLink
                 key={link.label}
-                color="primary.800"
+                color='primary.800'
                 _hover={{ color: 'secondary.600' }}
                 _active={{ bg: 'primary.100' }}
                 {...link}
@@ -170,13 +170,13 @@ export default function Header() {
             gutter={20}
             onOpen={onLangMenuOpen}
             onClose={onLangMenuClose}
-            placement="bottom-end"
+            placement='bottom-end'
           >
             <MenuButton
               as={IconButton}
-              size="md"
+              size='md'
               // rounded='full'
-              variant="ghost"
+              variant='ghost'
               // cursor='pointer'
               icon={
                 <Icon
@@ -190,9 +190,9 @@ export default function Header() {
               }
               _hover={buttonActive}
               _active={{ bg: 'secondary.brand', colorScheme: 'white' }}
-              aria-label="Language Switcher Button"
+              aria-label='Language Switcher Button'
             ></MenuButton>
-            <MenuList w={100} aria-label="Language Menu">
+            <MenuList w={100} aria-label='Language Menu'>
               {languages.map((lang) => (
                 <MenuItem
                   key={lang.abbr}
@@ -214,17 +214,17 @@ export default function Header() {
       </Flex>
 
       {/* Mobile nav */}
-      <Box w="full">
+      <Box w='full'>
         <Collapse in={isMobileNavOpen} animateOpacity>
           <Box
             py={4}
             pl={1.5}
             display={{ md: 'none' }}
             px={6}
-            borderTop="1px solid"
-            borderColor="primary.400"
+            borderTop='1px solid'
+            borderColor='primary.400'
           >
-            <VStack as="nav" spacing={4} w="min" align="left">
+            <VStack as='nav' spacing={4} w='min' align='left'>
               {links.map((link) => (
                 <NavLink
                   key={link.label}

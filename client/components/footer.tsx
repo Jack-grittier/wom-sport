@@ -6,7 +6,7 @@ export default function Footer() {
       <div>
         <h3>Statically Generated with Next.js.</h3>
         <div>
-          <a href="https://nextjs.org/docs/basic-features/pages">
+          <a href='https://nextjs.org/docs/basic-features/pages'>
             Read Documentation
           </a>
           <a
