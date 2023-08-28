@@ -1,6 +1,6 @@
 /.yarn/
 /docs/
-/public/favicon/
+/public/
 /.env.local.example
 /.gitignore
 /.nvmrc

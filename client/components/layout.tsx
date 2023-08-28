@@ -1,15 +1,16 @@
 import PreviewAlert from './preview-alert'
 import Footer from './footer'
 import Meta from './meta'
+import Header from './header'
+import { Box } from '@chakra-ui/react'
 
 export default function Layout({ preview, children }) {
   return (
     <>
       <Meta />
-      <div>
-        {preview && <PreviewAlert />}
-        <main>{children}</main>
-      </div>
+      {preview && <PreviewAlert />}
+      <Header />
+      <Box as='main'>{children}</Box>
       <Footer />
     </>
   )

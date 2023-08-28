@@ -4,7 +4,6 @@ import Head from 'next/head'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import PostBody from '../../components/post-body'
 import MoreStories from '../../components/more-stories'
-import Header from '../../components/header'
 import PostHeader from '../../components/post-header'
 import SectionSeparator from '../../components/section-separator'
 import Layout from '../../components/layout'
@@ -23,7 +22,6 @@ export default function Post({ post, posts, preview }) {
 
   return (
     <Layout preview={preview}>
-      <Header />
       {router.isFallback ? (
         <PostTitle>Loading…</PostTitle>
       ) : (
