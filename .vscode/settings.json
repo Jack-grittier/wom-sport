@@ -8,5 +8,5 @@
   "typescript.tsdk": "client/.yarn/sdks/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "prettier.ignorePath": "client/.prettierignore",
-  "prettier.configPath": "client/prettierrc.json",
+  "prettier.configPath": "client/.prettierrc.json",
 }
