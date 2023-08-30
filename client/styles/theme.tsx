@@ -1,5 +1,17 @@
 import { extendTheme } from '@chakra-ui/react'
 
+// TODO: submit PR to update Chakra docs on how to apply global fonts
+
+import { Comfortaa, Inter } from 'next/font/google'
+
+const comfortaaFont = Comfortaa({ subsets: ['latin'] })
+const interFont = Inter({ subsets: ['latin'] })
+
+const fonts = {
+  heading: comfortaaFont.style.fontFamily,
+  body: interFont.style.fontFamily,
+}
+
 const colors = {
   primary: {
     50: '#F0F0F8',
@@ -166,6 +178,6 @@ const colors = {
   },
 }
 
-const theme = extendTheme({ colors })
+const theme = extendTheme({ fonts, colors })
 
 export default theme
