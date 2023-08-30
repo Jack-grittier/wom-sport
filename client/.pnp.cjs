@@ -54,6 +54,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql-request", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:6.1.0"],\
             ["husky", "npm:8.0.3"],\
             ["lint-staged", "npm:13.2.3"],\
+            ["lorem-ipsum", "npm:2.0.8"],\
             ["next", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:13.4.10"],\
             ["postcss", "npm:8.4.26"],\
             ["prettier", "npm:3.0.0"],\
@@ -6880,6 +6881,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["commander", "npm:10.0.1"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:9.5.0", {\
+          "packageLocation": "./.yarn/cache/commander-npm-9.5.0-993b3f2434-c7a3e27aa5.zip/node_modules/commander/",\
+          "packageDependencies": [\
+            ["commander", "npm:9.5.0"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["common-tags", [\
@@ -9765,6 +9773,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["lorem-ipsum", [\
+        ["npm:2.0.8", {\
+          "packageLocation": "./.yarn/cache/lorem-ipsum-npm-2.0.8-a5c19f179a-63049aab1f.zip/node_modules/lorem-ipsum/",\
+          "packageDependencies": [\
+            ["lorem-ipsum", "npm:2.0.8"],\
+            ["commander", "npm:9.5.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["lower-case", [\
         ["npm:2.0.2", {\
           "packageLocation": "./.yarn/cache/lower-case-npm-2.0.2-151055f1c2-83a0a5f159.zip/node_modules/lower-case/",\
@@ -11279,6 +11297,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql-request", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:6.1.0"],\
             ["husky", "npm:8.0.3"],\
             ["lint-staged", "npm:13.2.3"],\
+            ["lorem-ipsum", "npm:2.0.8"],\
             ["next", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:13.4.10"],\
             ["postcss", "npm:8.4.26"],\
             ["prettier", "npm:3.0.0"],\
