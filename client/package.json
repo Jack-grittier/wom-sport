@@ -16,7 +16,6 @@
     "@chakra-ui/icons": "^2.1.0",
     "@chakra-ui/next-js": "^2.1.5",
     "@chakra-ui/react": "^2.8.0",
-    "@chakra-ui/system": "^2.6.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@types/node": "^20.4.2",
@@ -34,6 +33,7 @@
     "typescript": "^5.1.6"
   },
   "devDependencies": {
+    "@chakra-ui/system": "^2.6.0",
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/client-preset": "^4.1.0",
     "@parcel/watcher": "^2.2.0",
