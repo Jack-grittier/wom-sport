@@ -104,6 +104,7 @@ export default function Header() {
       position='sticky'
       top={0}
       zIndex={9999}
+      as='header'
     >
       <Flex
         h={20}
