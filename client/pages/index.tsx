@@ -1,42 +1,38 @@
 import Head from 'next/head'
-import { GetStaticProps } from 'next'
-import MoreStories from '../components/more-stories'
-import HeroPost from '../components/hero-post'
-import Intro from '../components/intro'
+import { InferGetStaticPropsType, GetStaticProps } from 'next'
 import Layout from '../components/layout'
-import { getAllPostsForHome } from '../lib/api'
-import { CMS_NAME } from '../lib/constants'
+import { Image } from '@chakra-ui/react'
+import NextImage, { StaticImageData } from 'next/image'
 
-export default function Index({ allPosts: { edges }, preview }) {
-  const heroPost = edges[0]?.node
-  const morePosts = edges.slice(1)
+import banner from '../public/images/banner.svg'
 
+// TODO: Send a PR to chakra to update docs about next/image and next/link
+// (image should say next / image includes nextjs image opt, link should use import from chakra-ui/next-js
+// TODO: Open issue about src type autocomplete in chakra image (should accept StaticImageData)
+
+export default function Index({
+  preview,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <Layout preview={preview}>
       <Head>
-        <title>{`Next.js Blog Example with ${CMS_NAME}`}</title>
+        <title>{`WomEmpSports`}</title>
       </Head>
-      <Intro />
-      {heroPost && (
-        <HeroPost
-          title={heroPost.title}
-          coverImage={heroPost.featuredImage}
-          date={heroPost.date}
-          author={heroPost.author}
-          slug={heroPost.slug}
-          excerpt={heroPost.excerpt}
-        />
-      )}
-      {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+      <Image
+        src={banner as StaticImageData}
+        alt='WomEmpSports Banner'
+        w='full'
+        as={NextImage}
+      />
     </Layout>
   )
 }
 
-export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
-  const allPosts = await getAllPostsForHome(preview)
-
+export const getStaticProps: GetStaticProps<{ preview: boolean }> = ({
+  preview = false,
+}) => {
   return {
-    props: { allPosts, preview },
+    props: { preview },
     revalidate: 10,
   }
 }
