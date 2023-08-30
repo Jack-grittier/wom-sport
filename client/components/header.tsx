@@ -49,6 +49,10 @@ interface LanguageProps {
 
 const languages: LanguageProps[] = [
   {
+    name: 'Bulgarian',
+    abbr: 'bg',
+  },
+  {
     name: 'English',
     abbr: 'en',
   },
@@ -59,10 +63,6 @@ const languages: LanguageProps[] = [
   {
     name: 'Italian',
     abbr: 'it',
-  },
-  {
-    name: 'Romanian',
-    abbr: 'ro',
   },
   {
     name: 'Spanish',
