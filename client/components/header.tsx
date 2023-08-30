@@ -70,7 +70,6 @@ const languages: LanguageProps[] = [
   },
 ]
 
-
 const NavLink = ({ label, href, ...props }: NavLinkProps & LinkProps) => {
   return (
     <Link px={2} py={1} rounded='md' href={href} {...props}>
@@ -104,6 +103,7 @@ export default function Header() {
       align='center'
       position='sticky'
       top={0}
+      zIndex={9999}
     >
       <Flex
         h={20}
@@ -136,8 +136,8 @@ export default function Header() {
           <Image
             src={
               isMobileNavOpen
-                ? wesLogoEmpty as string
-                : wesLogoFull as string
+                ? (wesLogoEmpty as string)
+                : (wesLogoFull as string)
             }
             alt='WomEmpSports Logo'
             w={16}
