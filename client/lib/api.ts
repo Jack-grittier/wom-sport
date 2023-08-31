@@ -1,7 +1,6 @@
 import { GraphQLClient, Variables } from 'graphql-request'
 import { graphql } from '../lib/gql'
 import {
-  Post,
   PostIdType,
   PreviewPostQueryVariables,
   TypedDocumentString,
@@ -102,7 +101,7 @@ export async function getAllPostsForHome() {
 
 export async function getPostAndMorePosts(
   id: number | string,
-  previewData?: { post: Post },
+  previewData?: { post: PreviewPostData },
 ) {
   const postPreview = previewData?.post
   // The slug may be the id of an unpublished post
@@ -200,7 +199,7 @@ export async function getPostAndMorePosts(
   })
   if (data.post) {
     // Draft posts may not have an slug
-    if (isDraft) data.post.slug = postPreview.id
+    if (isDraft) data.post.slug = String(postPreview.databaseId)
     // Apply a revision (changes in a published post)
     if (isRevision && data.post.revisions) {
       const revision = data.post.revisions.edges[0]?.node
@@ -219,3 +218,12 @@ export async function getPostAndMorePosts(
 
   return data
 }
+
+export type PreviewPostData = Awaited<ReturnType<typeof getPreviewPost>>
+export type AllPostsWithSlugData = Awaited<
+  ReturnType<typeof getAllPostsWithSlug>
+>
+export type AllPostsForHomeData = Awaited<ReturnType<typeof getAllPostsForHome>>
+export type PostAndMorePostsData = Awaited<
+  ReturnType<typeof getPostAndMorePosts>
+>

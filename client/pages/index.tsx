@@ -29,10 +29,10 @@ import perEsempioLogo from '../public/images/partners/per_esempio-logo.png'
 
 interface Partner {
   name: string
-  logo: StaticImageData
+  logo: StaticImageData | any
   description: string
 }
-interface Props {
+interface IndexProps {
   preview: boolean
   projectDescription: string
   partnersIntro: string
@@ -50,12 +50,7 @@ export default function Index({
       <Head>
         <title>{`WomEmpSports`}</title>
       </Head>
-      <Image
-        src={banner as StaticImageData}
-        alt='WomEmpSports Banner'
-        w='full'
-        as={NextImage}
-      />
+      <Image src={banner} alt='WomEmpSports Banner' w='full' as={NextImage} />
       <Box maxW='80rem' px={6}>
         <Box as='section' aria-labelledby='project-description-heading'>
           <Heading id='project-description-heading'>About This Project</Heading>
@@ -88,7 +83,9 @@ export default function Index({
   )
 }
 
-export const getStaticProps: GetStaticProps<Props> = ({ preview = false }) => {
+export const getStaticProps: GetStaticProps<IndexProps> = ({
+  preview = false,
+}) => {
   const lorem = new LoremIpsum()
 
   const projectDescription = lorem.generateParagraphs(3)
