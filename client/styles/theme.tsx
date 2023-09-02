@@ -1,6 +1,8 @@
-import { extendTheme } from '@chakra-ui/react'
+import { extendTheme, defineStyleConfig } from '@chakra-ui/react'
 
 // TODO: submit PR to update Chakra docs on how to apply global fonts
+// TODO: submit issue about chakra-cli not working
+// TODO: submit PR/issue about textshadow not working with shadow keys
 
 import { Comfortaa, Inter } from 'next/font/google'
 
@@ -178,6 +180,30 @@ const colors = {
   },
 }
 
-const theme = extendTheme({ fonts, colors })
+const components = {
+  Text: defineStyleConfig({
+    baseStyle: {
+      fontSize: ['md', 'lg', 'xl'],
+      lineHeight: 'tall',
+      pb: 2,
+      // whiteSpace: 'pre-line',
+    },
+  }),
+  Heading: defineStyleConfig({
+    sizes: {
+      xl: {
+        fontSize: ['3xl', '4xl', '5xl'],
+        color: 'primary.700',
+        textShadow: [
+          'var(--chakra-colors-primary-300) 0.6px 1.2px 1.8px',
+          null,
+          'var(--chakra-colors-primary-300) 1px 2px 3px',
+        ],
+        pb: [1, 2, 3],
+      },
+    },
+  }),
+}
+const theme = extendTheme({ fonts, colors, components })
 
 export default theme

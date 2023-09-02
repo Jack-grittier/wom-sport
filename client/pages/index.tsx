@@ -1,19 +1,26 @@
-import Head from 'next/head'
 import { InferGetStaticPropsType, GetStaticProps } from 'next'
-import Layout from '../components/layout'
+import Head from 'next/head'
+import NextImage, { StaticImageData } from 'next/image'
+
 import {
   Box,
   Card,
   CardBody,
   CardHeader,
-  Heading,
   Image,
   SimpleGrid,
   Text,
+  LinkBox,
+  LinkOverlay,
 } from '@chakra-ui/react'
-import NextImage, { StaticImageData } from 'next/image'
+import { Link } from '@chakra-ui/next-js'
 
 import { LoremIpsum } from 'lorem-ipsum'
+
+import Layout from '../components/layout'
+import Section from '../components/section'
+import SectionWithHeading from '../components/section-with-heading'
+import ContentContainer from '../components/content-container'
 
 import banner from '../public/images/banner.svg'
 import amigosDeEuropaLogo from '../public/images/partners/amigos_de_europa-logo.png'
@@ -31,17 +38,19 @@ interface Partner {
   name: string
   logo: StaticImageData | any
   description: string
+  url: string
 }
+
 interface IndexProps {
   preview: boolean
-  projectDescription: string
+  projectDescriptionParagraphs: string[]
   partnersIntro: string
   partnersInfo: Partner[]
 }
 
 export default function Index({
   preview,
-  projectDescription,
+  projectDescriptionParagraphs,
   partnersIntro,
   partnersInfo,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
@@ -50,35 +59,50 @@ export default function Index({
       <Head>
         <title>{`WomEmpSports`}</title>
       </Head>
-      <Image src={banner} alt='WomEmpSports Banner' w='full' as={NextImage} />
-      <Box maxW='80rem' px={6}>
-        <Box as='section' aria-labelledby='project-description-heading'>
-          <Heading id='project-description-heading'>About This Project</Heading>
-          <Text>{projectDescription}</Text>
-        </Box>
-        <Box as='section' aria-labelledby='partners-intro-heading'>
-          <Heading id='project-description-heading'>Our Partners</Heading>
+      <Image
+        src={banner}
+        alt='WomEmpSports Banner'
+        w='full'
+        minW='5xl'
+        as={NextImage}
+        pb={10}
+      />
+      <ContentContainer>
+        <SectionWithHeading id='project-description' title='About This Project'>
+          {projectDescriptionParagraphs.map((paragraph, i) => (
+            <Text key={i}>{paragraph}</Text>
+          ))}
+        </SectionWithHeading>
+        <SectionWithHeading id='partners' title='Our Partners'>
           <Text>{partnersIntro}</Text>
-          <SimpleGrid spacing={4} id='partners-grid' columns={[1, 2, 3]}>
-            {partnersInfo.map((partner) => (
-              <Card key={partner.name}>
-                <CardHeader>
-                  <Image
-                    src={partner.logo}
-                    alt={partner.name + ' logo'}
-                    as={NextImage}
-                    h='100'
-                    fit='contain'
-                  />
-                </CardHeader>
-                <CardBody>
-                  <Text>{partner.description}</Text>
-                </CardBody>
-              </Card>
-            ))}
-          </SimpleGrid>
-        </Box>
-      </Box>
+          <Section id='partners-description-grid'>
+            <SimpleGrid spacing={4} columns={[1, 2, 3]}>
+              {partnersInfo.map((partner) => (
+                <Card
+                  boxShadow='var(--chakra-colors-primary-300) 1px 2px 3px 2px'
+                  as={LinkBox}
+                  key={partner.name}
+                >
+                  <CardHeader pb={0}>
+                    <LinkOverlay as={Link} href={partner.url}>
+                      <Image
+                        src={partner.logo}
+                        alt={partner.name + ' logo'}
+                        as={NextImage}
+                        h='100'
+                        fit='contain'
+                      />
+                    </LinkOverlay>
+                  </CardHeader>
+                  <CardBody>
+                    <Text>{partner.description}</Text>
+                  </CardBody>
+                </Card>
+              ))}
+            </SimpleGrid>
+          </Section>
+        </SectionWithHeading>
+      </ContentContainer>
     </Layout>
   )
 }
@@ -88,43 +112,56 @@ export const getStaticProps: GetStaticProps<IndexProps> = ({
 }) => {
   const lorem = new LoremIpsum()
 
-  const projectDescription = lorem.generateParagraphs(3)
+  const projectDescriptionParagraphs = Array.from({ length: 3 }, () =>
+    lorem.generateParagraphs(1),
+  )
   const partnersIntro = lorem.generateParagraphs(1)
   const partnersInfo: Partner[] = [
     {
       name: 'Asociación Amigos de Europa',
       logo: amigosDeEuropaLogo,
       description: lorem.generateSentences(2),
+      url: 'https://amigosdeeuropa.eu/',
     },
     {
       name: 'Erasmus+ Programme',
       logo: erasmusLogo,
       description: lorem.generateSentences(2),
+      url: 'https://erasmus-plus.ec.europa.eu/',
     },
     {
       name: 'Фондация "ДА"',
       logo: gaLogo,
       description: lorem.generateSentences(2),
+      url: 'https://dafoundation.bg/',
     },
     {
       name: 'Asociación Guaraní',
       logo: guaraniLogo,
       description: lorem.generateSentences(2),
+      url: 'https://www.asociacionguarani.com/',
     },
     {
       name: 'ΑμΚΕ ΙΑΣΙΣ',
       logo: iasisLogo,
       description: lorem.generateSentences(2),
+      url: 'https://www.iasismed.eu/',
     },
     {
       name: 'Per Esempio ONLUS',
       logo: perEsempioLogo,
       description: lorem.generateSentences(2),
+      url: 'https://peresempionlus.org/',
     },
   ]
 
   return {
-    props: { preview, projectDescription, partnersIntro, partnersInfo },
+    props: {
+      preview,
+      projectDescriptionParagraphs,
+      partnersIntro,
+      partnersInfo,
+    },
     revalidate: 10,
   }
 }
