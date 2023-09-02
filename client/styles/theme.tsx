@@ -6,8 +6,14 @@ import { extendTheme, defineStyleConfig } from '@chakra-ui/react'
 
 import { Comfortaa, Inter } from 'next/font/google'
 
-const comfortaaFont = Comfortaa({ subsets: ['latin'] })
-const interFont = Inter({ subsets: ['latin'] })
+const comfortaaFont = Comfortaa({
+  subsets: ['cyrillic', 'greek', 'latin'],
+  display: 'swap',
+})
+const interFont = Inter({
+  subsets: ['cyrillic', 'greek', 'latin'],
+  display: 'swap',
+})
 
 const fonts = {
   heading: comfortaaFont.style.fontFamily,
