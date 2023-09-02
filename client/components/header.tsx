@@ -72,7 +72,16 @@ const languages: LanguageProps[] = [
 
 const NavLink = ({ label, href, ...props }: NavLinkProps & LinkProps) => {
   return (
-    <Link px={2} py={1} rounded='md' href={href} {...props}>
+    <Link
+      px={2}
+      py={1}
+      rounded='md'
+      href={href}
+      fontFamily='heading'
+      fontWeight={700}
+      fontSize={'xl'}
+      {...props}
+    >
       {label}
     </Link>
   )
@@ -91,7 +100,7 @@ export default function Header() {
   } = useDisclosure()
   const buttonColor = isMobileNavOpen ? 'white' : 'primary.700'
   const buttonActive = {
-    bg: isMobileNavOpen ? 'secondary.brand' : 'secondary.300',
+    bg: isMobileNavOpen ? 'secondary.brand' : 'secondary.400',
   }
 
   return (
@@ -158,8 +167,8 @@ export default function Header() {
             {links.map((link) => (
               <NavLink
                 key={link.label}
-                color='primary.800'
-                _hover={{ color: 'secondary.600' }}
+                color='primary.700'
+                _hover={{ color: 'secondary.500' }}
                 _active={{ bg: 'primary.100' }}
                 {...link}
               />
