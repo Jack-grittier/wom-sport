@@ -3,7 +3,6 @@ import Head from 'next/head'
 import NextImage, { StaticImageData } from 'next/image'
 
 import {
-  Box,
   Card,
   CardBody,
   CardHeader,
@@ -12,6 +11,7 @@ import {
   Text,
   LinkBox,
   LinkOverlay,
+  Flex,
 } from '@chakra-ui/react'
 import { Link } from '@chakra-ui/next-js'
 
@@ -59,14 +59,15 @@ export default function Index({
       <Head>
         <title>{`WomEmpSports`}</title>
       </Head>
-      <Image
-        src={banner}
-        alt='WomEmpSports Banner'
-        w='full'
-        minW='5xl'
-        as={NextImage}
-        pb={10}
-      />
+      <Flex w='full' pb={10} overflow='hidden' justify='center'>
+        <Image
+          src={banner}
+          alt='WomEmpSports Banner'
+          minW='5xl'
+          as={NextImage}
+          objectFit='cover'
+        />
+      </Flex>
       <ContentContainer>
         <SectionWithHeading id='project-description' title='About This Project'>
           {projectDescriptionParagraphs.map((paragraph, i) => (
