@@ -21,6 +21,7 @@ import Layout from '../components/layout'
 import Section from '../components/section'
 import SectionWithHeading from '../components/section-with-heading'
 import FixedWidthContainer from '../components/fixed-width-container'
+import Banner from '../components/banner'
 
 import banner from '../public/images/banner.svg'
 import amigosDeEuropaLogo from '../public/images/partners/amigos_de_europa-logo.png'
@@ -60,22 +61,7 @@ export default function Index({
         <title>{`WomEmpSports`}</title>
       </Head>
       <Flex align='center' as='article' direction='column'>
-        <Flex
-          w='100vw'
-          pb={10}
-          overflow='hidden'
-          justify='center'
-          as='header'
-          position='relative'
-        >
-          <Image
-            src={banner}
-            alt='WomEmpSports Banner'
-            minW='5xl'
-            as={NextImage}
-            objectFit='cover'
-          />
-        </Flex>
+        <Banner src={banner as StaticImageData} alt='WomEmpSports Banner' />
         <FixedWidthContainer>
           <SectionWithHeading
             id='project-description'
