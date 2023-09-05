@@ -211,7 +211,7 @@ export default function Header() {
                 >
                   <Link
                     // rounded='md'
-                    href={`/${lang.abbr}`}
+                    href={`/${lang.abbreviation}${pathname}`}
                     _hover={{ textDecoration: 'none' }}
                   >
                     {lang.name}
