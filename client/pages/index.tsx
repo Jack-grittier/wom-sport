@@ -58,7 +58,7 @@ export default function Index({
   return (
     <Layout preview={preview}>
       <Head>
-        <title>{`WomEmpSports`}</title>
+        <title>{`WomEmpSports Home`}</title>
       </Head>
       <Flex align='center' as='article' direction='column'>
         <Banner src={banner as StaticImageData} alt='WomEmpSports Banner' />
