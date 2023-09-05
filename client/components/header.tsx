@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react'
 import { Link, LinkProps } from '@chakra-ui/next-js'
 import NextImage from 'next/image'
+import { usePathname } from 'next/navigation'
 
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { BsGlobe2 as GlobeIcon } from 'react-icons/bs'
@@ -88,6 +89,7 @@ const NavLink = ({ title, href, ...props }: NavLinkProps & LinkProps) => {
 }
 
 export default function Header() {
+  const pathname = usePathname()
   const {
     isOpen: isMobileNavOpen,
     onOpen: onMobileNavOpen,
@@ -170,6 +172,12 @@ export default function Header() {
                 color='primary.700'
                 _hover={{ color: 'secondary.500' }}
                 _active={{ bg: 'primary.100' }}
+                {...(page.href === pathname
+                  ? {
+                      textDecoration: 'underline 2px',
+                      textDecorationColor: 'secondary.500',
+                    }
+                  : null)}
                 {...page}
               />
             ))}
@@ -236,7 +244,18 @@ export default function Header() {
           >
             <VStack as='nav' spacing={4} w='min' align='left'>
               {pages.map((page) => (
-                <NavLink key={page.title} color='white' {...page} />
+                <NavLink
+                  key={page.title}
+                  color='white'
+                  _hover={{ color: 'black', bg: 'secondary.500' }}
+                  {...(page.href === pathname
+                    ? {
+                        textDecoration: 'underline 2px',
+                        textDecorationColor: 'secondary.500',
+                      }
+                    : null)}
+                  {...page}
+                />
               ))}
             </VStack>
           </Box>
