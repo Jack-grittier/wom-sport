@@ -59,51 +59,63 @@ export default function Index({
       <Head>
         <title>{`WomEmpSports`}</title>
       </Head>
-      <Flex w='full' pb={10} overflow='hidden' justify='center'>
-        <Image
-          src={banner}
-          alt='WomEmpSports Banner'
-          minW='5xl'
-          as={NextImage}
-          objectFit='cover'
-        />
+      <Flex align='center' as='article' direction='column'>
+        <Flex
+          w='100vw'
+          pb={10}
+          overflow='hidden'
+          justify='center'
+          as='header'
+          position='relative'
+        >
+          <Image
+            src={banner}
+            alt='WomEmpSports Banner'
+            minW='5xl'
+            as={NextImage}
+            objectFit='cover'
+          />
+        </Flex>
+        <FixedWidthContainer>
+          <SectionWithHeading
+            id='project-description'
+            title='About This Project'
+          >
+            {projectDescriptionParagraphs.map((paragraph, i) => (
+              <Text key={i}>{paragraph}</Text>
+            ))}
+          </SectionWithHeading>
+          <SectionWithHeading id='partners' title='Our Partners'>
+            <Text>{partnersIntro}</Text>
+            <Section id='partners-description-grid'>
+              <SimpleGrid spacing={4} columns={[1, 2, 3]}>
+                {partnersInfo.map((partner) => (
+                  <Card
+                    boxShadow='var(--chakra-colors-primary-300) 1px 2px 3px 2px'
+                    as={LinkBox}
+                    key={partner.name}
+                  >
+                    <CardHeader pb={0}>
+                      <LinkOverlay as={Link} href={partner.url}>
+                        <Image
+                          src={partner.logo}
+                          alt={partner.name + ' logo'}
+                          as={NextImage}
+                          h='100'
+                          fit='contain'
+                        />
+                      </LinkOverlay>
+                    </CardHeader>
+                    <CardBody>
+                      <Text>{partner.description}</Text>
+                    </CardBody>
+                  </Card>
+                ))}
+              </SimpleGrid>
+            </Section>
+          </SectionWithHeading>
+        </FixedWidthContainer>
       </Flex>
-      <FixedWidthContainer>
-        <SectionWithHeading id='project-description' title='About This Project'>
-          {projectDescriptionParagraphs.map((paragraph, i) => (
-            <Text key={i}>{paragraph}</Text>
-          ))}
-        </SectionWithHeading>
-        <SectionWithHeading id='partners' title='Our Partners'>
-          <Text>{partnersIntro}</Text>
-          <Section id='partners-description-grid'>
-            <SimpleGrid spacing={4} columns={[1, 2, 3]}>
-              {partnersInfo.map((partner) => (
-                <Card
-                  boxShadow='var(--chakra-colors-primary-300) 1px 2px 3px 2px'
-                  as={LinkBox}
-                  key={partner.name}
-                >
-                  <CardHeader pb={0}>
-                    <LinkOverlay as={Link} href={partner.url}>
-                      <Image
-                        src={partner.logo}
-                        alt={partner.name + ' logo'}
-                        as={NextImage}
-                        h='100'
-                        fit='contain'
-                      />
-                    </LinkOverlay>
-                  </CardHeader>
-                  <CardBody>
-                    <Text>{partner.description}</Text>
-                  </CardBody>
-                </Card>
-              ))}
-            </SimpleGrid>
-          </Section>
-        </SectionWithHeading>
-      </FixedWidthContainer>
     </Layout>
   )
 }
