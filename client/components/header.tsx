@@ -23,54 +23,54 @@ import wesLogoFull from '../public/images/wes-logo-full.svg'
 import wesLogoEmpty from '../public/images/wes-logo-empty.svg'
 
 interface NavLinkProps {
-  label: string
+  title: string
   href: string
 }
 
-const links: NavLinkProps[] = [
+const pages: NavLinkProps[] = [
   {
-    label: 'Home',
+    title: 'Home',
     href: '/',
   },
   {
-    label: 'News',
+    title: 'News',
     href: '/news',
   },
   {
-    label: 'Resources',
+    title: 'Resources',
     href: '/resources',
   },
 ]
 
 interface LanguageProps {
   name: string
-  abbr: string
+  abbreviation: string
 }
 
 const languages: LanguageProps[] = [
   {
     name: 'Bulgarian',
-    abbr: 'bg',
+    abbreviation: 'bul',
   },
   {
     name: 'English',
-    abbr: 'en',
+    abbreviation: 'eng',
   },
   {
     name: 'Greek',
-    abbr: 'el',
+    abbreviation: 'ell',
   },
   {
     name: 'Italian',
-    abbr: 'it',
+    abbreviation: 'ita',
   },
   {
     name: 'Spanish',
-    abbr: 'es',
+    abbreviation: 'spa',
   },
 ]
 
-const NavLink = ({ label, href, ...props }: NavLinkProps & LinkProps) => {
+const NavLink = ({ title, href, ...props }: NavLinkProps & LinkProps) => {
   return (
     <Link
       px={2}
@@ -82,7 +82,7 @@ const NavLink = ({ label, href, ...props }: NavLinkProps & LinkProps) => {
       fontSize={'xl'}
       {...props}
     >
-      {label}
+      {title}
     </Link>
   )
 }
@@ -164,13 +164,13 @@ export default function Header() {
             pr={9}
             aria-label='Desktop Navigation'
           >
-            {links.map((link) => (
+            {pages.map((page) => (
               <NavLink
-                key={link.label}
+                key={page.title}
                 color='primary.700'
                 _hover={{ color: 'secondary.500' }}
                 _active={{ bg: 'primary.100' }}
-                {...link}
+                {...page}
               />
             ))}
           </HStack>
@@ -205,7 +205,7 @@ export default function Header() {
             <MenuList w={100} aria-label='Language Menu'>
               {languages.map((lang) => (
                 <MenuItem
-                  key={lang.abbr}
+                  key={lang.abbreviation}
                   _focus={{ bg: 'secondary.200' }}
                   _active={{ bg: 'secondary.300' }}
                 >
@@ -235,14 +235,8 @@ export default function Header() {
             borderColor='primary.400'
           >
             <VStack as='nav' spacing={4} w='min' align='left'>
-              {links.map((link) => (
-                <NavLink
-                  key={link.label}
-                  color='white'
-                  _active={{ color: 'black', bg: 'secondary.300' }}
-                  _hover={{ color: 'black', bg: 'secondary.400' }}
-                  {...link}
-                />
+              {pages.map((page) => (
+                <NavLink key={page.title} color='white' {...page} />
               ))}
             </VStack>
           </Box>
