@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react'
 
-export default function ContentContainer({
+export default function FixedWidthContainer({
   children,
 }: {
   children: React.ReactNode

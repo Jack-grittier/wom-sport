@@ -20,7 +20,7 @@ import { LoremIpsum } from 'lorem-ipsum'
 import Layout from '../components/layout'
 import Section from '../components/section'
 import SectionWithHeading from '../components/section-with-heading'
-import ContentContainer from '../components/content-container'
+import FixedWidthContainer from '../components/fixed-width-container'
 
 import banner from '../public/images/banner.svg'
 import amigosDeEuropaLogo from '../public/images/partners/amigos_de_europa-logo.png'
@@ -68,7 +68,7 @@ export default function Index({
           objectFit='cover'
         />
       </Flex>
-      <ContentContainer>
+      <FixedWidthContainer>
         <SectionWithHeading id='project-description' title='About This Project'>
           {projectDescriptionParagraphs.map((paragraph, i) => (
             <Text key={i}>{paragraph}</Text>
@@ -103,7 +103,7 @@ export default function Index({
             </SimpleGrid>
           </Section>
         </SectionWithHeading>
-      </ContentContainer>
+      </FixedWidthContainer>
     </Layout>
   )
 }
