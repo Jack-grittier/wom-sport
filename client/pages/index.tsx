@@ -37,7 +37,7 @@ import perEsempioLogo from '../public/images/partners/per_esempio-logo.png'
 
 interface Partner {
   name: string
-  logo: StaticImageData | any
+  logo: StaticImageData
   description: string
   url: string
 }
@@ -84,7 +84,7 @@ export default function Index({
                     <CardHeader pb={0}>
                       <LinkOverlay as={Link} href={partner.url}>
                         <Image
-                          src={partner.logo}
+                          src={partner.logo as unknown as string}
                           alt={partner.name + ' logo'}
                           as={NextImage}
                           h='100'
