@@ -64,9 +64,9 @@ export async function getAllPostsWithSlug() {
   return data?.posts
 }
 
-export async function getAllPostsForHome() {
+export async function getPostsForNews() {
   const document = graphql(`
-    query AllPosts {
+    query PostsForNews {
       posts(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
         edges {
           node {
@@ -77,16 +77,7 @@ export async function getAllPostsForHome() {
             featuredImage {
               node {
                 sourceUrl
-              }
-            }
-            author {
-              node {
-                name
-                firstName
-                lastName
-                avatar {
-                  url
-                }
+                altText
               }
             }
           }
@@ -94,9 +85,8 @@ export async function getAllPostsForHome() {
       }
     }
   `)
-  // the example passed {onlyEnabled: !preview, preview,} but I can't see what it would do
   const data = await fetchAPI(document)
-  return data?.posts
+  return data?.posts.edges.map((edge) => edge.node)
 }
 
 export async function getPostAndMorePosts(
@@ -223,7 +213,7 @@ export type PreviewPostData = Awaited<ReturnType<typeof getPreviewPost>>
 export type AllPostsWithSlugData = Awaited<
   ReturnType<typeof getAllPostsWithSlug>
 >
-export type AllPostsForHomeData = Awaited<ReturnType<typeof getAllPostsForHome>>
+export type PostsForNewsData = Awaited<ReturnType<typeof getPostsForNews>>
 export type PostAndMorePostsData = Awaited<
   ReturnType<typeof getPostAndMorePosts>
 >

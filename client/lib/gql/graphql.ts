@@ -9338,10 +9338,10 @@ export type AllPostsWithSlugQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllPostsWithSlugQuery = { __typename?: 'RootQuery', posts?: { __typename?: 'RootQueryToPostConnection', edges: Array<{ __typename?: 'RootQueryToPostConnectionEdge', node: { __typename?: 'Post', slug?: string | null } }> } | null };
 
-export type AllPostsQueryVariables = Exact<{ [key: string]: never; }>;
+export type PostsForNewsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllPostsQuery = { __typename?: 'RootQuery', posts?: { __typename?: 'RootQueryToPostConnection', edges: Array<{ __typename?: 'RootQueryToPostConnectionEdge', node: { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null } }> } | null };
+export type PostsForNewsQuery = { __typename?: 'RootQuery', posts?: { __typename?: 'RootQueryToPostConnection', edges: Array<{ __typename?: 'RootQueryToPostConnectionEdge', node: { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null } }> } | null };
 
 export type AuthorFieldsFragment = { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null };
 
@@ -9439,8 +9439,8 @@ export const AllPostsWithSlugDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AllPostsWithSlugQuery, AllPostsWithSlugQueryVariables>;
-export const AllPostsDocument = new TypedDocumentString(`
-    query AllPosts {
+export const PostsForNewsDocument = new TypedDocumentString(`
+    query PostsForNews {
   posts(first: 20, where: {orderby: {field: DATE, order: DESC}}) {
     edges {
       node {
@@ -9451,23 +9451,14 @@ export const AllPostsDocument = new TypedDocumentString(`
         featuredImage {
           node {
             sourceUrl
-          }
-        }
-        author {
-          node {
-            name
-            firstName
-            lastName
-            avatar {
-              url
-            }
+            altText
           }
         }
       }
     }
   }
 }
-    `) as unknown as TypedDocumentString<AllPostsQuery, AllPostsQueryVariables>;
+    `) as unknown as TypedDocumentString<PostsForNewsQuery, PostsForNewsQueryVariables>;
 export const PostBySlugDocument = new TypedDocumentString(`
     query PostBySlug($id: ID!, $idType: PostIdType!) {
   post(id: $id, idType: $idType) {
