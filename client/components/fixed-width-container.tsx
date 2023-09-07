@@ -9,7 +9,7 @@ export default function FixedWidthContainer({
   ...props
 }: FixedWidthContainerProps) {
   return (
-    <Box maxW='80rem' px={6} {...props}>
+    <Box maxW='80rem' w='full' px={6} {...props}>
       {children}
     </Box>
   )
