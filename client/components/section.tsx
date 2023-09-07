@@ -1,14 +1,13 @@
-import { Box } from '@chakra-ui/react'
+import { Flex, FlexProps } from '@chakra-ui/react'
 
-interface SectionProps {
+export interface SectionProps extends FlexProps {
   id: string
-  children: React.ReactNode
 }
 
-export default function Section({ id, children }: SectionProps) {
+export default function Section({ id, children, ...props }: SectionProps) {
   return (
-    <Box as='section' id={id} my={5}>
+    <Flex as='section' id={id} my={5} direction='column' {...props}>
       {children}
-    </Box>
+    </Flex>
   )
 }

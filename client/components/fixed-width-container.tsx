@@ -1,12 +1,15 @@
-import { Box } from '@chakra-ui/react'
+import { Box, BoxProps } from '@chakra-ui/react'
+
+export interface FixedWidthContainerProps extends BoxProps {
+  children: React.ReactNode
+}
 
 export default function FixedWidthContainer({
   children,
-}: {
-  children: React.ReactNode
-}) {
+  ...props
+}: FixedWidthContainerProps) {
   return (
-    <Box maxW='80rem' px={6}>
+    <Box maxW='80rem' px={6} {...props}>
       {children}
     </Box>
   )
