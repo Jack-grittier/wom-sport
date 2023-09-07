@@ -6,14 +6,13 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Image,
   SimpleGrid,
   Text,
   LinkBox,
   LinkOverlay,
   Flex,
 } from '@chakra-ui/react'
-import { Link } from '@chakra-ui/next-js'
+import { Link, Image } from '@chakra-ui/next-js'
 
 import { LoremIpsum } from 'lorem-ipsum'
 
@@ -84,11 +83,11 @@ export default function Index({
                     <CardHeader pb={0}>
                       <LinkOverlay as={Link} href={partner.url}>
                         <Image
-                          src={partner.logo as unknown as string}
+                          src={partner.logo}
                           alt={partner.name + ' logo'}
                           as={NextImage}
                           h='100'
-                          fit='contain'
+                          sx={{ objectFit: 'contain' }}
                         />
                       </LinkOverlay>
                     </CardHeader>

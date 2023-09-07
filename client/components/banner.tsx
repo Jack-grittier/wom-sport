@@ -1,12 +1,8 @@
-import { Flex, Image } from '@chakra-ui/react'
-import NextImage, { StaticImageData } from 'next/image'
+import { Flex } from '@chakra-ui/react'
+import { Image, ImageProps } from '@chakra-ui/next-js'
+import NextImage from 'next/image'
 
-interface BannerProps {
-  src: StaticImageData
-  alt: string
-}
-
-export default function Banner({ src, alt }: BannerProps) {
+export default function Banner({ src, alt }: ImageProps) {
   return (
     <Flex
       w='100vw'
@@ -17,11 +13,11 @@ export default function Banner({ src, alt }: BannerProps) {
       position='relative'
     >
       <Image
-        src={src as unknown as string}
+        src={src}
         alt={alt}
         minW='5xl'
         as={NextImage}
-        objectFit='cover'
+        sx={{ objectFit: 'contain' }}
       />
     </Flex>
   )
