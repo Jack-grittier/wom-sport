@@ -76,7 +76,7 @@ export default function Index({
               <SimpleGrid spacing={4} columns={[1, 2, 3]}>
                 {partnersInfo.map((partner) => (
                   <Card
-                    boxShadow='var(--chakra-colors-primary-300) 1px 2px 3px 2px'
+                    boxShadow='var(--chakra-colors-primary-700) 1px 2px 6px -2px'
                     as={LinkBox}
                     key={partner.name}
                   >

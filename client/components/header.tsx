@@ -108,8 +108,7 @@ export default function Header() {
   return (
     <Flex
       bg={isMobileNavOpen ? 'primary.brand' : 'white'}
-      borderBottom='1px solid'
-      borderColor='primary.100'
+      boxShadow='var(--chakra-colors-primary-700) 0px 1px 5px 0px'
       direction='column'
       align='center'
       position='sticky'
