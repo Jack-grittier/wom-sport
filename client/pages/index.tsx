@@ -1,6 +1,7 @@
 import { InferGetStaticPropsType, GetStaticProps } from 'next'
 import Head from 'next/head'
 import NextImage, { StaticImageData } from 'next/image'
+import NextLink from 'next/link'
 
 import {
   Card,
@@ -12,7 +13,7 @@ import {
   LinkOverlay,
   Flex,
 } from '@chakra-ui/react'
-import { Link, Image } from '@chakra-ui/next-js'
+import { Link, LinkProps, Image } from '@chakra-ui/next-js'
 
 import { LoremIpsum } from 'lorem-ipsum'
 
@@ -54,6 +55,11 @@ export default function Index({
   partnersIntro,
   partnersInfo,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const LinkAsNextLink = ({ children, ...props }: LinkProps) => (
+    <Link as={NextLink} {...props}>
+      {children}
+    </Link>
+  )
   return (
     <Layout preview={preview}>
       <Head>
@@ -81,7 +87,7 @@ export default function Index({
                     key={partner.name}
                   >
                     <CardHeader pb={0}>
-                      <LinkOverlay as={Link} href={partner.url}>
+                      <LinkOverlay as={LinkAsNextLink} href={partner.url}>
                         <Image
                           src={partner.logo}
                           alt={partner.name + ' logo'}

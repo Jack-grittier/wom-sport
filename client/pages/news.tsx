@@ -12,6 +12,8 @@ import {
   Flex,
   Heading,
   CardFooter,
+  LinkBoxProps,
+  LinkBox,
 } from '@chakra-ui/react'
 import { Link, Image } from '@chakra-ui/next-js'
 
@@ -37,6 +39,11 @@ export default function News({
   preview,
   posts,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const LinkBoxAsArticle = ({ children, ...props }: LinkBoxProps) => (
+    <LinkBox as='article' {...props}>
+      {children}
+    </LinkBox>
+  )
   return (
     <Layout preview={preview}>
       <Head>
@@ -55,11 +62,7 @@ export default function News({
                 {posts.map((post) => (
                   <Card
                     boxShadow='var(--chakra-colors-primary-700) 1px 2px 6px -2px'
-                    as='article'
-                    // Workaround to have a Card be both an 'article' and a 'LinkBox'
-                    className='chakra-linkbox'
-                    maxW={360}
-                    h='full'
+                    as={LinkBoxAsArticle}
                     key={post.slug}
                   >
                     <CardHeader pb={0}>
