@@ -93,7 +93,6 @@ extension=php_soap.dll
 extension=php_mysqli.dll
 extension=php_pdo_mysql.dll
 extension=php_fileinfo.dll
-extension=php_zip.dll
 {{/if}}
 
 [MySQL]
@@ -126,9 +125,7 @@ mysqli.reconnect = Off
 pdo_mysql.default_socket = "{{mysql.socket}}"
 pdo_mysql.default_port = {{mysql.port}}
 
-{{#if os.windows}}
-{{! Imagick on Windows coming soon!}}
-{{else}}
+{{#if intelChipMac}}
 [imagick]
 extension = {{extensionsDir}}/imagick.so
 {{/if}}
