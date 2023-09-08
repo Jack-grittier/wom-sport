@@ -56,13 +56,14 @@ export default function News({
             <Section id='article-grid'>
               <SimpleGrid
                 columns={[1, null, 2, 3]}
-                gap={6}
+                gap={[6, null, null, null, 12]}
                 justifyItems={'center'}
               >
                 {posts.map((post) => (
                   <Card
                     boxShadow='var(--chakra-colors-primary-700) 1px 2px 6px -2px'
                     as={LinkBoxAsArticle}
+                    maxW={400}
                     key={post.slug}
                   >
                     <CardHeader pb={0}>
