@@ -23,7 +23,7 @@ import { BsGlobe2 as GlobeIcon } from 'react-icons/bs'
 import wesLogoFull from '../public/images/wes-logo-full.svg'
 import wesLogoEmpty from '../public/images/wes-logo-empty.svg'
 
-interface NavLinkProps {
+interface NavLinkProps extends LinkProps {
   title: string
   href: string
 }
@@ -71,7 +71,7 @@ const languages: LanguageProps[] = [
   },
 ]
 
-const NavLink = ({ title, href, ...props }: NavLinkProps & LinkProps) => {
+const NavLink = ({ title, href, ...props }: NavLinkProps) => {
   return (
     <Link
       px={2}
