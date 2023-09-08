@@ -25,7 +25,6 @@ import Banner from '../components/banner'
 
 import banner from '../public/images/banner.svg'
 import amigosDeEuropaLogo from '../public/images/partners/amigos_de_europa-logo.png'
-import erasmusLogo from '../public/images/partners/erasmus-logo.png'
 import gaLogo from '../public/images/partners/ga-logo.png'
 import guaraniLogo from '../public/images/partners/guarani-logo.png'
 import iasisLogo from '../public/images/partners/iasis-logo.png'
@@ -126,12 +125,6 @@ export const getStaticProps: GetStaticProps<IndexProps> = ({
       logo: amigosDeEuropaLogo,
       description: lorem.generateSentences(2),
       url: 'https://amigosdeeuropa.eu/',
-    },
-    {
-      name: 'Erasmus+ Programme',
-      logo: erasmusLogo,
-      description: lorem.generateSentences(2),
-      url: 'https://erasmus-plus.ec.europa.eu/',
     },
     {
       name: 'Фондация "ДА"',
