@@ -65,6 +65,7 @@ export default function News({
                     as={LinkBoxAsArticle}
                     maxW={400}
                     key={post.slug}
+                    w='100%'
                   >
                     <CardHeader pb={0}>
                       <Heading
