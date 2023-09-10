@@ -89,6 +89,25 @@ export async function getPostsForNews() {
   return data?.posts.edges.map((edge) => edge.node)
 }
 
+export async function getVideosForResources() {
+  const document = graphql(`
+    query VideosForResources {
+      videos(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
+        edges {
+          node {
+            excerpt
+            date
+            embedUrl
+            title
+          }
+        }
+      }
+    }
+  `)
+  const data = await fetchAPI(document)
+  return data?.videos.edges.map((edge) => edge.node)
+}
+
 export async function getPostAndMorePosts(
   id: number | string,
   previewData?: { post: PreviewPostData },
@@ -214,6 +233,9 @@ export type AllPostsWithSlugData = Awaited<
   ReturnType<typeof getAllPostsWithSlug>
 >
 export type PostsForNewsData = Awaited<ReturnType<typeof getPostsForNews>>
+export type VideosForResourcesData = Awaited<
+  ReturnType<typeof getVideosForResources>
+>
 export type PostAndMorePostsData = Awaited<
   ReturnType<typeof getPostAndMorePosts>
 >
