@@ -2,7 +2,7 @@ import NextImage from 'next/image'
 import NextLink from 'next/link'
 import { Link, Image } from '@chakra-ui/next-js'
 
-import { Box, Flex, Text } from '@chakra-ui/react'
+import { Flex, Text } from '@chakra-ui/react'
 
 import erasmusLogo from '../public/images/erasmus-logo.png'
 import FixedWidthContainer from './fixed-width-container'
@@ -15,25 +15,24 @@ export default function Footer() {
       direction='column'
       align='center'
     >
-      <FixedWidthContainer direction='row'>
-        <Flex direction='row' alidn='center'>
-          <Link
-            as={NextLink}
-            href='https://erasmus-plus.ec.europa.eu/'
-            my={2}
-            mr={5}
-          >
-            <Image
-              src={erasmusLogo}
-              alt='Erasmus+ Programme logo'
-              as={NextImage}
-              h='64px'
-              sx={{ objectFit: 'contain' }}
-              bg='white'
-              w='fit-content'
-            />
-          </Link>
-          <Text color='gray.600' fontSize='2xs' p={0} alignSelf='center'>
+      <FixedWidthContainer>
+        <Flex direction={['column', 'row']} align='center'>
+          <Flex>
+            <Link
+              as={NextLink}
+              href='https://erasmus-plus.ec.europa.eu/'
+              my={2}
+              mr={5}
+              w={48}
+            >
+              <Image
+                src={erasmusLogo}
+                alt='Erasmus+ Programme logo'
+                as={NextImage}
+              />
+            </Link>
+          </Flex>
+          <Text color='gray.600' fontSize='2xs' p={0}>
             {/* TODO: change text */}
             {`© 2023 CirculART-e. The European Commission's support for the
           production of this publication does not constitute an endorsement of the
