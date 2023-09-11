@@ -7,13 +7,22 @@ import {
   Card,
   CardBody,
   CardHeader,
-  SimpleGrid,
   Text,
   LinkBox,
   LinkOverlay,
   Flex,
+  VStack,
+  HStack,
+  IconButton,
+  Icon,
 } from '@chakra-ui/react'
 import { Link, LinkProps, Image } from '@chakra-ui/next-js'
+
+import {
+  BsFacebook as FacebookIcon,
+  BsTwitter as TwitterIcon,
+  BsInstagram as InstagramIcon,
+} from 'react-icons/bs'
 
 import { LoremIpsum } from 'lorem-ipsum'
 
@@ -24,35 +33,32 @@ import FixedWidthContainer from '../components/fixed-width-container'
 import Banner from '../components/banner'
 
 import banner from '../public/images/banner.svg'
-import amigosDeEuropaLogo from '../public/images/partners/amigos_de_europa-logo.png'
-import gaLogo from '../public/images/partners/ga-logo.png'
-import guaraniLogo from '../public/images/partners/guarani-logo.png'
-import iasisLogo from '../public/images/partners/iasis-logo.png'
-import perEsempioLogo from '../public/images/partners/per_esempio-logo.png'
+
+import { partners } from '../lib/constants'
+import { IconType } from 'react-icons'
 
 // TODO: Send a PR to chakra to update docs about next/image and next/link
 // (image should say next / image includes nextjs image opt, link should use import from chakra-ui/next-js
 // TODO: Open issue about src type autocomplete in chakra image (should accept StaticImageData)
 
-interface Partner {
-  name: string
-  logo: StaticImageData
-  description: string
-  url: string
-}
-
 interface IndexProps {
   preview: boolean
   projectDescriptionParagraphs: string[]
   partnersIntro: string
-  partnersInfo: Partner[]
+}
+
+type SocialIcons = Record<keyof (typeof partners)[string]['socials'], IconType>
+
+const socialIcons: SocialIcons = {
+  facebook: FacebookIcon,
+  instagram: InstagramIcon,
+  twitter: TwitterIcon,
 }
 
 export default function Index({
   preview,
   projectDescriptionParagraphs,
   partnersIntro,
-  partnersInfo,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const LinkAsNextLink = ({ children, ...props }: LinkProps) => (
     <Link as={NextLink} {...props}>
@@ -78,30 +84,76 @@ export default function Index({
           <SectionWithHeading id='partners' title='Our Partners'>
             <Text>{partnersIntro}</Text>
             <Section id='partners-description-grid'>
-              <SimpleGrid spacing={4} columns={[1, 2, 3]}>
-                {partnersInfo.map((partner) => (
+              <VStack spacing={6}>
+                {Object.entries(partners).map(([partnerName, partnerInfo]) => (
                   <Card
                     boxShadow='var(--chakra-colors-primary-700) 1px 2px 6px -2px'
                     as={LinkBox}
-                    key={partner.name}
+                    key={partnerName}
+                    direction={['column', null, 'row']}
+                    w='full'
                   >
-                    <CardHeader pb={0}>
-                      <LinkOverlay as={LinkAsNextLink} href={partner.url}>
-                        <Image
-                          src={partner.logo}
-                          alt={partner.name + ' logo'}
-                          as={NextImage}
-                          h='100'
-                          sx={{ objectFit: 'contain' }}
-                        />
-                      </LinkOverlay>
+                    <CardHeader
+                      as={Flex}
+                      align='center'
+                      justify='center'
+                      borderRight={[null, null, '1px solid']}
+                      borderColor={[null, null, 'gray.300']}
+                      pb={0}
+                    >
+                      <Flex direction='column' align='center'>
+                        <LinkOverlay as={LinkAsNextLink} href={partnerInfo.url}>
+                          <Image
+                            src={partnerInfo.logo}
+                            alt={partnerName + ' logo'}
+                            as={NextImage}
+                            w='200px'
+                            sx={{ objectFit: 'contain' }}
+                          />
+                        </LinkOverlay>
+                        <HStack pt={3} spacing={0}>
+                          {Object.entries(partnerInfo.socials).map(
+                            ([socialType, socialUrl]) => (
+                              <LinkAsNextLink key={socialType} href={socialUrl}>
+                                <IconButton
+                                  size='md'
+                                  variant='ghost'
+                                  icon={
+                                    <Icon
+                                      as={
+                                        socialIcons[
+                                          socialType as keyof SocialIcons
+                                        ]
+                                      }
+                                      color={'primary.700'}
+                                      w={5}
+                                      h={5}
+                                      _active={{
+                                        color: 'white',
+                                      }}
+                                    />
+                                  }
+                                  _hover={{
+                                    bg: 'secondary.400',
+                                  }}
+                                  _active={{
+                                    bg: 'secondary.brand',
+                                  }}
+                                  aria-label='Social Button'
+                                  isRound
+                                />
+                              </LinkAsNextLink>
+                            ),
+                          )}
+                        </HStack>
+                      </Flex>
                     </CardHeader>
-                    <CardBody>
-                      <Text>{partner.description}</Text>
+                    <CardBody as={Flex} justify='center' direction='column'>
+                      {partnerInfo.descriptions.eng}
                     </CardBody>
                   </Card>
                 ))}
-              </SimpleGrid>
+              </VStack>
             </Section>
           </SectionWithHeading>
         </FixedWidthContainer>
@@ -119,45 +171,12 @@ export const getStaticProps: GetStaticProps<IndexProps> = ({
     lorem.generateParagraphs(1),
   )
   const partnersIntro = lorem.generateParagraphs(1)
-  const partnersInfo: Partner[] = [
-    {
-      name: 'Asociación Amigos de Europa',
-      logo: amigosDeEuropaLogo,
-      description: lorem.generateSentences(2),
-      url: 'https://amigosdeeuropa.eu/',
-    },
-    {
-      name: 'Фондация "ДА"',
-      logo: gaLogo,
-      description: lorem.generateSentences(2),
-      url: 'https://dafoundation.bg/',
-    },
-    {
-      name: 'Asociación Guaraní',
-      logo: guaraniLogo,
-      description: lorem.generateSentences(2),
-      url: 'https://www.asociacionguarani.com/',
-    },
-    {
-      name: 'ΑμΚΕ ΙΑΣΙΣ',
-      logo: iasisLogo,
-      description: lorem.generateSentences(2),
-      url: 'https://www.iasismed.eu/',
-    },
-    {
-      name: 'Per Esempio ONLUS',
-      logo: perEsempioLogo,
-      description: lorem.generateSentences(2),
-      url: 'https://peresempionlus.org/',
-    },
-  ]
 
   return {
     props: {
       preview,
       projectDescriptionParagraphs,
       partnersIntro,
-      partnersInfo,
     },
     revalidate: 10,
   }

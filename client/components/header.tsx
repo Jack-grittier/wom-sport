@@ -20,6 +20,8 @@ import { usePathname } from 'next/navigation'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { BsGlobe2 as GlobeIcon } from 'react-icons/bs'
 
+import { languages } from '../lib/constants'
+
 import wesLogoFull from '../public/images/wes-logo-full.svg'
 import wesLogoEmpty from '../public/images/wes-logo-empty.svg'
 
@@ -40,34 +42,6 @@ const pages: NavLinkProps[] = [
   {
     title: 'Resources',
     href: '/resources',
-  },
-]
-
-interface LanguageProps {
-  name: string
-  abbreviation: string
-}
-
-const languages: LanguageProps[] = [
-  {
-    name: 'Bulgarian',
-    abbreviation: 'bul',
-  },
-  {
-    name: 'English',
-    abbreviation: 'eng',
-  },
-  {
-    name: 'Greek',
-    abbreviation: 'ell',
-  },
-  {
-    name: 'Italian',
-    abbreviation: 'ita',
-  },
-  {
-    name: 'Spanish',
-    abbreviation: 'spa',
   },
 ]
 
@@ -210,18 +184,18 @@ export default function Header() {
               aria-label='Language Switcher Button'
             ></MenuButton>
             <MenuList w={100} aria-label='Language Menu'>
-              {languages.map((lang) => (
+              {Object.entries(languages).map(([langAbbreviation, langName]) => (
                 <MenuItem
-                  key={lang.abbreviation}
+                  key={langAbbreviation}
                   _focus={{ bg: 'secondary.200' }}
                   _active={{ bg: 'secondary.300' }}
                 >
                   <Link
                     // rounded='md'
-                    href={`/${lang.abbreviation}${pathname}`}
+                    href={`/${langAbbreviation}${pathname}`}
                     _hover={{ textDecoration: 'none' }}
                   >
-                    {lang.name}
+                    {langName}
                   </Link>
                 </MenuItem>
               ))}
