@@ -13,17 +13,20 @@ import {
   VStack,
   Image,
 } from '@chakra-ui/react'
-import { Link, LinkProps } from '@chakra-ui/next-js'
+import { LinkProps } from '@chakra-ui/next-js'
 import NextImage from 'next/image'
 import { usePathname } from 'next/navigation'
 
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { BsGlobe2 as GlobeIcon } from 'react-icons/bs'
 
-import { languages } from '../lib/constants'
+import Link from './link-as-next-link'
+import { LANGUAGES } from '../lib/constants'
 
 import wesLogoFull from '../public/images/wes-logo-full.svg'
 import wesLogoEmpty from '../public/images/wes-logo-empty.svg'
+
+// TODO: Submit issue about href warning when using Chakra UI Link and localization
 
 interface NavLinkProps extends LinkProps {
   title: string
@@ -151,7 +154,8 @@ export default function Header() {
                       textDecorationColor: 'secondary.500',
                     }
                   : null)}
-                {...page}
+                title={page.title}
+                href={page.href}
               />
             ))}
           </HStack>
@@ -166,9 +170,7 @@ export default function Header() {
             <MenuButton
               as={IconButton}
               size='md'
-              // rounded='full'
               variant='ghost'
-              // cursor='pointer'
               icon={
                 <Icon
                   as={GlobeIcon}
@@ -184,20 +186,20 @@ export default function Header() {
               aria-label='Language Switcher Button'
             ></MenuButton>
             <MenuList w={100} aria-label='Language Menu'>
-              {Object.entries(languages).map(([langAbbreviation, langName]) => (
-                <MenuItem
-                  key={langAbbreviation}
-                  _focus={{ bg: 'secondary.200' }}
-                  _active={{ bg: 'secondary.300' }}
+              {Object.entries(LANGUAGES).map(([locale, language]) => (
+                <Link
+                  key={locale}
+                  locale={locale}
+                  _hover={{ textDecoration: 'none' }}
+                  href={pathname}
                 >
-                  <Link
-                    // rounded='md'
-                    href={`/${langAbbreviation}${pathname}`}
-                    _hover={{ textDecoration: 'none' }}
+                  <MenuItem
+                    _focus={{ bg: 'secondary.200' }}
+                    _active={{ bg: 'secondary.300' }}
                   >
-                    {langName}
-                  </Link>
-                </MenuItem>
+                    {language}
+                  </MenuItem>
+                </Link>
               ))}
             </MenuList>
           </Menu>

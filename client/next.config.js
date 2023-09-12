@@ -18,4 +18,8 @@ module.exports = {
       'secure.gravatar.com',
     ],
   },
+  i18n: {
+    locales: ['bg', 'el', 'en', 'es', 'it'],
+    defaultLocale: 'en',
+  },
 }
