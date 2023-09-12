@@ -12,13 +12,19 @@ import {
   Icon,
   VStack,
   Image,
+  AbsoluteCenter,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import { LinkProps } from '@chakra-ui/next-js'
 import NextImage from 'next/image'
 import { usePathname } from 'next/navigation'
 
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
-import { BsGlobe2 as GlobeIcon } from 'react-icons/bs'
+import {
+  BsGlobe2 as GlobeIcon,
+  BsFacebook as FacebookIcon,
+  BsYoutube as YoutubeIcon,
+} from 'react-icons/bs'
 
 import Link from './link-as-next-link'
 import { LANGUAGES } from '../lib/constants'
@@ -81,7 +87,19 @@ export default function Header() {
   const buttonActive = {
     bg: isMobileNavOpen ? 'secondary.brand' : 'secondary.400',
   }
-
+  const shouldCenter = useBreakpointValue({ base: true, md: false })
+  const Logo = () => (
+    <Link href='/' display={['none', 'unset']}>
+      <Image
+        src={
+          isMobileNavOpen ? (wesLogoEmpty as string) : (wesLogoFull as string)
+        }
+        alt='WomEmpSports Logo'
+        w={16}
+        as={NextImage}
+      />
+    </Link>
+  )
   return (
     <Flex
       bg={isMobileNavOpen ? 'primary.brand' : 'white'}
@@ -120,18 +138,13 @@ export default function Header() {
         />
 
         {/* Logo */}
-        <Link href='/'>
-          <Image
-            src={
-              isMobileNavOpen
-                ? (wesLogoEmpty as string)
-                : (wesLogoFull as string)
-            }
-            alt='WomEmpSports Logo'
-            w={16}
-            as={NextImage}
-          />
-        </Link>
+        {shouldCenter ? (
+          <AbsoluteCenter>
+            <Logo />
+          </AbsoluteCenter>
+        ) : (
+          <Logo />
+        )}
 
         <Flex alignItems='center'>
           {/* Desktop nav */}
@@ -139,7 +152,7 @@ export default function Header() {
             as='nav'
             spacing={4}
             display={{ base: 'none', md: 'flex' }}
-            pr={9}
+            pr={7}
             aria-label='Desktop Navigation'
           >
             {pages.map((page) => (
@@ -148,18 +161,55 @@ export default function Header() {
                 color='primary.700'
                 _hover={{ color: 'secondary.500' }}
                 _active={{ bg: 'primary.100' }}
-                {...(page.href === pathname
-                  ? {
-                      textDecoration: 'underline 2px',
-                      textDecorationColor: 'secondary.500',
-                    }
-                  : null)}
+                {...(page.href === pathname && {
+                  textDecoration: 'underline 2px',
+                  textDecorationColor: 'secondary.500',
+                })}
                 title={page.title}
                 href={page.href}
               />
             ))}
           </HStack>
 
+          {/* Socials */}
+          <HStack pr={5} spacing={3}>
+            <IconButton
+              size='md'
+              variant='ghost'
+              as={Link}
+              href='https://www.facebook.com/profile.php?id=100091980933607'
+              icon={
+                <Icon
+                  as={FacebookIcon}
+                  color={isMobileNavOpen ? 'white' : 'primary.700'}
+                  _active={{ color: 'white' }}
+                  w={7}
+                  h={7}
+                />
+              }
+              _hover={buttonActive}
+              _active={{ bg: 'secondary.brand' }}
+              aria-label='Facebook Project Page'
+            />
+            <IconButton
+              size='md'
+              variant='ghost'
+              as={Link}
+              href=''
+              icon={
+                <Icon
+                  as={YoutubeIcon}
+                  color={isMobileNavOpen ? 'white' : 'primary.700'}
+                  _active={{ color: 'white' }}
+                  w={7}
+                  h={7}
+                />
+              }
+              _hover={buttonActive}
+              _active={{ bg: 'secondary.brand' }}
+              aria-label='YouTube Project Page'
+            />
+          </HStack>
           {/* Language Switcher */}
           <Menu
             gutter={20}
@@ -182,9 +232,9 @@ export default function Header() {
                 />
               }
               _hover={buttonActive}
-              _active={{ bg: 'secondary.brand', colorScheme: 'white' }}
-              aria-label='Language Switcher Button'
-            ></MenuButton>
+              _active={{ bg: 'secondary.brand' }}
+              aria-label='Language Switcher'
+            />
             <MenuList w={100} aria-label='Language Menu'>
               {Object.entries(LANGUAGES).map(([locale, language]) => (
                 <Link
