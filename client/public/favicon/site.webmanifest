@@ -1,6 +1,7 @@
 {
-  "name": "Next.js",
-  "short_name": "Next.js",
+  "name": "WomEmpSports",
+  "short_name": "WES",
+  "description": "The WomEmpSports Project Page.",
   "icons": [
     {
       "src": "/favicons/android-chrome-192x192.png",
@@ -13,7 +14,6 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#000000",
-  "background_color": "#000000",
-  "display": "standalone"
+  "theme_color": "#4C59A7",
+  "background_color": "white"
 }
