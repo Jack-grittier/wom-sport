@@ -139,7 +139,7 @@ export default function Header() {
 
         {/* Logo */}
         {shouldCenter ? (
-          <AbsoluteCenter>
+          <AbsoluteCenter axis='horizontal'>
             <Logo />
           </AbsoluteCenter>
         ) : (
