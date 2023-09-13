@@ -33,13 +33,13 @@ export default function Footer() {
             </Link>
           </Flex>
           <Text color='gray.600' fontSize='2xs' p={0}>
-            {/* TODO: change text */}
-            {`© 2023 CirculART-e. The European Commission's support for the
+            {/* TODO: Update project number */}
+            {`© 2023 WomEmpSports. The European Commission's support for the
           production of this publication does not constitute an endorsement of the
           contents, which reflect the views only of the authors, and the
           Commission cannot be held responsible for any use which may be made of
-          the information contained therein. Project Nr.
-          2021-1-IT03-KA220-YOU-000030392`}
+          the information contained therein. Project #
+          `}
           </Text>
         </Flex>
       </FixedWidthContainer>
