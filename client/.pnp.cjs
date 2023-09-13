@@ -44,8 +44,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/sanitize-html", "npm:2.9.0"],\
             ["@typescript-eslint/eslint-plugin", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:6.5.0"],\
             ["@typescript-eslint/parser", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:6.5.0"],\
-            ["autoprefixer", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.4.15"],\
-            ["classnames", "npm:2.3.2"],\
             ["concurrently", "npm:8.2.1"],\
             ["date-fns", "npm:2.30.0"],\
             ["eslint", "npm:8.48.0"],\
@@ -56,9 +54,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql-request", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:6.1.0"],\
             ["husky", "npm:8.0.3"],\
             ["lint-staged", "npm:14.0.1"],\
-            ["lorem-ipsum", "npm:2.0.8"],\
             ["next", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:13.4.19"],\
-            ["postcss", "npm:8.4.29"],\
             ["prettier", "npm:3.0.3"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:18.2.0"],\
@@ -6211,34 +6207,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["autoprefixer", [\
-        ["npm:10.4.15", {\
-          "packageLocation": "./.yarn/cache/autoprefixer-npm-10.4.15-f16a1e775d-d490b14fb0.zip/node_modules/autoprefixer/",\
-          "packageDependencies": [\
-            ["autoprefixer", "npm:10.4.15"]\
-          ],\
-          "linkType": "SOFT"\
-        }],\
-        ["virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.4.15", {\
-          "packageLocation": "./.yarn/__virtual__/autoprefixer-virtual-3932fa257a/0/cache/autoprefixer-npm-10.4.15-f16a1e775d-d490b14fb0.zip/node_modules/autoprefixer/",\
-          "packageDependencies": [\
-            ["autoprefixer", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.4.15"],\
-            ["@types/postcss", null],\
-            ["browserslist", "npm:4.21.10"],\
-            ["caniuse-lite", "npm:1.0.30001524"],\
-            ["fraction.js", "npm:4.2.0"],\
-            ["normalize-range", "npm:0.1.2"],\
-            ["picocolors", "npm:1.0.0"],\
-            ["postcss", "npm:8.4.29"],\
-            ["postcss-value-parser", "npm:4.2.0"]\
-          ],\
-          "packagePeers": [\
-            "@types/postcss",\
-            "postcss"\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["available-typed-arrays", [\
         ["npm:1.0.5", {\
           "packageLocation": "./.yarn/cache/available-typed-arrays-npm-1.0.5-88f321e4d3-20eb47b3ce.zip/node_modules/available-typed-arrays/",\
@@ -6559,13 +6527,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["caniuse-lite", "npm:1.0.30001519"]\
           ],\
           "linkType": "HARD"\
-        }],\
-        ["npm:1.0.30001524", {\
-          "packageLocation": "./.yarn/cache/caniuse-lite-npm-1.0.30001524-412c248e4d-35d662a62f.zip/node_modules/caniuse-lite/",\
-          "packageDependencies": [\
-            ["caniuse-lite", "npm:1.0.30001524"]\
-          ],\
-          "linkType": "HARD"\
         }]\
       ]],\
       ["capital-case", [\
@@ -6669,15 +6630,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/chownr-npm-2.0.0-638f1c9c61-c57cf9dd07.zip/node_modules/chownr/",\
           "packageDependencies": [\
             ["chownr", "npm:2.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["classnames", [\
-        ["npm:2.3.2", {\
-          "packageLocation": "./.yarn/cache/classnames-npm-2.3.2-d2fdae468d-2c62199789.zip/node_modules/classnames/",\
-          "packageDependencies": [\
-            ["classnames", "npm:2.3.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -6875,13 +6827,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/commander-npm-11.0.0-7def992f0c-6621954e1e.zip/node_modules/commander/",\
           "packageDependencies": [\
             ["commander", "npm:11.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:9.5.0", {\
-          "packageLocation": "./.yarn/cache/commander-npm-9.5.0-993b3f2434-c7a3e27aa5.zip/node_modules/commander/",\
-          "packageDependencies": [\
-            ["commander", "npm:9.5.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8356,15 +8301,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["for-each", "npm:0.3.3"],\
             ["is-callable", "npm:1.2.7"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["fraction.js", [\
-        ["npm:4.2.0", {\
-          "packageLocation": "./.yarn/cache/fraction.js-npm-4.2.0-28efe4afc7-8c76a6e21d.zip/node_modules/fraction.js/",\
-          "packageDependencies": [\
-            ["fraction.js", "npm:4.2.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9965,16 +9901,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["lorem-ipsum", [\
-        ["npm:2.0.8", {\
-          "packageLocation": "./.yarn/cache/lorem-ipsum-npm-2.0.8-a5c19f179a-63049aab1f.zip/node_modules/lorem-ipsum/",\
-          "packageDependencies": [\
-            ["lorem-ipsum", "npm:2.0.8"],\
-            ["commander", "npm:9.5.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["lower-case", [\
         ["npm:2.0.2", {\
           "packageLocation": "./.yarn/cache/lower-case-npm-2.0.2-151055f1c2-83a0a5f159.zip/node_modules/lower-case/",\
@@ -10502,15 +10428,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["normalize-range", [\
-        ["npm:0.1.2", {\
-          "packageLocation": "./.yarn/cache/normalize-range-npm-0.1.2-bec5e259e2-9b2f14f093.zip/node_modules/normalize-range/",\
-          "packageDependencies": [\
-            ["normalize-range", "npm:0.1.2"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["npm-run-path", [\
         ["npm:4.0.1", {\
           "packageLocation": "./.yarn/cache/npm-run-path-npm-4.0.1-7aebd8bab3-5374c0cea4.zip/node_modules/npm-run-path/",\
@@ -10969,15 +10886,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["nanoid", "npm:3.3.6"],\
             ["picocolors", "npm:1.0.0"],\
             ["source-map-js", "npm:1.0.2"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["postcss-value-parser", [\
-        ["npm:4.2.0", {\
-          "packageLocation": "./.yarn/cache/postcss-value-parser-npm-4.2.0-3cef602a6a-819ffab0c9.zip/node_modules/postcss-value-parser/",\
-          "packageDependencies": [\
-            ["postcss-value-parser", "npm:4.2.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -11569,8 +11477,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/sanitize-html", "npm:2.9.0"],\
             ["@typescript-eslint/eslint-plugin", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:6.5.0"],\
             ["@typescript-eslint/parser", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:6.5.0"],\
-            ["autoprefixer", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:10.4.15"],\
-            ["classnames", "npm:2.3.2"],\
             ["concurrently", "npm:8.2.1"],\
             ["date-fns", "npm:2.30.0"],\
             ["eslint", "npm:8.48.0"],\
@@ -11581,9 +11487,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql-request", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:6.1.0"],\
             ["husky", "npm:8.0.3"],\
             ["lint-staged", "npm:14.0.1"],\
-            ["lorem-ipsum", "npm:2.0.8"],\
             ["next", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:13.4.19"],\
-            ["postcss", "npm:8.4.29"],\
             ["prettier", "npm:3.0.3"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:18.2.0"],\
