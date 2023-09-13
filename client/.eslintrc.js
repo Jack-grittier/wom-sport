@@ -19,4 +19,7 @@ module.exports = {
       extends: ['plugin:@typescript-eslint/disable-type-checked'],
     },
   ],
+  rules: {
+    '@typescript-eslint/prefer-nullish-coalescing': 'off',
+  },
 }
