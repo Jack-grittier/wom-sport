@@ -1,6 +1,4 @@
-import { InferGetStaticPropsType, GetStaticProps } from 'next'
 import Head from 'next/head'
-import { StaticImageData } from 'next/image'
 
 import { Text, Flex } from '@chakra-ui/react'
 
@@ -10,7 +8,6 @@ import SectionWithHeading from '../components/section-with-heading'
 import FixedWidthContainer from '../components/fixed-width-container'
 import Banner from '../components/banner'
 
-import banner from '../public/images/banner.svg'
 import Partners from '../components/partners'
 import { useRouter } from 'next/router'
 import { LOCALE_TYPE } from '../lib/constants'
@@ -42,7 +39,7 @@ export default function Index({ preview }: IndexProps) {
         <title>{`WomEmpSports Home`}</title>
       </Head>
       <Flex align='center' as='article' direction='column'>
-        <Banner src={banner as StaticImageData} alt='WomEmpSports Banner' />
+        <Banner />
         <FixedWidthContainer>
           <SectionWithHeading
             id='project-description'

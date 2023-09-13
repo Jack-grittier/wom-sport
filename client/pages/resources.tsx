@@ -1,6 +1,5 @@
 import { InferGetStaticPropsType, GetStaticProps } from 'next'
 import Head from 'next/head'
-import { StaticImageData } from 'next/image'
 
 import {
   Card,
@@ -22,8 +21,6 @@ import FixedWidthContainer from '../components/fixed-width-container'
 import Banner from '../components/banner'
 import Date from '../components/date'
 
-import banner from '../public/images/banner.svg'
-
 import { VideosForResourcesData, getVideosForResources } from '../lib/api'
 
 interface ResourcesProps {
@@ -41,7 +38,7 @@ export default function Resources({
         <title>{`WomEmpSports Resources`}</title>
       </Head>
       <Flex align='center' direction='column'>
-        <Banner src={banner as StaticImageData} alt='WomEmpSports Banner' />
+        <Banner />
         <FixedWidthContainer>
           <SectionWithHeading id='resources' title='Resources'>
             <Section id='video-grid'>
