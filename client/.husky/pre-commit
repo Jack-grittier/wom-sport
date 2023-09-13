@@ -2,5 +2,5 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 cd client
-# yarn build
+yarn build
 yarn lint-staged
