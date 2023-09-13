@@ -33,41 +33,7 @@ export default function Post({
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />
   }
-
   return (
-    // <Layout preview={preview}>
-    //   {router.isFallback ? (
-    //     <PostTitle>Loading…</PostTitle>
-    //   ) : (
-    //     <>
-    //       <article>
-    //         <Head>
-    //           <title>
-    //             {`${post.title} | Next.js Blog Example with ${CMS_NAME}`}
-    //           </title>
-    //           <meta
-    //             property='og:image'
-    //             content={post.featuredImage?.node.sourceUrl}
-    //           />
-    //         </Head>
-    //         <PostHeader
-    //           title={post.title}
-    //           coverImage={post.featuredImage}
-    //           date={post.date}
-    //           author={post.author}
-    //           categories={post.categories}
-    //         />
-    //         <PostBody content={post.content} />
-    //         <footer>
-    //           {post.tags.edges.length > 0 && <Tags tags={post.tags} />}
-    //         </footer>
-    //       </article>
-
-    //       <SectionSeparator />
-    //       {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-    //     </>
-    //   )}
-    // </Layout>
     <Layout preview={preview}>
       <Head>
         <title>{`WomEmpSports Home`}</title>
@@ -136,6 +102,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: allPosts.map((post) => `/posts/${post.slug}`) || [],
-    fallback: true,
+    fallback: 'blocking',
   }
 }
