@@ -9694,11 +9694,6 @@ export type PreviewPostQueryVariables = Exact<{
 
 export type PreviewPostQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', databaseId: number, slug?: string | null, status?: string | null } | null };
 
-export type AllPostsWithSlugQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AllPostsWithSlugQuery = { __typename?: 'RootQuery', posts?: { __typename?: 'RootQueryToPostConnection', edges: Array<{ __typename?: 'RootQueryToPostConnectionEdge', node: { __typename?: 'Post', slug?: string | null } }> } | null };
-
 export type PostsForNewsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -9709,17 +9704,25 @@ export type VideosForResourcesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type VideosForResourcesQuery = { __typename?: 'RootQuery', videos?: { __typename?: 'RootQueryToVideoConnection', edges: Array<{ __typename?: 'RootQueryToVideoConnectionEdge', node: { __typename?: 'Video', excerpt?: string | null, date?: string | null, embedUrl?: string | null, title?: string | null } }> } | null };
 
-export type AuthorFieldsFragment = { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null };
-
-export type PostFieldsFragment = { __typename?: 'Post', title?: string | null, content?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null, categories?: { __typename?: 'PostToCategoryConnection', edges: Array<{ __typename?: 'PostToCategoryConnectionEdge', node: { __typename?: 'Category', name?: string | null } }> } | null, tags?: { __typename?: 'PostToTagConnection', edges: Array<{ __typename?: 'PostToTagConnectionEdge', node: { __typename?: 'Tag', name?: string | null } }> } | null };
-
 export type PostBySlugQueryVariables = Exact<{
   id: Scalars['ID']['input'];
   idType: PostIdType;
 }>;
 
 
-export type PostBySlugQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', title?: string | null, content?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, revisions?: { __typename?: 'PostToRevisionConnection', edges: Array<{ __typename?: 'PostToRevisionConnectionEdge', node: { __typename?: 'Post', title?: string | null, excerpt?: string | null, content?: string | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null } }> } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null, categories?: { __typename?: 'PostToCategoryConnection', edges: Array<{ __typename?: 'PostToCategoryConnectionEdge', node: { __typename?: 'Category', name?: string | null } }> } | null, tags?: { __typename?: 'PostToTagConnection', edges: Array<{ __typename?: 'PostToTagConnectionEdge', node: { __typename?: 'Tag', name?: string | null } }> } | null } | null, posts?: { __typename?: 'RootQueryToPostConnection', edges: Array<{ __typename?: 'RootQueryToPostConnectionEdge', node: { __typename?: 'Post', title?: string | null, content?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null, categories?: { __typename?: 'PostToCategoryConnection', edges: Array<{ __typename?: 'PostToCategoryConnectionEdge', node: { __typename?: 'Category', name?: string | null } }> } | null, tags?: { __typename?: 'PostToTagConnection', edges: Array<{ __typename?: 'PostToTagConnectionEdge', node: { __typename?: 'Tag', name?: string | null } }> } | null } }> } | null };
+export type PostBySlugQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null } | null };
+
+export type AuthorFieldsFragment = { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null };
+
+export type PostFieldsFragment = { __typename?: 'Post', title?: string | null, content?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null, categories?: { __typename?: 'PostToCategoryConnection', edges: Array<{ __typename?: 'PostToCategoryConnectionEdge', node: { __typename?: 'Category', name?: string | null } }> } | null, tags?: { __typename?: 'PostToTagConnection', edges: Array<{ __typename?: 'PostToTagConnectionEdge', node: { __typename?: 'Tag', name?: string | null } }> } | null };
+
+export type PostBySlug_QueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+  idType: PostIdType;
+}>;
+
+
+export type PostBySlug_Query = { __typename?: 'RootQuery', post?: { __typename?: 'Post', title?: string | null, content?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, revisions?: { __typename?: 'PostToRevisionConnection', edges: Array<{ __typename?: 'PostToRevisionConnectionEdge', node: { __typename?: 'Post', title?: string | null, excerpt?: string | null, content?: string | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null } }> } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null, categories?: { __typename?: 'PostToCategoryConnection', edges: Array<{ __typename?: 'PostToCategoryConnectionEdge', node: { __typename?: 'Category', name?: string | null } }> } | null, tags?: { __typename?: 'PostToTagConnection', edges: Array<{ __typename?: 'PostToTagConnectionEdge', node: { __typename?: 'Tag', name?: string | null } }> } | null } | null, posts?: { __typename?: 'RootQueryToPostConnection', edges: Array<{ __typename?: 'RootQueryToPostConnectionEdge', node: { __typename?: 'Post', title?: string | null, content?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null } } | null, categories?: { __typename?: 'PostToCategoryConnection', edges: Array<{ __typename?: 'PostToCategoryConnectionEdge', node: { __typename?: 'Category', name?: string | null } }> } | null, tags?: { __typename?: 'PostToTagConnection', edges: Array<{ __typename?: 'PostToTagConnectionEdge', node: { __typename?: 'Tag', name?: string | null } }> } | null } }> } | null };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -9755,6 +9758,7 @@ export const PostFieldsFragmentDoc = new TypedDocumentString(`
   featuredImage {
     node {
       sourceUrl
+      altText
     }
   }
   author {
@@ -9794,20 +9798,9 @@ export const PreviewPostDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<PreviewPostQuery, PreviewPostQueryVariables>;
-export const AllPostsWithSlugDocument = new TypedDocumentString(`
-    query AllPostsWithSlug {
-  posts(first: 10000) {
-    edges {
-      node {
-        slug
-      }
-    }
-  }
-}
-    `) as unknown as TypedDocumentString<AllPostsWithSlugQuery, AllPostsWithSlugQueryVariables>;
 export const PostsForNewsDocument = new TypedDocumentString(`
     query PostsForNews {
-  posts(first: 20, where: {orderby: {field: DATE, order: DESC}}) {
+  posts(where: {orderby: {field: DATE, order: DESC}}) {
     edges {
       node {
         title
@@ -9841,6 +9834,23 @@ export const VideosForResourcesDocument = new TypedDocumentString(`
     `) as unknown as TypedDocumentString<VideosForResourcesQuery, VideosForResourcesQueryVariables>;
 export const PostBySlugDocument = new TypedDocumentString(`
     query PostBySlug($id: ID!, $idType: PostIdType!) {
+  post(id: $id, idType: $idType) {
+    title
+    excerpt
+    slug
+    date
+    content
+    featuredImage {
+      node {
+        sourceUrl
+        altText
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<PostBySlugQuery, PostBySlugQueryVariables>;
+export const PostBySlug_Document = new TypedDocumentString(`
+    query PostBySlug_($id: ID!, $idType: PostIdType!) {
   post(id: $id, idType: $idType) {
     ...PostFields
     revisions(first: 1, where: {orderby: {field: MODIFIED, order: DESC}}) {
@@ -9883,6 +9893,7 @@ fragment PostFields on Post {
   featuredImage {
     node {
       sourceUrl
+      altText
     }
   }
   author {
@@ -9904,4 +9915,4 @@ fragment PostFields on Post {
       }
     }
   }
-}`) as unknown as TypedDocumentString<PostBySlugQuery, PostBySlugQueryVariables>;
+}`) as unknown as TypedDocumentString<PostBySlug_Query, PostBySlug_QueryVariables>;

@@ -210,6 +210,100 @@ const components = {
     },
   }),
 }
-const theme = extendTheme({ fonts, colors, components })
+
+const styles = {
+  global: {
+    '*': {
+      transitionProperty: 'var(--chakra-transition-property-common)',
+      transitionDuration: 'var(--chakra-transition-duration-normal)',
+      lineHeight: 'tall',
+    },
+    'p, li': {
+      fontSize: ['md', 'lg', 'xl'],
+    },
+    'h2, h3, h4': {
+      fontFamily: comfortaaFont.style.fontFamily,
+    },
+    h2: {
+      fontSize: ['2xl', '3xl', '4xl'],
+      pb: [0.5, 1, 2],
+    },
+    h3: {
+      fontSize: ['xl', '2xl', '3xl'],
+      pb: [null, 0.5, 1],
+    },
+    h4: {
+      fontSize: ['lg', 'xl', '2xl'],
+      pb: [null, null, 0.5],
+    },
+    p: {
+      pb: 2,
+    },
+    blockquote: {
+      ml: 5,
+      pl: 2,
+      borderLeft: 'solid 2px',
+      borderColor: 'gray.300',
+      mb: 2,
+    },
+    'blockquote p': {
+      pb: 0,
+    },
+    cite: {
+      fontSize: ['sm', 'md', 'lg'],
+    },
+    'a.wp-element-button': {
+      bg: 'primary.700',
+      color: 'white',
+      _hover: { bg: 'secondary.600' },
+      _active: { bg: 'secondary.500' },
+      px: 4,
+      py: 2,
+      fontSize: ['md', 'lg', 'xl'],
+      borderRadius: 'md',
+      w: 'fit-content',
+      my: 2,
+    },
+    // select divs with a class attributes starting with 'wp-'
+    // this helps keep a margin around divs with a button or media
+    'div[class^="wp-"], div[class*=" wp-"]': {
+      my: 5,
+    },
+    'object[type="application/pdf"]': {
+      my: 5,
+    },
+    'ul, ol': {
+      pl: 5,
+    },
+    // select outermost list items (there can be mixed lists)
+    'ul:not(ul > li > ul, ol > li > ul), ol:not(ul > li > ul, ol > li > ul)': {
+      pb: 2,
+    },
+    figure: {
+      w: 'fit-content',
+      bg: 'primary.900',
+    },
+    figcaption: {
+      fontSize: ['xs', 'sm', 'md'],
+      color: 'gray.300',
+      pl: 2,
+      p: 1,
+      textAlign: 'center',
+    },
+    'div.wp-block-media-text': {
+      display: 'flex',
+      flexDirection: ['column', null, 'row'],
+      alignItems: 'center',
+    },
+    'figure.wp-block-media-text__media, div.wp-block-media-text__content': {
+      w: [null, null, '50%'],
+    },
+    'div.wp-block-media-text__content': {
+      m: 5,
+    },
+  },
+}
+
+const theme = extendTheme({ fonts, colors, components, styles })
 
 export default theme

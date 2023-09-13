@@ -13,7 +13,7 @@ const headers = {
 
 const API_URL = process.env.WORDPRESS_API_URL
 
-const graphQLClient = new GraphQLClient(API_URL!, { headers })
+const graphQLClient = new GraphQLClient(API_URL, { headers })
 
 async function fetchAPI<TResult, TVariables extends Variables>(
   query: TypedDocumentString<TResult, TVariables>,
@@ -48,26 +48,10 @@ export async function getPreviewPost({
   return data.post
 }
 
-export async function getAllPostsWithSlug() {
-  const document = graphql(`
-    query AllPostsWithSlug {
-      posts(first: 10000) {
-        edges {
-          node {
-            slug
-          }
-        }
-      }
-    }
-  `)
-  const data = await fetchAPI(document)
-  return data?.posts
-}
-
 export async function getPostsForNews() {
   const document = graphql(`
     query PostsForNews {
-      posts(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
+      posts(where: { orderby: { field: DATE, order: DESC } }) {
         edges {
           node {
             title
@@ -108,6 +92,54 @@ export async function getVideosForResources() {
   return data?.videos.edges.map((edge) => edge.node)
 }
 
+export async function getPost(
+  id: number | string,
+  previewData?: { post: PreviewPostData },
+) {
+  const postPreview = previewData?.post
+  // The slug may be the id of an unpublished post
+  const isSamePost =
+    typeof id === 'number'
+      ? id === postPreview?.databaseId
+      : id === postPreview?.slug
+  const isDraft = isSamePost && postPreview?.status === 'draft'
+  // const isRevision = isSamePost && postPreview?.status === 'publish'
+
+  const document = graphql(`
+    query PostBySlug($id: ID!, $idType: PostIdType!) {
+      post(id: $id, idType: $idType) {
+        title
+        excerpt
+        slug
+        date
+        content
+        featuredImage {
+          node {
+            sourceUrl
+            altText
+          }
+        }
+      }
+    }
+  `)
+  const data = await fetchAPI(document, {
+    id: isDraft ? postPreview.databaseId : id,
+    idType: isDraft ? PostIdType.DatabaseId : PostIdType.Slug,
+  })
+  if (data.post) {
+    // Draft posts may not have an slug
+    if (isDraft) data.post.slug = String(postPreview.databaseId)
+    // Apply a revision (changes in a published post)
+    // if (isRevision && data.post.revisions) {
+    //   const revision = data.post.revisions.edges[0]?.node
+
+    //   if (revision) Object.assign(data.post, revision)
+    //   delete data.post.revisions
+    // }
+  }
+  return data?.post
+}
+
 export async function getPostAndMorePosts(
   id: number | string,
   previewData?: { post: PreviewPostData },
@@ -144,6 +176,7 @@ export async function getPostAndMorePosts(
       featuredImage {
         node {
           sourceUrl
+          altText
         }
       }
       author {
@@ -171,7 +204,7 @@ export async function getPostAndMorePosts(
   // but this doesn't work with graphql-codegen, so revisions are
   // always queried
   const document = graphql(`
-    query PostBySlug($id: ID!, $idType: PostIdType!) {
+    query PostBySlug_($id: ID!, $idType: PostIdType!) {
       post(id: $id, idType: $idType) {
         ...PostFields
         revisions(
@@ -229,10 +262,8 @@ export async function getPostAndMorePosts(
 }
 
 export type PreviewPostData = Awaited<ReturnType<typeof getPreviewPost>>
-export type AllPostsWithSlugData = Awaited<
-  ReturnType<typeof getAllPostsWithSlug>
->
 export type PostsForNewsData = Awaited<ReturnType<typeof getPostsForNews>>
+export type PostData = Awaited<ReturnType<typeof getPost>>
 export type VideosForResourcesData = Awaited<
   ReturnType<typeof getVideosForResources>
 >

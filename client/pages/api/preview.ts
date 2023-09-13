@@ -49,7 +49,6 @@ export default async function preview(
 
   // Redirect to the path from the fetched post
   // We don't redirect to `req.query.slug` as that might lead to open redirect vulnerabilities
-  // TODO: how could it lead to an open redirect, since we are staying on our domain?
   res.writeHead(307, { Location: `/posts/${post.slug ?? post.databaseId}` })
   res.end()
 }
