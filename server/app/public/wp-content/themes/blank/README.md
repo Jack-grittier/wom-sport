@@ -1,7 +1,6 @@
 # WP Blank Theme
 
 A blank theme to use WordPress as a headless CMS.
-Testing if FTP update works.
 
 ## Feature
 
