@@ -11,9 +11,9 @@ const headers = {
   Authorization: `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`,
 }
 
-const API_URL = process.env.WORDPRESS_API_URL
-
-const graphQLClient = new GraphQLClient(API_URL, { headers })
+const graphQLClient = new GraphQLClient(process.env.WORDPRESS_API_URL, {
+  headers,
+})
 
 async function fetchAPI<TResult, TVariables extends Variables>(
   query: TypedDocumentString<TResult, TVariables>,

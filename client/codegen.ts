@@ -1,8 +1,11 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
+import { loadEnvConfig } from '@next/env'
+
+const _env = loadEnvConfig(process.cwd())
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: 'http://womempsports.local/graphql',
+  schema: process.env.WORDPRESS_API_URL,
   documents: 'lib/api.ts',
   ignoreNoDocuments: true,
   generates: {

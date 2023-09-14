@@ -10,7 +10,7 @@ module.exports = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
+        protocol: 'https',
         hostname: process.env.WORDPRESS_URL,
         pathname: '/wp-content/uploads/**',
       },

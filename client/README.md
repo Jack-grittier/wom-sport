@@ -2,6 +2,7 @@
 
 client/.env.local
 server/app/public/wp-config.php
+server/app/public/wp-content/themes/blank/.env
 
 # Instructions
 
@@ -37,7 +38,7 @@ mutation Login {
 }
 ```
 
-4. copy refresh token from GraphQL IDE into .env.local (WORDPRESS_AUTH_REFRESH_TOKEN)
-5. add the second secret in .env.local (WORDPRESS_PREVIEW_SECRET)
-6. set WORDPRESS_URL in .env.local and verify that WORDPRESS_API_URL and WORDPRESS_UPLOADS_URL are correct
-7. set the redirect url in the theme (see server/app/public/wp-content/themes/blank/readme.MD)
+4. copy refresh token from GraphQL IDE into client/.env.local (WORDPRESS_AUTH_REFRESH_TOKEN)
+5. add the second secret in client/.env.local (WORDPRESS_PREVIEW_SECRET)
+6. set WORDPRESS_URL in client/.env.local and verify that WORDPRESS_API_URL and WORDPRESS_UPLOADS_URL are correct
+7. set REDIRECTION_URL in themes/blank/.env
