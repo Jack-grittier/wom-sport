@@ -15,4 +15,4 @@ jobs:
         username: ${{ secrets.ftp_username }}
         password: ${{ secrets.ftp_password }}
         local-dir: './server/app/public/'
-        server-dir: 'htdocs/'
+        server-dir: ${{ secrets.server_dir }}
