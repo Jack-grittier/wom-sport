@@ -33,6 +33,7 @@ import wesLogoFull from '../public/images/wes-logo-full.svg'
 import wesLogoEmpty from '../public/images/wes-logo-empty.svg'
 
 // TODO: Submit issue about href warning when using Chakra UI Link and localization
+// TODO: Fix button color for _active socials
 
 interface NavLinkProps extends LinkProps {
   title: string
