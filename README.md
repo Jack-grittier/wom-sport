@@ -8,7 +8,7 @@ Website for the international WomEmpSports non-profit project.
 - Data Fetching: GraphQL w/ WPGraphQL, GraphQL Code Generator, and Next.js Incremental Static Regeneration
 - Localization: Next.js Internationalization (i18n)
 - Linting & Formatting: ESlint and Prettier
-- Hosting: TBD
+- Hosting: Vercel
 
 ## Contents:
 - Pages:
