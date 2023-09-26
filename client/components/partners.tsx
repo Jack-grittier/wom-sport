@@ -151,9 +151,9 @@ export default function Partners({ locale }: { locale: LOCALE_TYPE }) {
             justify='center'
             borderRight={[null, null, '1px solid']}
             borderColor={[null, null, 'gray.300']}
-            pb={0}
+            p={0}
           >
-            <Flex direction='column' align='center'>
+            <Flex direction='column' align='center' p={5}>
               <LinkOverlay as={Link} href={partnerInfo.url}>
                 <Image
                   src={partnerInfo.logo}
