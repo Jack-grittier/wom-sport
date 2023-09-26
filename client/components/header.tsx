@@ -34,6 +34,7 @@ import wesLogoEmpty from '../public/images/wes-logo-empty.svg'
 
 // TODO: Submit issue about href warning when using Chakra UI Link and localization
 // TODO: Fix button color for _active socials
+// TODO: Fix flicker during first load
 
 interface NavLinkProps extends LinkProps {
   title: string
@@ -98,6 +99,7 @@ export default function Header() {
         alt='WomEmpSports Logo'
         w={16}
         as={NextImage}
+        loading='eager'
       />
     </Link>
   )

@@ -35,6 +35,7 @@ export default function Banner({
         as={NextImage}
         sx={sx}
         {...imageProps}
+        loading='eager'
       />
     </Flex>
   )
