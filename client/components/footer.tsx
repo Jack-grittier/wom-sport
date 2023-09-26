@@ -11,16 +11,47 @@ import {
 import erasmusLogo from '../public/images/erasmus-logo.png'
 import FixedWidthContainer from './fixed-width-container'
 import Link from './link-as-next-link'
+import { IconType } from 'react-icons'
+import { FiMail as EmailIcon } from 'react-icons/fi'
 
 export default function Footer() {
+  const FooterIcon = ({
+    href,
+    icon,
+    label,
+  }: {
+    href: string
+    icon: IconType
+    label: string
+  }) => (
+    <IconButton
+      size='2xs'
+      as={Link}
+      href={href}
+      icon={
+        <Icon
+          as={icon}
+          color={'primary.700'}
+          _active={{ color: 'secondary.brand' }}
+          w={2.5}
+          h={2.5}
+        />
+      }
+      aria-label={label}
+      _active={{}}
+      bg={{}}
+      _hover={{}}
+    />
+  )
+
   return (
     <Flex
       as='footer'
-      boxShadow='inset var(--chakra-colors-primary-700) 0px 1px 5px 0px'
+      shadow='inset var(--chakra-colors-primary-700) 0px 1px 5px 0px'
       direction='column'
       align='center'
     >
-      <FixedWidthContainer>
+      <FixedWidthContainer pb={1}>
         <Flex direction={['column', 'row']} align='center'>
           <Flex>
             <Link
@@ -49,48 +80,30 @@ export default function Footer() {
       </FixedWidthContainer>
       <Flex
         borderTop='solid 1px'
-        borderColor='gray.300'
+        borderColor='gray.100'
         w='full'
         align='center'
         justify='center'
+        pt={1.5}
       >
         <Text color='gray.600' fontSize='2xs' pb={0} pr={2}>
           Created by Moiri Gamboni.
         </Text>
         <HStack spacing={2}>
-          <IconButton
-            size='2xs'
-            as={Link}
+          <FooterIcon
             href='https://github.com/moiri-gamboni/WomEmpSports'
-            icon={
-              <Icon
-                as={GithubIcon}
-                color={'primary.700'}
-                _active={{ color: 'white' }}
-                w={2.5}
-                h={2.5}
-              />
-            }
-            aria-label='Moiri Gamboni GitHub'
-            _active={{ bg: 'primary.700' }}
-            isRound
+            icon={GithubIcon}
+            label='Moiri Gamboni GitHub'
           />
-          <IconButton
-            size='2xs'
-            as={Link}
+          <FooterIcon
             href='https://www.linkedin.com/in/moirigamboni000/'
-            icon={
-              <Icon
-                as={LinkedinIcon}
-                color={'primary.700'}
-                _active={{ color: 'white' }}
-                w={2.5}
-                h={2.5}
-              />
-            }
-            aria-label='Moiri Gamboni GitHub'
-            _active={{ bg: 'primary.700' }}
-            isRound
+            icon={LinkedinIcon}
+            label='Moiri Gamboni LinkedIn'
+          />
+          <FooterIcon
+            href='mailto:moiri.gamboni@proton.me'
+            icon={EmailIcon}
+            label='Moiri Gamboni Email'
           />
         </HStack>
       </Flex>
