@@ -29,10 +29,11 @@ import {
   BsTwitter as TwitterIcon,
   BsInstagram as InstagramIcon,
 } from 'react-icons/bs'
+import { FiMail as EmailIcon } from 'react-icons/fi'
 
 import Link from './link-as-next-link'
 
-type Social = 'facebook' | 'instagram' | 'twitter'
+type Social = 'facebook' | 'instagram' | 'twitter' | 'email'
 
 type SocialIcons = Record<Social, IconType>
 
@@ -40,6 +41,7 @@ const socialIcons: SocialIcons = {
   facebook: FacebookIcon,
   instagram: InstagramIcon,
   twitter: TwitterIcon,
+  email: EmailIcon,
 }
 
 interface Partner {
@@ -71,7 +73,10 @@ const partners: Record<PARTNER_NAME_TYPE, Partner> = {
   'Фондация "ДА"': {
     logo: gaLogo,
     url: 'https://dafoundation.bg/',
-    socials: {},
+    socials: {
+      facebook: 'www.facebook.com/DA.Foundation.against.violance',
+      email: 'mailto:office@dafoundation.bg',
+    },
     contacts: {},
     descriptions: {
       en: `Our mission is to work towards the protection and empowerment of women and girls in all spheres of public and private life so that they realize their full potential in a just and unbiased society. The issues we devote our efforts to are combating the historical gender inequalities which assign women and girls a subordinate role in society and the family, making their contribution and participation unrecognized and undervalued.`,
