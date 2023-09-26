@@ -42,6 +42,9 @@ export default function Resources({
         <FixedWidthContainer>
           <SectionWithHeading id='resources' title='Resources'>
             <Section id='video-grid'>
+              {videos.length == 0 && (
+                <Text>There are currently no resources to show.</Text>
+              )}
               <SimpleGrid
                 columns={[1, null, 2, 3]}
                 gap={[6, null, null, null, 12]}
