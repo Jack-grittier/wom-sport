@@ -14,6 +14,12 @@ module.exports = {
         hostname: process.env.WORDPRESS_URL,
         pathname: '/wp-content/uploads/**',
       },
+      // uncomment for unsecured dev environment
+      // {
+      //   protocol: 'http',
+      //   hostname: process.env.WORDPRESS_URL,
+      //   pathname: '/wp-content/uploads/**',
+      // },
     ],
   },
   i18n: {
