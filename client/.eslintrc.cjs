@@ -15,11 +15,16 @@ module.exports = {
   root: true,
   overrides: [
     {
-      files: ['*.js'],
+      files: ['*.js', '*.cjs'],
       extends: ['plugin:@typescript-eslint/disable-type-checked'],
     },
   ],
   rules: {
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
+  },
+  settings: {
+    next: {
+      rootDir: 'client/',
+    },
   },
 }
