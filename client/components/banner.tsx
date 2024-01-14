@@ -20,7 +20,7 @@ export default function Banner({
   const sx = imageProps?.sx ?? { objectFit: 'contain' }
   return (
     <Flex
-      w='100vw'
+      w='full'
       pb={10}
       overflow='hidden'
       justify='center'
