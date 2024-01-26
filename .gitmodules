@@ -1,0 +1,3 @@
+[submodule "server/app/public/wp-content/themes/blank"]
+	path = server/app/public/wp-content/themes/blank
+	url = git@github.com:moiri-gamboni/wp-blank-theme.git
