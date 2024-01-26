@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "concurrently --kill-others \"next\" \"yarn gql-gen:watch\"",
     "dev:no-gql-gen": "next",
-    "build": "next build",
+    "build": "yarn gql-gen && next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
