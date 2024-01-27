@@ -2,6 +2,7 @@ on:
   push:
     branches: 
       - main
+      - update
 name: Deploy with FTP on push
 jobs:
   web-deploy:
@@ -9,8 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Get latest code
-      uses: actions/checkout@v3
-    
+      uses: actions/checkout@v4
+      with:
+        submodules: 'true'
     - name: Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
@@ -19,7 +21,7 @@ jobs:
         password: ${{ secrets.ftp_password }}
         local-dir: './server/app/public/wp-content/'
         server-dir: ${{ secrets.server_dir }}
-        log-level: 'standard'
         exclude: |
           /uploads/
           index.php
+        dry-run: 'true'
