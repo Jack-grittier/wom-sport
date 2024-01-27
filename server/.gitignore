@@ -8,6 +8,5 @@
 /app/sql/
 
 # Ignore everything but themes and plugins
-/app/public/**
-!/app/public/wp-content/plugins/
-!/app/public/wp-content/themes/
+/app/public/*
+!/app/public/wp-content/
