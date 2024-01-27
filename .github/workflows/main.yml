@@ -2,7 +2,6 @@ on:
   push:
     branches: 
       - main
-      - update
 name: Deploy with FTP on push
 jobs:
   web-deploy:
@@ -24,4 +23,3 @@ jobs:
         exclude: |
           /uploads/
           index.php
-        dry-run: 'true'
