@@ -3271,6 +3271,8 @@ export type MenuToMenuItemConnectionWhereArgs = {
 export enum MimeTypeEnum {
   /** application/java mime type. */
   ApplicationJava = 'APPLICATION_JAVA',
+  /** application/javascript mime type. */
+  ApplicationJavascript = 'APPLICATION_JAVASCRIPT',
   /** application/msword mime type. */
   ApplicationMsword = 'APPLICATION_MSWORD',
   /** application/octet-stream mime type. */
@@ -3409,6 +3411,8 @@ export enum MimeTypeEnum {
   TextCss = 'TEXT_CSS',
   /** text/csv mime type. */
   TextCsv = 'TEXT_CSV',
+  /** text/html mime type. */
+  TextHtml = 'TEXT_HTML',
   /** text/plain mime type. */
   TextPlain = 'TEXT_PLAIN',
   /** text/richtext mime type. */
