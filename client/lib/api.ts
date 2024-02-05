@@ -5,6 +5,7 @@ import {
   PreviewPostQueryVariables,
   PostsForNewsQueryVariables,
   TypedDocumentString,
+  LanguageCodeEnum,
 } from './gql/graphql'
 
 const headers = {
@@ -102,6 +103,7 @@ export async function getVideosForResources() {
 
 export async function getPost(
   id: number | string,
+  language: LanguageCodeEnum,
   previewData?: { post: PreviewPostData },
 ) {
   const postPreview = previewData?.post
@@ -114,17 +116,23 @@ export async function getPost(
   // const isRevision = isSamePost && postPreview?.status === 'publish'
 
   const document = graphql(`
-    query PostBySlug($id: ID!, $idType: PostIdType!) {
+    query PostBySlug(
+      $id: ID!
+      $idType: PostIdType!
+      $language: LanguageCodeEnum!
+    ) {
       post(id: $id, idType: $idType) {
-        title
-        excerpt
-        slug
-        date
-        content
-        featuredImage {
-          node {
-            sourceUrl
-            altText
+        translation(language: $language) {
+          title
+          excerpt
+          slug
+          date
+          content
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
           }
         }
       }
@@ -133,10 +141,11 @@ export async function getPost(
   const data = await fetchAPI(document, {
     id: isDraft ? postPreview.databaseId : id,
     idType: isDraft ? PostIdType.DatabaseId : PostIdType.Slug,
+    language,
   })
-  if (data.post) {
+  if (data.post.translation) {
     // Draft posts may not have an slug
-    if (isDraft) data.post.slug = String(postPreview.databaseId)
+    if (isDraft) data.post.translation.slug = String(postPreview.databaseId)
     // Apply a revision (changes in a published post)
     // if (isRevision && data.post.revisions) {
     //   const revision = data.post.revisions.edges[0]?.node
@@ -145,7 +154,7 @@ export async function getPost(
     //   delete data.post.revisions
     // }
   }
-  return data?.post
+  return data?.post.translation
 }
 
 export async function getPostAndMorePosts(

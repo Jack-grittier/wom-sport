@@ -1,7 +1,12 @@
 import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Head from 'next/head'
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  InferGetStaticPropsType,
+} from 'next'
 import Layout from '../../components/layout'
 
 import { AspectRatio, Flex } from '@chakra-ui/react'
@@ -18,7 +23,7 @@ import {
 
 import { ParsedUrlQuery } from 'querystring'
 import SectionWithHeading from '../../components/section-with-heading'
-import { LanguageCodeFilterEnum } from '../../lib/gql/graphql'
+import { LanguageCodeEnum, LanguageCodeFilterEnum } from '../../lib/gql/graphql'
 
 interface PostProps {
   post: PostData
@@ -29,9 +34,10 @@ export default function Post({
   post,
   preview,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const router = useRouter()
-
-  if (!router.isFallback && !post?.slug) {
+  // const router = useRouter()
+  const { isFallback } = useRouter()
+  // TODO: Add better redirect page for missing translations
+  if (!isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />
   }
   return (
@@ -57,17 +63,20 @@ export default function Post({
   )
 }
 
-interface Context {
-  params: ParsedUrlQuery
-  preview: boolean
-  previewData: { post: PreviewPostData }
+interface PreviewData {
+  post: PreviewPostData
 }
-
+interface Params extends ParsedUrlQuery {
+  db_id: string
+  slug: string
+}
 export const getStaticProps: GetStaticProps<PostProps> = async ({
   params,
   preview = false,
   previewData,
-}: Context) => {
+  locale,
+  defaultLocale,
+}: GetStaticPropsContext<Params, PreviewData>) => {
   // TODO: refactor out with preview.ts?
   // TODO: preview only works for drafts, not revisions
   const { slug, db_id } = params
@@ -83,11 +92,18 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({
     }
   }
 
-  const post = await getPost(id, previewData)
+  const languageCode = locale.toUpperCase() as LanguageCodeEnum
+  const defaultLanguageCode = defaultLocale.toUpperCase() as LanguageCodeEnum
+
+  let post = await getPost(id, languageCode, previewData)
 
   if (!post) {
-    return {
-      notFound: true,
+    post = await getPost(id, defaultLanguageCode, previewData)
+    // TODO: Add better redirect page
+    if (!post) {
+      return {
+        notFound: true,
+      }
     }
   }
   return {
@@ -99,19 +115,33 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({
   }
 }
 
-export const getStaticPaths: GetStaticPaths = (async () => {
+export const getStaticPaths: GetStaticPaths = (async ({ locales }) => {
   const allPosts = await getPostsForNews({
     language: LanguageCodeFilterEnum.All,
   })
+  // console.log(allPosts)
+  const paths =
+    allPosts.map((post) => ({
+      params: {
+        slug: post.slug,
+      },
+      locale: post.language.code.toLowerCase(),
+    })) || []
+  // console.log(paths)
 
+  const allLocalizedPaths = [
+    ...paths.flatMap((path) => {
+      return locales.map((locale) => {
+        return {
+          ...path,
+          locale,
+        }
+      })
+    }),
+  ]
+  // console.log(nestedPaths)
   return {
-    paths:
-      allPosts.map((post) => ({
-        params: {
-          slug: post.slug,
-        },
-        locale: post.language.code.toLowerCase(),
-      })) || [],
-    fallback: 'blocking',
+    paths: allLocalizedPaths,
+    fallback: false,
   }
 }) satisfies GetStaticPaths

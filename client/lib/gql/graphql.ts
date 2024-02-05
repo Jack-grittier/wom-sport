@@ -9944,10 +9944,11 @@ export type VideosForResourcesQuery = { __typename?: 'RootQuery', videos?: { __t
 export type PostBySlugQueryVariables = Exact<{
   id: Scalars['ID']['input'];
   idType: PostIdType;
+  language: LanguageCodeEnum;
 }>;
 
 
-export type PostBySlugQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null } | null };
+export type PostBySlugQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', translation?: { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null } | null } | null };
 
 export type AuthorFieldsFragment = { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null };
 
@@ -10073,17 +10074,19 @@ export const VideosForResourcesDocument = new TypedDocumentString(`
 }
     `) as unknown as TypedDocumentString<VideosForResourcesQuery, VideosForResourcesQueryVariables>;
 export const PostBySlugDocument = new TypedDocumentString(`
-    query PostBySlug($id: ID!, $idType: PostIdType!) {
+    query PostBySlug($id: ID!, $idType: PostIdType!, $language: LanguageCodeEnum!) {
   post(id: $id, idType: $idType) {
-    title
-    excerpt
-    slug
-    date
-    content
-    featuredImage {
-      node {
-        sourceUrl
-        altText
+    translation(language: $language) {
+      title
+      excerpt
+      slug
+      date
+      content
+      featuredImage {
+        node {
+          sourceUrl
+          altText
+        }
       }
     }
   }
