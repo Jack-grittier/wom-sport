@@ -17,7 +17,6 @@ import {
 } from '@chakra-ui/react'
 import { Link, LinkProps } from '@chakra-ui/next-js'
 import NextImage from 'next/image'
-import { usePathname } from 'next/navigation'
 
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import {
@@ -29,6 +28,7 @@ import {
 import wesLogoFull from '../public/images/wes-logo-full.svg'
 import wesLogoEmpty from '../public/images/wes-logo-empty.svg'
 import { LanguageCodeEnum } from '../lib/gql/graphql'
+import { useRouter } from 'next/router'
 
 // TODO: Submit issue about href warning when using Chakra UI Link and localization
 // TODO: Fix button color for _active socials
@@ -80,7 +80,7 @@ const NavLink = ({ title, href, ...props }: NavLinkProps) => {
 }
 
 export default function Header() {
-  const pathname = usePathname()
+  const { asPath } = useRouter()
   const {
     isOpen: isMobileNavOpen,
     onOpen: onMobileNavOpen,
@@ -169,7 +169,7 @@ export default function Header() {
                 color='primary.700'
                 _hover={{ color: 'secondary.500' }}
                 _active={{ bg: 'primary.100' }}
-                {...(page.href === pathname && {
+                {...(page.href === asPath && {
                   textDecoration: 'underline 2px',
                   textDecorationColor: 'secondary.500',
                 })}
@@ -252,7 +252,7 @@ export default function Header() {
                   key={languageCode}
                   locale={languageCode.toLowerCase()}
                   _hover={{ textDecoration: 'none' }}
-                  href={pathname}
+                  href={asPath}
                 >
                   <MenuItem
                     _focus={{ bg: 'secondary.200' }}
@@ -284,13 +284,14 @@ export default function Header() {
                   key={page.title}
                   color='white'
                   _hover={{ color: 'black', bg: 'secondary.500' }}
-                  {...(page.href === pathname
+                  {...(page.href === asPath
                     ? {
                         textDecoration: 'underline 2px',
                         textDecorationColor: 'secondary.500',
                       }
                     : null)}
-                  {...page}
+                  href={page.href}
+                  title={page.title}
                 />
               ))}
             </VStack>
