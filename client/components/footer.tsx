@@ -1,5 +1,5 @@
 import NextImage from 'next/image'
-import { Image } from '@chakra-ui/next-js'
+import { Link, Image } from '@chakra-ui/next-js'
 
 import { Flex, HStack, Icon, IconButton, Text } from '@chakra-ui/react'
 
@@ -10,7 +10,6 @@ import {
 
 import erasmusLogo from '../public/images/erasmus-logo.png'
 import FixedWidthContainer from './fixed-width-container'
-import Link from './link-as-next-link'
 import { IconType } from 'react-icons'
 import { FiMail as EmailIcon } from 'react-icons/fi'
 

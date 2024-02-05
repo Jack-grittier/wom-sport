@@ -15,7 +15,7 @@ import {
   AbsoluteCenter,
   useBreakpointValue,
 } from '@chakra-ui/react'
-import { LinkProps } from '@chakra-ui/next-js'
+import { Link, LinkProps } from '@chakra-ui/next-js'
 import NextImage from 'next/image'
 import { usePathname } from 'next/navigation'
 
@@ -25,8 +25,6 @@ import {
   BsFacebook as FacebookIcon,
   BsYoutube as YoutubeIcon,
 } from 'react-icons/bs'
-
-import Link from './link-as-next-link'
 
 import wesLogoFull from '../public/images/wes-logo-full.svg'
 import wesLogoEmpty from '../public/images/wes-logo-empty.svg'

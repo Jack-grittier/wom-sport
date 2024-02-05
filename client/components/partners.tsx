@@ -20,7 +20,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 
-import { Image } from '@chakra-ui/next-js'
+import { Image, Link } from '@chakra-ui/next-js'
 import NextImage from 'next/image'
 import { IconType } from 'react-icons'
 
@@ -31,7 +31,6 @@ import {
 } from 'react-icons/bs'
 import { FiMail as EmailIcon } from 'react-icons/fi'
 
-import Link from './link-as-next-link'
 import { useRouter } from 'next/router'
 
 type Social = 'facebook' | 'instagram' | 'twitter' | 'email'
