@@ -42,6 +42,7 @@ export default function Resources({
         <FixedWidthContainer>
           <SectionWithHeading id='resources' title='Resources'>
             <Section id='video-grid'>
+              {/* TODO: Localize */}
               {videos.length == 0 && (
                 <Text>There are currently no resources to show.</Text>
               )}

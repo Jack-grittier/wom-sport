@@ -53,6 +53,7 @@ export default function News({
         <FixedWidthContainer>
           <SectionWithHeading id='news' title='News'>
             <Section id='article-grid'>
+              {/* TODO: Localize */}
               {posts.length == 0 && (
                 <Text>There are currently no articles to show.</Text>
               )}
