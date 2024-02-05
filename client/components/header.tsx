@@ -27,14 +27,22 @@ import {
 } from 'react-icons/bs'
 
 import Link from './link-as-next-link'
-import { LANGUAGES } from '../lib/constants'
 
 import wesLogoFull from '../public/images/wes-logo-full.svg'
 import wesLogoEmpty from '../public/images/wes-logo-empty.svg'
+import { LanguageCodeEnum } from '../lib/gql/graphql'
 
 // TODO: Submit issue about href warning when using Chakra UI Link and localization
 // TODO: Fix button color for _active socials
 // TODO: Fix flicker during first load
+
+const languages: Record<LanguageCodeEnum, string> = {
+  BG: 'Български',
+  EL: 'Ελληνικά',
+  EN: 'English',
+  ES: 'Español (Castellano)',
+  IT: 'Italiano',
+}
 
 interface NavLinkProps extends LinkProps {
   title: string
@@ -239,10 +247,10 @@ export default function Header() {
               aria-label='Language Switcher'
             />
             <MenuList w={100} aria-label='Language Menu'>
-              {Object.entries(LANGUAGES).map(([locale, language]) => (
+              {Object.entries(languages).map(([languageCode, language]) => (
                 <Link
-                  key={locale}
-                  locale={locale}
+                  key={languageCode}
+                  locale={languageCode.toLowerCase()}
                   _hover={{ textDecoration: 'none' }}
                   href={pathname}
                 >

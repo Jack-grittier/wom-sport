@@ -27,6 +27,7 @@ import Banner from '../components/banner'
 import Date from '../components/date'
 
 import { PostsForNewsData, getPostsForNews } from '../lib/api'
+import { LanguageCodeFilterEnum } from '../lib/gql/graphql'
 
 interface NewsProps {
   preview: boolean
@@ -124,10 +125,10 @@ export default function News({
   )
 }
 
-export const getStaticProps: GetStaticProps<NewsProps> = async ({
-  preview = false,
-}) => {
-  const posts = await getPostsForNews()
+export const getStaticProps = (async (context) => {
+  const posts = await getPostsForNews({
+    language: context.locale.toUpperCase() as LanguageCodeFilterEnum,
+  })
   for (const post of posts) {
     post.excerpt = sanitizeHtml(post.excerpt, {
       allowedAttributes: {},
@@ -135,12 +136,11 @@ export const getStaticProps: GetStaticProps<NewsProps> = async ({
       disallowedTagsMode: 'discard',
     })
   }
-
   return {
     props: {
-      preview,
-      posts,
+      preview: context.preview ?? false,
+      posts: posts,
     },
     revalidate: 10,
   }
-}
+}) satisfies GetStaticProps<NewsProps>

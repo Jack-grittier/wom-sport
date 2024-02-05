@@ -15,7 +15,7 @@ import * as types from './graphql';
  */
 const documents = {
     "\n    query PreviewPost($id: ID!, $idType: PostIdType!) {\n      post(id: $id, idType: $idType) {\n        databaseId\n        slug\n        status\n      }\n    }\n  ": types.PreviewPostDocument,
-    "\n    query PostsForNews {\n      posts(where: { orderby: { field: DATE, order: DESC } }) {\n        edges {\n          node {\n            title\n            excerpt\n            slug\n            date\n            featuredImage {\n              node {\n                sourceUrl\n                altText\n              }\n            }\n          }\n        }\n      }\n    }\n  ": types.PostsForNewsDocument,
+    "\n    query PostsForNews($language: LanguageCodeFilterEnum!) {\n      posts(\n        where: { language: $language, orderby: { field: DATE, order: DESC } }\n      ) {\n        edges {\n          node {\n            title\n            excerpt\n            slug\n            date\n            featuredImage {\n              node {\n                sourceUrl\n                altText\n              }\n            }\n            language {\n              code\n            }\n          }\n        }\n      }\n    }\n  ": types.PostsForNewsDocument,
     "\n    query VideosForResources {\n      videos(first: 20, where: { orderby: { field: DATE, order: DESC } }) {\n        edges {\n          node {\n            excerpt\n            date\n            embedUrl\n            title\n          }\n        }\n      }\n    }\n  ": types.VideosForResourcesDocument,
     "\n    query PostBySlug($id: ID!, $idType: PostIdType!) {\n      post(id: $id, idType: $idType) {\n        title\n        excerpt\n        slug\n        date\n        content\n        featuredImage {\n          node {\n            sourceUrl\n            altText\n          }\n        }\n      }\n    }\n  ": types.PostBySlugDocument,
     "\n    fragment AuthorFields on User {\n      name\n      firstName\n      lastName\n      avatar {\n        url\n      }\n    }\n  ": types.AuthorFieldsFragmentDoc,
@@ -30,7 +30,7 @@ export function graphql(source: "\n    query PreviewPost($id: ID!, $idType: Post
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query PostsForNews {\n      posts(where: { orderby: { field: DATE, order: DESC } }) {\n        edges {\n          node {\n            title\n            excerpt\n            slug\n            date\n            featuredImage {\n              node {\n                sourceUrl\n                altText\n              }\n            }\n          }\n        }\n      }\n    }\n  "): typeof import('./graphql').PostsForNewsDocument;
+export function graphql(source: "\n    query PostsForNews($language: LanguageCodeFilterEnum!) {\n      posts(\n        where: { language: $language, orderby: { field: DATE, order: DESC } }\n      ) {\n        edges {\n          node {\n            title\n            excerpt\n            slug\n            date\n            featuredImage {\n              node {\n                sourceUrl\n                altText\n              }\n            }\n            language {\n              code\n            }\n          }\n        }\n      }\n    }\n  "): typeof import('./graphql').PostsForNewsDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

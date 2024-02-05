@@ -3,6 +3,7 @@ import { graphql } from '../lib/gql'
 import {
   PostIdType,
   PreviewPostQueryVariables,
+  PostsForNewsQueryVariables,
   TypedDocumentString,
 } from './gql/graphql'
 
@@ -48,10 +49,14 @@ export async function getPreviewPost({
   return data.post
 }
 
-export async function getPostsForNews() {
+export async function getPostsForNews({
+  language,
+}: PostsForNewsQueryVariables) {
   const document = graphql(`
-    query PostsForNews {
-      posts(where: { orderby: { field: DATE, order: DESC } }) {
+    query PostsForNews($language: LanguageCodeFilterEnum!) {
+      posts(
+        where: { language: $language, orderby: { field: DATE, order: DESC } }
+      ) {
         edges {
           node {
             title
@@ -64,12 +69,15 @@ export async function getPostsForNews() {
                 altText
               }
             }
+            language {
+              code
+            }
           }
         }
       }
     }
   `)
-  const data = await fetchAPI(document)
+  const data = await fetchAPI(document, { language })
   return data?.posts.edges.map((edge) => edge.node)
 }
 

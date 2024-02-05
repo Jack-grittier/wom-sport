@@ -18,6 +18,7 @@ import {
 
 import { ParsedUrlQuery } from 'querystring'
 import SectionWithHeading from '../../components/section-with-heading'
+import { LanguageCodeFilterEnum } from '../../lib/gql/graphql'
 
 interface PostProps {
   post: PostData
@@ -68,6 +69,7 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({
   previewData,
 }: Context) => {
   // TODO: refactor out with preview.ts?
+  // TODO: preview only works for drafts, not revisions
   const { slug, db_id } = params
   let id: string | number
   // Check that a well-formed db_id or slug was provided
@@ -97,11 +99,19 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({
   }
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const allPosts = await getPostsForNews()
+export const getStaticPaths: GetStaticPaths = (async () => {
+  const allPosts = await getPostsForNews({
+    language: LanguageCodeFilterEnum.All,
+  })
 
   return {
-    paths: allPosts.map((post) => `/posts/${post.slug}`) || [],
+    paths:
+      allPosts.map((post) => ({
+        params: {
+          slug: post.slug,
+        },
+        locale: post.language.code.toLowerCase(),
+      })) || [],
     fallback: 'blocking',
   }
-}
+}) satisfies GetStaticPaths
