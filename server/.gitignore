@@ -10,3 +10,7 @@
 # Ignore everything but themes and plugins
 /app/public/*
 !/app/public/wp-content/
+/app/public/wp-content/*
+!/app/public/wp-content/**/index.php
+!/app/public/wp-content/plugins
+!/app/public/wp-content/themes
