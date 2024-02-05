@@ -78,7 +78,7 @@ const partners: Partner[] = [
     logo: gaLogo,
     url: 'https://dafoundation.bg/',
     socials: {
-      facebook: 'www.facebook.com/DA.Foundation.against.violance',
+      facebook: 'https://www.facebook.com/DA.Foundation.against.violance',
       email: 'mailto:office@dafoundation.bg',
     },
     contacts: {},
@@ -180,7 +180,7 @@ export default function Partners() {
               <HStack pt={3} spacing={0}>
                 {Object.entries(partnerInfo.socials).map(
                   ([socialType, socialUrl]) => (
-                    <Link key={socialType} href={socialUrl}>
+                    <Link key={socialType} href={socialUrl} isExternal>
                       <IconButton
                         size='md'
                         variant='ghost'

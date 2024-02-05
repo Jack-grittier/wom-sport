@@ -198,12 +198,14 @@ export default function Header() {
               _hover={buttonActive}
               _active={{ bg: 'secondary.brand' }}
               aria-label='Facebook Project Page'
+              isExternal
             />
             <IconButton
               size='md'
               variant='ghost'
               as={Link}
-              href=''
+              //TODO: Add youtube link
+              href='https://www.youtube.com'
               icon={
                 <Icon
                   as={YoutubeIcon}
@@ -216,6 +218,7 @@ export default function Header() {
               _hover={buttonActive}
               _active={{ bg: 'secondary.brand' }}
               aria-label='YouTube Project Page'
+              isExternal
             />
           </HStack>
           {/* Language Switcher */}
