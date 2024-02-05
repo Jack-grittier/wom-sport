@@ -107,7 +107,6 @@ export default function Header() {
         alt='WomEmpSports Logo'
         w={16}
         as={NextImage}
-        loading='eager'
       />
     </Link>
   )
