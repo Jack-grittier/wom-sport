@@ -27,43 +27,22 @@ import {
 
 import wesLogoFull from '../public/images/wes-logo-full.svg'
 import wesLogoEmpty from '../public/images/wes-logo-empty.svg'
-import { codeToLocale } from '../lib/util'
-import { LanguageCodeEnum } from '../lib/gql/graphql'
 import { useRouter } from 'next/router'
+import { LocalizedTitles, languages, titles } from '../lib/localized-strings'
+import { codeToLocale, localeToCode } from '../lib/util'
+import { LanguageCodeEnum } from '../lib/gql/graphql'
 
 // TODO: Submit issue about href warning when using Chakra UI Link and localization
 // TODO: Fix button color for _active socials
 // TODO: Fix flicker during first load
 
-const languages: Record<LanguageCodeEnum, string> = {
-  BG: 'Български',
-  EL: 'Ελληνικά',
-  EN: 'English',
-  ES: 'Español (Castellano)',
-  IT: 'Italiano',
+const paths: Record<keyof LocalizedTitles, string> = {
+  home: '/',
+  news: '/news',
+  resources: '/resources',
 }
 
-interface NavLinkProps extends LinkProps {
-  title: string
-  href: string
-}
-
-const pages: NavLinkProps[] = [
-  {
-    title: 'Home',
-    href: '/',
-  },
-  {
-    title: 'News',
-    href: '/news',
-  },
-  {
-    title: 'Resources',
-    href: '/resources',
-  },
-]
-
-const NavLink = ({ title, href, ...props }: NavLinkProps) => {
+const NavLink = ({ title, href, ...props }: LinkProps) => {
   return (
     <Link
       px={2}
@@ -81,7 +60,8 @@ const NavLink = ({ title, href, ...props }: NavLinkProps) => {
 }
 
 export default function Header() {
-  const { asPath } = useRouter()
+  const { locale, asPath } = useRouter()
+  const languageCode = localeToCode(locale)
   const {
     isOpen: isMobileNavOpen,
     onOpen: onMobileNavOpen,
@@ -164,18 +144,18 @@ export default function Header() {
             pr={7}
             aria-label='Desktop Navigation'
           >
-            {pages.map((page) => (
+            {Object.entries(paths).map(([titleKey, path]) => (
               <NavLink
-                key={page.title}
+                key={titleKey}
                 color='primary.700'
                 _hover={{ color: 'secondary.500' }}
                 _active={{ bg: 'primary.100' }}
-                {...(page.href === asPath && {
+                {...(path === asPath && {
                   textDecoration: 'underline 2px',
                   textDecorationColor: 'secondary.500',
                 })}
-                title={page.title}
-                href={page.href}
+                title={titles[titleKey as keyof LocalizedTitles][languageCode]}
+                href={path}
               />
             ))}
           </HStack>
@@ -280,19 +260,21 @@ export default function Header() {
             borderColor='primary.400'
           >
             <VStack as='nav' spacing={4} w='min' align='left'>
-              {pages.map((page) => (
+              {Object.entries(paths).map(([titleKey, path]) => (
                 <NavLink
-                  key={page.title}
+                  key={titleKey}
                   color='white'
                   _hover={{ color: 'black', bg: 'secondary.500' }}
-                  {...(page.href === asPath
+                  {...(path === asPath
                     ? {
                         textDecoration: 'underline 2px',
                         textDecorationColor: 'secondary.500',
                       }
                     : null)}
-                  href={page.href}
-                  title={page.title}
+                  href={path}
+                  title={
+                    titles[titleKey as keyof LocalizedTitles][languageCode]
+                  }
                 />
               ))}
             </VStack>

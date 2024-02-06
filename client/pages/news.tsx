@@ -28,7 +28,9 @@ import Date from '../components/date'
 
 import { PostsForNewsData, getPostsForNews } from '../lib/api'
 
-import { localeToFilterCode } from '../lib/util'
+import { localeToCode, localeToFilterCode } from '../lib/util'
+import { useRouter } from 'next/router'
+import { missingContent, titles } from '../lib/localized-strings'
 
 interface NewsProps {
   preview: boolean
@@ -39,6 +41,9 @@ export default function News({
   preview,
   posts,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const { locale } = useRouter()
+  const languageCode = localeToCode(locale)
+  const title = titles.news[languageCode]
   const LinkBoxAsArticle = ({ children, ...props }: LinkBoxProps) => (
     <LinkBox as='article' {...props}>
       {children}
@@ -47,16 +52,15 @@ export default function News({
   return (
     <Layout preview={preview}>
       <Head>
-        <title>{`WomEmpSports News`}</title>
+        <title>{`WomEmpSports ${title}`}</title>
       </Head>
       <Flex align='center' direction='column'>
         <Banner />
         <FixedWidthContainer>
-          <SectionWithHeading id='news' title='News'>
+          <SectionWithHeading id='news' title={title}>
             <Section id='article-grid'>
-              {/* TODO: Localize */}
               {posts.length == 0 && (
-                <Text>There are currently no articles to show.</Text>
+                <Text>{missingContent.articles[languageCode]}</Text>
               )}
               <SimpleGrid
                 columns={[1, null, 2, 3]}
@@ -113,7 +117,7 @@ export default function News({
                         pb={0}
                         color='gray.600'
                       >
-                        on <Date dateString={post.date}></Date>
+                        <Date dateString={post.date} locale={locale}></Date>
                       </Text>
                     </CardFooter>
                   </Card>
