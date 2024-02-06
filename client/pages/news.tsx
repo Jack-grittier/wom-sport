@@ -27,7 +27,8 @@ import Banner from '../components/banner'
 import Date from '../components/date'
 
 import { PostsForNewsData, getPostsForNews } from '../lib/api'
-import { LanguageCodeFilterEnum } from '../lib/gql/graphql'
+
+import { localeToFilterCode } from '../lib/util'
 
 interface NewsProps {
   preview: boolean
@@ -128,7 +129,7 @@ export default function News({
 
 export const getStaticProps = (async (context) => {
   const posts = await getPostsForNews({
-    language: context.locale.toUpperCase() as LanguageCodeFilterEnum,
+    language: localeToFilterCode(context.locale),
   })
   for (const post of posts) {
     post.excerpt = sanitizeHtml(post.excerpt, {

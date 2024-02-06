@@ -32,6 +32,7 @@ import {
 import { FiMail as EmailIcon } from 'react-icons/fi'
 
 import { useRouter } from 'next/router'
+import { localeToCode } from '../lib/util'
 
 type Social = 'facebook' | 'instagram' | 'twitter' | 'email'
 
@@ -147,8 +148,6 @@ const partners: Partner[] = [
 
 export default function Partners() {
   const { locale, defaultLocale } = useRouter()
-  const languageCode = locale.toUpperCase() as LanguageCodeEnum
-  const defaultLanguageCode = defaultLocale.toUpperCase() as LanguageCodeEnum
   return (
     <VStack spacing={6}>
       {Object.entries(partners).map(([partnerName, partnerInfo]) => (
@@ -212,8 +211,8 @@ export default function Partners() {
           </CardHeader>
           <CardBody as={Flex} justify='center' direction='column'>
             <Text fontSize={['sm', 'md', 'lg']}>
-              {partnerInfo.descriptions[languageCode] ??
-                partnerInfo.descriptions[defaultLanguageCode]}
+              {partnerInfo.descriptions[localeToCode(locale)] ??
+                partnerInfo.descriptions[localeToCode(defaultLocale)]}
             </Text>
           </CardBody>
         </Card>

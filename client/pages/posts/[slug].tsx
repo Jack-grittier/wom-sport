@@ -23,7 +23,8 @@ import {
 
 import { ParsedUrlQuery } from 'querystring'
 import SectionWithHeading from '../../components/section-with-heading'
-import { LanguageCodeEnum, LanguageCodeFilterEnum } from '../../lib/gql/graphql'
+import { LanguageCodeFilterEnum } from '../../lib/gql/graphql'
+import { codeToLocale, localeToCode } from '../../lib/util'
 
 interface PostProps {
   post: PostData
@@ -92,13 +93,10 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({
     }
   }
 
-  const languageCode = locale.toUpperCase() as LanguageCodeEnum
-  const defaultLanguageCode = defaultLocale.toUpperCase() as LanguageCodeEnum
-
-  let post = await getPost(id, languageCode, previewData)
+  let post = await getPost(id, localeToCode(locale), previewData)
 
   if (!post) {
-    post = await getPost(id, defaultLanguageCode, previewData)
+    post = await getPost(id, localeToCode(defaultLocale), previewData)
     // TODO: Add better redirect page
     if (!post) {
       return {
@@ -125,7 +123,7 @@ export const getStaticPaths: GetStaticPaths = (async ({ locales }) => {
       params: {
         slug: post.slug,
       },
-      locale: post.language.code.toLowerCase(),
+      locale: codeToLocale(post.language.code),
     })) || []
   // console.log(paths)
 

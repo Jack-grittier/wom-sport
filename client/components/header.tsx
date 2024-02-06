@@ -27,6 +27,7 @@ import {
 
 import wesLogoFull from '../public/images/wes-logo-full.svg'
 import wesLogoEmpty from '../public/images/wes-logo-empty.svg'
+import { codeToLocale } from '../lib/util'
 import { LanguageCodeEnum } from '../lib/gql/graphql'
 import { useRouter } from 'next/router'
 
@@ -250,7 +251,7 @@ export default function Header() {
               {Object.entries(languages).map(([languageCode, language]) => (
                 <Link
                   key={languageCode}
-                  locale={languageCode.toLowerCase()}
+                  locale={codeToLocale(languageCode as LanguageCodeEnum)}
                   _hover={{ textDecoration: 'none' }}
                   href={asPath}
                 >

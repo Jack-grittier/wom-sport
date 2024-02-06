@@ -11,6 +11,7 @@ import Banner from '../components/banner'
 import Partners from '../components/partners'
 import { useRouter } from 'next/router'
 import { LanguageCodeEnum } from '../lib/gql/graphql'
+import { localeToCode } from '../lib/util'
 
 // TODO: Send a PR to chakra to update docs about next/image and next/link
 // (image should say next / image includes nextjs image opt, link should use import from chakra-ui/next-js
@@ -40,11 +41,9 @@ interface IndexProps {
 
 export default function Index({ preview }: IndexProps) {
   const { locale, defaultLocale } = useRouter()
-  const languageCode = locale.toUpperCase() as LanguageCodeEnum
-  const defaultLanguageCode = defaultLocale.toUpperCase() as LanguageCodeEnum
   const description =
-    projectDescription[languageCode] ?? projectDescription[defaultLanguageCode]
-  const descriptionParagraphs = description.split('\n')
+    projectDescription[localeToCode(locale)] ??
+    projectDescription[localeToCode(defaultLocale)]
   return (
     <Layout preview={preview}>
       <Head>
@@ -57,7 +56,7 @@ export default function Index({ preview }: IndexProps) {
             id='project-description'
             title='About This Project'
           >
-            {descriptionParagraphs.map((paragraph, i) => (
+            {description.split('\n').map((paragraph, i) => (
               <Text key={i}>{paragraph}</Text>
             ))}
           </SectionWithHeading>
