@@ -1,5 +1,5 @@
 import NextImage from 'next/image'
-import { Image } from '@chakra-ui/next-js'
+import { Link, Image } from '@chakra-ui/next-js'
 
 import { Flex, HStack, Icon, IconButton, Text } from '@chakra-ui/react'
 
@@ -10,7 +10,6 @@ import {
 
 import erasmusLogo from '../public/images/erasmus-logo.png'
 import FixedWidthContainer from './fixed-width-container'
-import Link from './link-as-next-link'
 import { IconType } from 'react-icons'
 import { FiMail as EmailIcon } from 'react-icons/fi'
 
@@ -68,7 +67,7 @@ export default function Footer() {
             </Link>
           </Flex>
           <Text color='gray.600' fontSize='2xs' p={0}>
-            {/* TODO: Update project number */}
+            {/* TODO: Update project number and localize*/}
             {`© 2023 WomEmpSports. The European Commission's support for the
           production of this publication does not constitute an endorsement of the
           contents, which reflect the views only of the authors, and the

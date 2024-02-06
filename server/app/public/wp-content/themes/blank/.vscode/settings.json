@@ -1,7 +1,0 @@
-{
-	"[php]": {
-		"editor.defaultFormatter": "wongjn.php-sniffer"
-	},
-	"phpSniffer.autoDetect": true,
-	"phpSniffer.executablesFolder": "./vendor/squizlabs/php_codesniffer/bin/"
-}

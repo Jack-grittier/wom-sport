@@ -3,7 +3,6 @@
 namespace WPGraphQL\Registry\Utils;
 
 use GraphQL\Type\Definition\ResolveInfo;
-use WP_Taxonomy;
 use WPGraphQL;
 use WPGraphQL\AppContext;
 use WPGraphQL\Data\Connection\PostObjectConnectionResolver;
@@ -12,6 +11,7 @@ use WPGraphQL\Data\Connection\TermObjectConnectionResolver;
 use WPGraphQL\Model\Term;
 use WPGraphQL\Type\Connection\PostObjects;
 use WPGraphQL\Type\Connection\TermObjects;
+use WP_Taxonomy;
 
 /**
  * Class TermObjectType
@@ -102,7 +102,7 @@ class TermObject {
 	 *
 	 * @param \WP_Taxonomy $tax_object
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	protected static function get_connections( WP_Taxonomy $tax_object ) {
 		$connections = [];
@@ -170,10 +170,6 @@ class TermObject {
 				'description'        => __( 'The ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root).', 'wp-graphql' ),
 				'connectionTypeName' => ucfirst( $tax_object->graphql_single_name ) . 'ToAncestors' . ucfirst( $tax_object->graphql_single_name ) . 'Connection',
 				'resolve'            => static function ( Term $term, $args, AppContext $context, $info ) use ( $tax_object ) {
-					if ( ! $tax_object instanceof WP_Taxonomy ) {
-						return null;
-					}
-
 					$ancestor_ids = get_ancestors( absint( $term->term_id ), $term->taxonomyName, 'taxonomy' );
 
 					if ( empty( $ancestor_ids ) ) {
@@ -272,7 +268,7 @@ class TermObject {
 	 *
 	 * @param \WP_Taxonomy $tax_object Taxonomy.
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	protected static function get_interfaces( WP_Taxonomy $tax_object ) {
 		$interfaces = [ 'Node', 'TermNode', 'DatabaseIdentifier' ];
@@ -307,7 +303,7 @@ class TermObject {
 	 *
 	 * @param \WP_Taxonomy $tax_object Taxonomy.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>[]
 	 */
 	protected static function get_fields( WP_Taxonomy $tax_object ) {
 		$single_name = $tax_object->graphql_single_name;

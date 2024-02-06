@@ -4,9 +4,9 @@ namespace WPGraphQL\Data;
 
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQLRelay\Relay;
-use WP_Post_Type;
 use WPGraphQL\AppContext;
 use WPGraphQL\Utils\Utils;
+use WP_Post_Type;
 
 /**
  * Class PostObjectMutation
@@ -18,12 +18,11 @@ class PostObjectMutation {
 	/**
 	 * This handles inserting the post object
 	 *
-	 * @param array        $input             The input for the mutation
-	 * @param \WP_Post_Type $post_type_object The post_type_object for the type of post being
- * mutated
-	 * @param string       $mutation_name     The name of the mutation being performed
+	 * @param array<string,mixed> $input            The input for the mutation
+	 * @param \WP_Post_Type       $post_type_object The post_type_object for the type of post being mutated
+	 * @param string              $mutation_name    The name of the mutation being performed
 	 *
-	 * @return array $insert_post_args
+	 * @return array<string,mixed>
 	 * @throws \Exception
 	 */
 	public static function prepare_post_object( $input, $post_type_object, $mutation_name ) {
@@ -105,10 +104,10 @@ class PostObjectMutation {
 		/**
 		 * Filter the $insert_post_args
 		 *
-		 * @param array        $insert_post_args The array of $input_post_args that will be passed to wp_insert_post
-		 * @param array        $input            The data that was entered as input for the mutation
-		 * @param \WP_Post_Type $post_type_object The post_type_object that the mutation is affecting
-		 * @param string       $mutation_type    The type of mutation being performed (create, edit, etc)
+		 * @param array<string,mixed> $insert_post_args The array of $input_post_args that will be passed to wp_insert_post
+		 * @param array<string,mixed> $input            The data that was entered as input for the mutation
+		 * @param \WP_Post_Type       $post_type_object The post_type_object that the mutation is affecting
+		 * @param string              $mutation_type    The type of mutation being performed (create, edit, etc)
 		 */
 		$insert_post_args = apply_filters( 'graphql_post_object_insert_post_args', $insert_post_args, $input, $post_type_object, $mutation_name );
 
@@ -122,19 +121,14 @@ class PostObjectMutation {
 	 * This updates additional data related to a post object, such as postmeta, term relationships,
 	 * etc.
 	 *
-	 * @param int          $post_id               $post_id      The ID of the postObject being
-	 *                                            mutated
-	 * @param array        $input                 The input for the mutation
-	 * @param \WP_Post_Type $post_type_object The Post Type Object for the type of post being
- * mutated
-	 * @param string       $mutation_name         The name of the mutation (ex: create, update,
-	 *                                            delete)
-	 * @param \WPGraphQL\AppContext $context The AppContext passed down to all resolvers
-	 * @param \GraphQL\Type\Definition\ResolveInfo $info The ResolveInfo passed down to all resolvers
-	 * @param string       $intended_post_status  The intended post_status the post should have
-	 *                                            according to the mutation input
-	 * @param string       $default_post_status   The default status posts should use if an
-	 *                                            intended status wasn't set
+	 * @param int                                  $post_id              The ID of the postObject being mutated
+	 * @param array<string,mixed>                  $input                The input for the mutation
+	 * @param \WP_Post_Type                        $post_type_object     The Post Type Object for the type of post being mutated
+	 * @param string                               $mutation_name        The name of the mutation (ex: create, update, delete)
+	 * @param \WPGraphQL\AppContext                $context              The AppContext passed down to all resolvers
+	 * @param \GraphQL\Type\Definition\ResolveInfo $info                 The ResolveInfo passed down to all resolvers
+	 * @param string                               $default_post_status  The default status posts should use if an intended status wasn't set
+	 * @param string                               $intended_post_status The intended post_status the post should have according to the mutation input
 	 *
 	 * @return void
 	 */
@@ -143,17 +137,15 @@ class PostObjectMutation {
 		/**
 		 * Sets the post lock
 		 *
-		 * @param bool         $is_locked            Whether the post is locked
-		 * @param int          $post_id              The ID of the postObject being mutated
-		 * @param array        $input                The input for the mutation
-		 * @param \WP_Post_Type $post_type_object The Post Type Object for the type of post being mutated
-		 * @param string       $mutation_name        The name of the mutation (ex: create, update, delete)
-		 * @param \WPGraphQL\AppContext $context The AppContext passed down to all resolvers
+		 * @param bool                                 $is_locked            Whether the post is locked
+		 * @param int                                  $post_id              The ID of the postObject being mutated
+		 * @param array<string,mixed>                  $input                The input for the mutation
+		 * @param \WP_Post_Type                        $post_type_object The Post Type Object for the type of post being mutated
+		 * @param string                               $mutation_name        The name of the mutation (ex: create, update, delete)
+		 * @param \WPGraphQL\AppContext                $context The AppContext passed down to all resolvers
 		 * @param \GraphQL\Type\Definition\ResolveInfo $info The ResolveInfo passed down to all resolvers
-		 * @param ?string      $intended_post_status The intended post_status the post should have according to the mutation input
-		 * @param ?string      $default_post_status  The default status posts should use if an intended status wasn't set
-		 *
-		 * @return bool
+		 * @param ?string                              $intended_post_status The intended post_status the post should have according to the mutation input
+		 * @param ?string                              $default_post_status  The default status posts should use if an intended status wasn't set
 		 */
 		if ( true === apply_filters( 'graphql_post_object_mutation_set_edit_lock', true, $post_id, $input, $post_type_object, $mutation_name, $context, $info, $default_post_status, $intended_post_status ) ) {
 			/**
@@ -177,10 +169,10 @@ class PostObjectMutation {
 		/**
 		 * Set the object terms
 		 *
-		 * @param int          $post_id          The ID of the postObject being mutated
-		 * @param array        $input            The input for the mutation
-		 * @param \WP_Post_Type $post_type_object The Post Type Object for the type of post being mutated
-		 * @param string       $mutation_name    The name of the mutation (ex: create, update, delete)
+		 * @param int                 $post_id          The ID of the postObject being mutated
+		 * @param array<string,mixed> $input            The input for the mutation
+		 * @param \WP_Post_Type       $post_type_object The Post Type Object for the type of post being mutated
+		 * @param string              $mutation_name    The name of the mutation (ex: create, update, delete)
 		 */
 		self::set_object_terms( $post_id, $input, $post_type_object, $mutation_name );
 
@@ -189,29 +181,29 @@ class PostObjectMutation {
 		 * update additional data related to postObjects, such as setting relationships, updating additional postmeta,
 		 * or sending emails to Kevin. . .whatever you need to do with the postObject.
 		 *
-		 * @param int          $post_id              The ID of the postObject being mutated
-		 * @param array        $input                The input for the mutation
-		 * @param \WP_Post_Type $post_type_object The Post Type Object for the type of post being mutated
-		 * @param string       $mutation_name        The name of the mutation (ex: create, update, delete)
-		 * @param \WPGraphQL\AppContext $context The AppContext passed down to all resolvers
-		 * @param \GraphQL\Type\Definition\ResolveInfo $info The ResolveInfo passed down to all resolvers
-		 * @param ?string      $intended_post_status The intended post_status the post should have according to the mutation input
-		 * @param ?string      $default_post_status  The default status posts should use if an intended status wasn't set
+		 * @param int                                  $post_id              The ID of the postObject being mutated
+		 * @param array<string,mixed>                  $input                The input for the mutation
+		 * @param \WP_Post_Type                        $post_type_object     The Post Type Object for the type of post being mutated
+		 * @param string                               $mutation_name        The name of the mutation (ex: create, update, delete)
+		 * @param \WPGraphQL\AppContext                $context              The AppContext passed down to all resolvers
+		 * @param \GraphQL\Type\Definition\ResolveInfo $info                 The ResolveInfo passed down to all resolvers
+		 * @param ?string                              $intended_post_status The intended post_status the post should have according to the mutation input
+		 * @param ?string                              $default_post_status  The default status posts should use if an intended status wasn't set
 		 */
 		do_action( 'graphql_post_object_mutation_update_additional_data', $post_id, $input, $post_type_object, $mutation_name, $context, $info, $default_post_status, $intended_post_status );
 
 		/**
 		 * Sets the post lock
 		 *
-		 * @param bool         $is_locked            Whether the post is locked.
-		 * @param int          $post_id              The ID of the postObject being mutated
-		 * @param array        $input                The input for the mutation
-		 * @param \WP_Post_Type $post_type_object The Post Type Object for the type of post being mutated
-		 * @param string       $mutation_name        The name of the mutation (ex: create, update, delete)
-		 * @param \WPGraphQL\AppContext $context The AppContext passed down to all resolvers
-		 * @param \GraphQL\Type\Definition\ResolveInfo $info The ResolveInfo passed down to all resolvers
-		 * @param ?string      $intended_post_status The intended post_status the post should have according to the mutation input
-		 * @param ?string      $default_post_status  The default status posts should use if an intended status wasn't set
+		 * @param bool                                 $is_locked            Whether the post is locked.
+		 * @param int                                  $post_id              The ID of the postObject being mutated
+		 * @param array<string,mixed>                  $input                The input for the mutation
+		 * @param \WP_Post_Type                        $post_type_object     The Post Type Object for the type of post being mutated
+		 * @param string                               $mutation_name        The name of the mutation (ex: create, update, delete)
+		 * @param \WPGraphQL\AppContext                $context              The AppContext passed down to all resolvers
+		 * @param \GraphQL\Type\Definition\ResolveInfo $info                 The ResolveInfo passed down to all resolvers
+		 * @param ?string                              $intended_post_status The intended post_status the post should have according to the mutation input
+		 * @param ?string                              $default_post_status  The default status posts should use if an intended status wasn't set
 		 *
 		 * @return bool
 		 */
@@ -227,11 +219,10 @@ class PostObjectMutation {
 	 * Given a $post_id and $input from the mutation, check to see if any term associations are
 	 * being made, and properly set the relationships
 	 *
-	 * @param int          $post_id           The ID of the postObject being mutated
-	 * @param array        $input             The input for the mutation
-	 * @param \WP_Post_Type $post_type_object The Post Type Object for the type of post being
- * mutated
-	 * @param string       $mutation_name     The name of the mutation (ex: create, update, delete)
+	 * @param int                 $post_id           The ID of the postObject being mutated
+	 * @param array<string,mixed> $input             The input for the mutation
+	 * @param \WP_Post_Type       $post_type_object The Post Type Object for the type of post being mutated
+	 * @param string              $mutation_name     The name of the mutation (ex: create, update, delete)
 	 *
 	 * @return void
 	 */
@@ -242,10 +233,10 @@ class PostObjectMutation {
 		 *
 		 * One example use for this hook would be to create terms from the input that may not exist yet, so that they can be set as a relation below.
 		 *
-		 * @param int          $post_id          The ID of the postObject being mutated
-		 * @param array        $input            The input for the mutation
-		 * @param \WP_Post_Type $post_type_object The Post Type Object for the type of post being mutated
-		 * @param string       $mutation_name    The name of the mutation (ex: create, update, delete)
+		 * @param int                 $post_id          The ID of the postObject being mutated
+		 * @param array<string,mixed> $input            The input for the mutation
+		 * @param \WP_Post_Type       $post_type_object The Post Type Object for the type of post being mutated
+		 * @param string              $mutation_name    The name of the mutation (ex: create, update, delete)
 		 */
 		do_action( 'graphql_post_object_mutation_set_object_terms', $post_id, $input, $post_type_object, $mutation_name );
 
@@ -374,8 +365,8 @@ class PostObjectMutation {
 	 * Given an array of Term properties (slug, name, description, etc), create the term and return
 	 * a term_id
 	 *
-	 * @param array  $node     The node input for the term
-	 * @param string $taxonomy The taxonomy the term input is for
+	 * @param array<string,mixed> $node     The node input for the term
+	 * @param string              $taxonomy The taxonomy the term input is for
 	 *
 	 * @return int $term_id The ID of the created term. 0 if no term was created.
 	 */
@@ -428,7 +419,7 @@ class PostObjectMutation {
 	 *
 	 * @param int $post_id ID of the post being edited.
 	 *
-	 * @return array|false Array of the lock time and user ID. False if the post does not exist, or
+	 * @return int[]|false Array of the lock time and user ID. False if the post does not exist, or
 	 *                     there is no current user.
 	 */
 	public static function set_edit_lock( $post_id ) {
@@ -470,8 +461,8 @@ class PostObjectMutation {
 	/**
 	 * Check the edit lock for a post
 	 *
-	 * @param false|int     $post_id ID of the post to delete the lock for
-	 * @param array      $input             The input for the mutation
+	 * @param false|int           $post_id ID of the post to delete the lock for
+	 * @param array<string,mixed> $input             The input for the mutation
 	 *
 	 * @return false|int Return false if no lock or the user_id of the owner of the lock
 	 */

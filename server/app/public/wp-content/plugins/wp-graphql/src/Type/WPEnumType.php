@@ -15,7 +15,7 @@ class WPEnumType extends EnumType {
 	/**
 	 * WPEnumType constructor.
 	 *
-	 * @param array $config
+	 * @param array<string,mixed> $config
 	 */
 	public function __construct( $config ) {
 		$name             = ucfirst( $config['name'] );
@@ -52,9 +52,9 @@ class WPEnumType extends EnumType {
 	 * This function sorts the values and applies a filter to allow for easily
 	 * extending/modifying the shape of the Schema for the enum.
 	 *
-	 * @param array  $values
-	 * @param string $type_name
-	 * @return mixed
+	 * @param array<string,mixed> $values
+	 * @param string              $type_name
+	 * @return array<string,mixed>
 	 * @since 0.0.5
 	 */
 	private static function prepare_values( $values, $type_name ) {
@@ -64,7 +64,7 @@ class WPEnumType extends EnumType {
 		 * This is useful when several different types need to be easily filtered at once. . .for example,
 		 * if ALL types with a field of a certain name needed to be adjusted, or something to that tune
 		 *
-		 * @param array $values
+		 * @param array<string,mixed> $values
 		 */
 		$values = apply_filters( 'graphql_enum_values', $values );
 
@@ -76,7 +76,7 @@ class WPEnumType extends EnumType {
 		 * This is useful for more targeted filtering, and is applied after the general filter, to allow for
 		 * more specific overrides
 		 *
-		 * @param array $values
+		 * @param array<string,mixed> $values
 		 *
 		 * @since 0.0.5
 		 */

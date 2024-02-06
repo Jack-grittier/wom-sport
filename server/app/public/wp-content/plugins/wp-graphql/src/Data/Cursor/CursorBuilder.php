@@ -10,7 +10,7 @@ class CursorBuilder {
 	/**
 	 * The field by which the cursor should order the results
 	 *
-	 * @var array
+	 * @var array<string,mixed>[]
 	 */
 	public $fields;
 
@@ -51,9 +51,9 @@ class CursorBuilder {
 		/**
 		 * Filters the field used for ordering when cursors are used for pagination
 		 *
-		 * @param array         $field          The field key, value, type and order
+		 * @param array<string,mixed>                  $field          The field key, value, type and order
 		 * @param \WPGraphQL\Data\Cursor\CursorBuilder $cursor_builder The CursorBuilder class
-		 * @param ?object        $object_cursor  The Cursor class
+		 * @param ?object                              $object_cursor  The Cursor class
 		 */
 		$field = apply_filters(
 			'graphql_cursor_ordering_field',
@@ -90,7 +90,7 @@ class CursorBuilder {
 	/**
 	 * Returns true at least one ordering field has been added
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has_fields() {
 		return count( $this->fields ) > 0;
@@ -99,7 +99,7 @@ class CursorBuilder {
 	/**
 	 * Generate the final SQL string to be appended to WHERE clause
 	 *
-	 * @param mixed|array|null $fields
+	 * @param mixed|array<string,mixed>[]|null $fields
 	 *
 	 * @return string
 	 */

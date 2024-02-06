@@ -14,14 +14,14 @@ class WPMutationType {
 	/**
 	 * Configuration for how auth should be handled on the connection field
 	 *
-	 * @var array
+	 * @var array<string,mixed>
 	 */
 	protected $auth;
 
 	/**
 	 * The config for the connection
 	 *
-	 * @var array
+	 * @var array<string,mixed>
 	 */
 	protected $config;
 
@@ -42,21 +42,21 @@ class WPMutationType {
 	/**
 	 * The mutation input field config.
 	 *
-	 * @var array
+	 * @var array<string,array<string,mixed>>
 	 */
 	protected $input_fields;
 
 	/**
 	 * The mutation output field config.
 	 *
-	 * @var array
+	 * @var array<string,array<string,mixed>>
 	 */
 	protected $output_fields;
 
 	/**
-	 * The resolver function to resole the connection
+	 * The resolver function to resolve the mutation
 	 *
-	 * @var callable|\Closure
+	 * @var callable(mixed $root,array<string,mixed> $args,\WPGraphQL\AppContext $context,\GraphQL\Type\Definition\ResolveInfo $info): array<string,mixed>
 	 */
 	protected $resolve_mutation;
 
@@ -70,7 +70,7 @@ class WPMutationType {
 	/**
 	 * WPMutationType constructor.
 	 *
-	 * @param array        $config        The config array for the mutation
+	 * @param array<string,mixed>              $config        The config array for the mutation
 	 * @param \WPGraphQL\Registry\TypeRegistry $type_registry Instance of the WPGraphQL Type Registry
 	 *
 	 * @throws \Exception
@@ -80,7 +80,7 @@ class WPMutationType {
 		/**
 		 * Filter the config of WPMutationType
 		 *
-		 * @param array        $config         Array of configuration options passed to the WPMutationType when instantiating a new type
+		 * @param array<string,mixed>            $config           Array of configuration options passed to the WPMutationType when instantiating a new type
 		 * @param \WPGraphQL\Type\WPMutationType $wp_mutation_type The instance of the WPMutationType class
 		 *
 		 * @since 1.13.0
@@ -109,7 +109,7 @@ class WPMutationType {
 		/**
 		 * Run an action when the WPMutationType is instantiating.
 		 *
-		 * @param array        $config         Array of configuration options passed to the WPObjectType when instantiating a new type
+		 * @param array<string,mixed>            $config           Array of configuration options passed to the WPObjectType when instantiating a new type
 		 * @param \WPGraphQL\Type\WPMutationType $wp_mutation_type The instance of the WPMutationType class
 		 *
 		 * @since 1.13.0
@@ -122,9 +122,7 @@ class WPMutationType {
 	/**
 	 * Validates that essential key/value pairs are passed to the connection config.
 	 *
-	 * @param array $config
-	 *
-	 * @return bool
+	 * @param array<string,mixed> $config The config array for the mutation
 	 */
 	protected function is_config_valid( array $config ): bool {
 		$is_valid = true;
@@ -149,11 +147,13 @@ class WPMutationType {
 			$is_valid = false;
 		}
 
-		return (bool) $is_valid;
+		return $is_valid;
 	}
 
 	/**
 	 * Gets the mutation input fields.
+	 *
+	 * @return array<string,array<string,mixed>>
 	 */
 	protected function get_input_fields(): array {
 		$input_fields = [
@@ -172,6 +172,8 @@ class WPMutationType {
 
 	/**
 	 * Gets the mutation output fields.
+	 *
+	 * @return array<string,array<string,mixed>>
 	 */
 	protected function get_output_fields(): array {
 		$output_fields = [
@@ -188,6 +190,11 @@ class WPMutationType {
 		return $output_fields;
 	}
 
+	/**
+	 * Gets the resolver callable for the mutation.
+	 *
+	 * @return callable(mixed $root,array<string,mixed> $args,\WPGraphQL\AppContext $context,\GraphQL\Type\Definition\ResolveInfo $info): array<string,mixed>
+	 */
 	protected function get_resolver(): callable {
 		return function ( $root, array $args, AppContext $context, ResolveInfo $info ) {
 			$unfiltered_input = $args['input'];
@@ -197,10 +204,10 @@ class WPMutationType {
 			/**
 			 * Filters the mutation input before it's passed to the `mutateAndGetPayload` callback.
 			 *
-			 * @param array $input The mutation input args.
-			 * @param \WPGraphQL\AppContext $context The AppContext object.
-			 * @param \GraphQL\Type\Definition\ResolveInfo $info The ResolveInfo object.
-			 * @param string $mutation_name The name of the mutation field.
+			 * @param array<string,mixed>                  $input         The mutation input args.
+			 * @param \WPGraphQL\AppContext                $context       The AppContext object.
+			 * @param \GraphQL\Type\Definition\ResolveInfo $info          The ResolveInfo object.
+			 * @param string                               $mutation_name The name of the mutation field.
 			 */
 			$input = apply_filters( 'graphql_mutation_input', $unfiltered_input, $context, $info, $this->mutation_name );
 
@@ -209,11 +216,11 @@ class WPMutationType {
 			 * Returning anything other than null will stop the callback for the mutation from executing,
 			 * and will return your data or execute your callback instead.
 			 *
-			 * @param array|callable|null $payload. The payload returned from the callback. Null by default.
-			 * @param string $mutation_name The name of the mutation field.
-			 * @param callable|\Closure $mutateAndGetPayload The callback for the mutation.
-			 * @param array $input The mutation input args.
-			 * @param \WPGraphQL\AppContext $context The AppContext object.
+			 * @param array<string,mixed>|callable|null   $payload.            The payload returned from the callback. Null by default.
+			 * @param string                $mutation_name       The name of the mutation field.
+			 * @param callable|\Closure     $mutateAndGetPayload The callback for the mutation.
+			 * @param array<string,mixed>   $input               The mutation input args.
+			 * @param \WPGraphQL\AppContext $context             The AppContext object.
 			 * @param \GraphQL\Type\Definition\ResolveInfo $info The ResolveInfo object.
 			 */
 			$pre = apply_filters( 'graphql_pre_mutate_and_get_payload', null, $this->mutation_name, $this->config['mutateAndGetPayload'], $input, $context, $info );
@@ -226,9 +233,9 @@ class WPMutationType {
 				/**
 				 * Filters the payload returned from the default mutateAndGetPayload callback.
 				 *
-				 * @param array $payload The payload returned from the callback.
-				 * @param string $mutation_name The name of the mutation field.
-				 * @param array $input The mutation input args.
+				 * @param array<string,mixed>   $payload The payload returned from the callback.
+				 * @param string                $mutation_name The name of the mutation field.
+				 * @param array<string,mixed>   $input The mutation input args.
 				 * @param \WPGraphQL\AppContext $context The AppContext object.
 				 * @param \GraphQL\Type\Definition\ResolveInfo $info The ResolveInfo object.
 				 */
@@ -238,12 +245,12 @@ class WPMutationType {
 			/**
 			 * Fires after the mutation payload has been returned from the `mutateAndGetPayload` callback.
 			 *
-			 * @param array $payload The Payload returned from the mutation.
-			 * @param array $input The mutation input args, after being filtered by 'graphql_mutation_input'.
-			 * @param array $unfiltered_input The unfiltered input args of the mutation
-			 * @param \WPGraphQL\AppContext $context The AppContext object.
-			 * @param \GraphQL\Type\Definition\ResolveInfo $info The ResolveInfo object.
-			 * @param string $mutation_name The name of the mutation field.
+			 * @param array<string,mixed>                  $payload          The Payload returned from the mutation.
+			 * @param array<string,mixed>                  $input            The mutation input args, after being filtered by 'graphql_mutation_input'.
+			 * @param array<string,mixed>                  $unfiltered_input The unfiltered input args of the mutation
+			 * @param \WPGraphQL\AppContext                $context          The AppContext object.
+			 * @param \GraphQL\Type\Definition\ResolveInfo $info             The ResolveInfo object.
+			 * @param string                               $mutation_name    The name of the mutation field.
 			 */
 			do_action( 'graphql_mutation_response', $payload, $input, $unfiltered_input, $context, $info, $this->mutation_name );
 
@@ -277,6 +284,9 @@ class WPMutationType {
 		);
 	}
 
+	/**
+	 * Registers the payload type to the Schema.
+	 */
 	protected function register_mutation_payload(): void {
 		$object_name = $this->mutation_name . 'Payload';
 

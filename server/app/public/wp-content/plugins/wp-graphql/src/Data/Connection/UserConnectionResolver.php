@@ -21,26 +21,22 @@ class UserConnectionResolver extends AbstractConnectionResolver {
 	protected $query;
 
 	/**
-	 * Determines whether the query should execute at all. It's possible that in some
-	 * situations we may want to prevent the underlying query from executing at all.
-	 *
-	 * In those cases, this would be set to false.
-	 *
-	 * @return bool
+	 * {@inheritDoc}
 	 */
 	public function should_execute() {
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function get_loader_name() {
 		return 'user';
 	}
 
 	/**
-	 * Converts the args that were input to the connection into args that can be executed
-	 * by WP_User_Query
+	 * {@inheritDoc}
 	 *
-	 * @return array
 	 * @throws \Exception
 	 */
 	public function get_query_args() {
@@ -204,9 +200,9 @@ class UserConnectionResolver extends AbstractConnectionResolver {
 	}
 
 	/**
-	 * Returns an array of ids from the query being executed.
+	 * {@inheritDoc}
 	 *
-	 * @return array
+	 * @return int[]
 	 */
 	public function get_ids_from_query() {
 		$ids = method_exists( $this->query, 'get_results' ) ? $this->query->get_results() : [];
@@ -226,9 +222,10 @@ class UserConnectionResolver extends AbstractConnectionResolver {
 	 * There's probably a cleaner/more dynamic way to approach this, but this was quick. I'd be
 	 * down to explore more dynamic ways to map this, but for now this gets the job done.
 	 *
-	 * @param array $args The query "where" args
+	 * @param array<string,mixed> $args The query "where" args
 	 *
-	 * @return array
+	 * @return array<string,mixed>
+	 * @throws \GraphQL\Error\UserError If the user does not have the "list_users" capability.
 	 * @since  0.0.5
 	 */
 	protected function sanitize_input_fields( array $args ) {
@@ -269,14 +266,13 @@ class UserConnectionResolver extends AbstractConnectionResolver {
 		 * This allows plugins/themes to hook in and alter what $args should be allowed to be passed
 		 * from a GraphQL Query to the WP_User_Query
 		 *
-		 * @param array       $query_args The mapped query args
-		 * @param array       $args       The query "where" args
-		 * @param mixed       $source     The query results of the query calling this relation
-		 * @param array       $all_args   Array of all the query args (not just the "where" args)
-		 * @param \WPGraphQL\AppContext $context The AppContext object
+		 * @param array<string,mixed>                  $query_args The mapped query args
+		 * @param array<string,mixed>                  $args       The query "where" args
+		 * @param mixed                                $source     The query results of the query calling this relation
+		 * @param array<string,mixed>                  $all_args   Array of all the query args (not just the "where" args)
+		 * @param \WPGraphQL\AppContext                $context The AppContext object
 		 * @param \GraphQL\Type\Definition\ResolveInfo $info The ResolveInfo object
 		 *
-		 * @return array
 		 * @since 0.0.5
 		 */
 		$query_args = apply_filters( 'graphql_map_input_fields_to_wp_user_query', $query_args, $args, $this->source, $this->args, $this->context, $this->info );
@@ -285,9 +281,7 @@ class UserConnectionResolver extends AbstractConnectionResolver {
 	}
 
 	/**
-	 * Determine whether or not the the offset is valid, i.e the user corresponding to the offset
-	 * exists. Offset is equivalent to user_id. So this function is equivalent to checking if the
-	 * user with the given ID exists.
+	 * {@inheritDoc}
 	 *
 	 * @param int $offset The ID of the node used as the offset in the cursor
 	 *

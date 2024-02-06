@@ -29,7 +29,7 @@ class MediaItemCreate {
 	/**
 	 * Defines the mutation input field configuration.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	public static function get_input_fields() {
 		return [
@@ -95,7 +95,7 @@ class MediaItemCreate {
 	/**
 	 * Defines the mutation output field configuration.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	public static function get_output_fields() {
 		return [
@@ -116,7 +116,7 @@ class MediaItemCreate {
 	/**
 	 * Defines the mutation data modification closure.
 	 *
-	 * @return callable
+	 * @return callable(array<string,mixed>$input,\WPGraphQL\AppContext $context,\GraphQL\Type\Definition\ResolveInfo $info):array<string,mixed>
 	 */
 	public static function mutate_and_get_payload() {
 		return static function ( $input, AppContext $context, ResolveInfo $info ) {
@@ -171,9 +171,9 @@ class MediaItemCreate {
 			/**
 			 * Filter the allowed protocols for the mutation
 			 *
-			 * @param array                                $allowed_protocols The allowed protocols for filePaths to be submitted
+			 * @param string[]                             $allowed_protocols The allowed protocols for filePaths to be submitted
 			 * @param mixed                                $protocol          The current protocol of the filePath
-			 * @param array                                $input             The input of the current mutation
+			 * @param array<string,mixed>                  $input             The input of the current mutation
 			 * @param \WPGraphQL\AppContext                $context           The context of the current request
 			 * @param \GraphQL\Type\Definition\ResolveInfo $info              The ResolveInfo of the current field
 			 */

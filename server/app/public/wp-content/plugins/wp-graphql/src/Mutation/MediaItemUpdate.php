@@ -29,7 +29,7 @@ class MediaItemUpdate {
 	/**
 	 * Defines the mutation input field configuration.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	public static function get_input_fields() {
 		/** @var \WP_Post_Type $post_type_object */
@@ -51,7 +51,7 @@ class MediaItemUpdate {
 	/**
 	 * Defines the mutation output field configuration.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	public static function get_output_fields() {
 		return MediaItemCreate::get_output_fields();
@@ -60,14 +60,14 @@ class MediaItemUpdate {
 	/**
 	 * Defines the mutation data modification closure.
 	 *
-	 * @return callable
+	 * @return callable(array<string,mixed>$input,\WPGraphQL\AppContext $context,\GraphQL\Type\Definition\ResolveInfo $info):array<string,mixed>
 	 */
 	public static function mutate_and_get_payload() {
 		return static function ( $input, AppContext $context, ResolveInfo $info ) {
 			$post_type_object = get_post_type_object( 'attachment' );
 
 			if ( empty( $post_type_object ) ) {
-				return null;
+				return [];
 			}
 
 			// Get the database ID for the comment.

@@ -22,6 +22,10 @@ import Banner from '../components/banner'
 import Date from '../components/date'
 
 import { VideosForResourcesData, getVideosForResources } from '../lib/api'
+import { useRouter } from 'next/router'
+import { localeToCode } from '../lib/util'
+
+import { titles, missingContent } from '../lib/localized-strings'
 
 interface ResourcesProps {
   preview: boolean
@@ -32,18 +36,21 @@ export default function Resources({
   preview,
   videos,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const { locale } = useRouter()
+  const languageCode = localeToCode(locale)
+  const title = titles.resources[languageCode]
   return (
     <Layout preview={preview}>
       <Head>
-        <title>{`WomEmpSports Resources`}</title>
+        <title>{`WomEmpSports ${title}`}</title>
       </Head>
       <Flex align='center' direction='column'>
         <Banner />
         <FixedWidthContainer>
-          <SectionWithHeading id='resources' title='Resources'>
+          <SectionWithHeading id='resources' title={title}>
             <Section id='video-grid'>
               {videos.length == 0 && (
-                <Text>There are currently no resources to show.</Text>
+                <Text>{missingContent.resources[languageCode]}</Text>
               )}
               <SimpleGrid
                 columns={[1, null, 2, 3]}
@@ -84,7 +91,7 @@ export default function Resources({
                         pb={0}
                         color='gray.600'
                       >
-                        on <Date dateString={video.date}></Date>
+                        <Date dateString={video.date} locale={locale}></Date>
                       </Text>
                     </CardFooter>
                   </Card>

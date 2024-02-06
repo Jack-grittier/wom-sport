@@ -79,7 +79,7 @@ export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermN
   enqueuedScripts?: Maybe<TermNodeToEnqueuedScriptConnection>;
   /** Connection between the TermNode type and the EnqueuedStylesheet type */
   enqueuedStylesheets?: Maybe<TermNodeToEnqueuedStylesheetConnection>;
-  /** The unique resource identifier path */
+  /** The globally unique ID for the object */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
   isContentNode: Scalars['Boolean']['output'];
@@ -87,6 +87,8 @@ export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermN
   isRestricted?: Maybe<Scalars['Boolean']['output']>;
   /** Whether the node is a Term */
   isTermNode: Scalars['Boolean']['output'];
+  /** List available translations for this post */
+  language?: Maybe<Language>;
   /** The link to the term */
   link?: Maybe<Scalars['String']['output']>;
   /** The human friendly name of the object. */
@@ -109,6 +111,10 @@ export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermN
   termGroupId?: Maybe<Scalars['Int']['output']>;
   /** The taxonomy ID that the object is associated with */
   termTaxonomyId?: Maybe<Scalars['Int']['output']>;
+  /** Get specific translation version of this object */
+  translation?: Maybe<Category>;
+  /** List all translated versions of this term */
+  translations?: Maybe<Array<Maybe<Category>>>;
   /** The unique resource identifier path */
   uri?: Maybe<Scalars['String']['output']>;
 };
@@ -168,6 +174,12 @@ export type CategoryPostsArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<CategoryToPostConnectionWhereArgs>;
+};
+
+
+/** The category type */
+export type CategoryTranslationArgs = {
+  language: LanguageCodeEnum;
 };
 
 /** Connection to category Nodes */
@@ -944,7 +956,7 @@ export type ContentNode = {
   enqueuedStylesheets?: Maybe<ContentNodeToEnqueuedStylesheetConnection>;
   /** The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table. */
   guid?: Maybe<Scalars['String']['output']>;
-  /** The unique resource identifier path */
+  /** The globally unique ID for the object */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
   isContentNode: Scalars['Boolean']['output'];
@@ -1405,6 +1417,7 @@ export type CreateCategoryInput = {
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   /** The description of the category object */
   description?: InputMaybe<Scalars['String']['input']>;
+  language?: InputMaybe<LanguageCodeEnum>;
   /** The name of the category object to mutate */
   name: Scalars['String']['input'];
   /** The ID of the category that should be set as the parent */
@@ -1514,6 +1527,7 @@ export type CreatePageInput = {
   content?: InputMaybe<Scalars['String']['input']>;
   /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
   date?: InputMaybe<Scalars['String']['input']>;
+  language?: InputMaybe<LanguageCodeEnum>;
   /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
   menuOrder?: InputMaybe<Scalars['Int']['input']>;
   /** The ID of the parent object */
@@ -1576,6 +1590,7 @@ export type CreatePostInput = {
   date?: InputMaybe<Scalars['String']['input']>;
   /** The excerpt of the object */
   excerpt?: InputMaybe<Scalars['String']['input']>;
+  language?: InputMaybe<LanguageCodeEnum>;
   /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
   menuOrder?: InputMaybe<Scalars['Int']['input']>;
   /** The password used to protect the content of the object */
@@ -1615,6 +1630,7 @@ export type CreateTagInput = {
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   /** The description of the post_tag object */
   description?: InputMaybe<Scalars['String']['input']>;
+  language?: InputMaybe<LanguageCodeEnum>;
   /** The name of the post_tag object to mutate */
   name: Scalars['String']['input'];
   /** If this argument exists then the slug will be checked to see if it is not an existing valid term. If that check succeeds (it is not a valid term), then it is added and the term id is given. If it fails, then a check is made to whether the taxonomy is hierarchical and the parent argument is not empty. If the second check succeeds, the term will be inserted and the term id will be given. If the slug argument is empty, then it will be calculated from the term name. */
@@ -1971,11 +1987,23 @@ export type Edge = {
 
 /** Asset enqueued by the CMS */
 export type EnqueuedAsset = {
-  /** @todo */
+  /** The inline code to be run after the asset is loaded. */
+  after?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /**
+   * Deprecated
+   * @deprecated Use `EnqueuedAsset.media` instead.
+   */
   args?: Maybe<Scalars['Boolean']['output']>;
+  /** The inline code to be run before the asset is loaded. */
+  before?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /** The HTML conditional comment for the enqueued asset. E.g. IE 6, lte IE 7, etc */
+  conditional?: Maybe<Scalars['String']['output']>;
   /** Dependencies needed to use this asset */
-  dependencies?: Maybe<Array<Maybe<EnqueuedScript>>>;
-  /** Extra information needed for the script */
+  dependencies?: Maybe<Array<Maybe<EnqueuedAsset>>>;
+  /**
+   * Extra information needed for the script
+   * @deprecated Use `EnqueuedScript.extraData` instead.
+   */
   extra?: Maybe<Scalars['String']['output']>;
   /** The handle of the enqueued asset */
   handle?: Maybe<Scalars['String']['output']>;
@@ -1990,19 +2018,35 @@ export type EnqueuedAsset = {
 /** Script enqueued by the CMS */
 export type EnqueuedScript = EnqueuedAsset & Node & {
   __typename?: 'EnqueuedScript';
-  /** @todo */
+  /** The inline code to be run after the asset is loaded. */
+  after?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /**
+   * Deprecated
+   * @deprecated Use `EnqueuedAsset.media` instead.
+   */
   args?: Maybe<Scalars['Boolean']['output']>;
+  /** The inline code to be run before the asset is loaded. */
+  before?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /** The HTML conditional comment for the enqueued asset. E.g. IE 6, lte IE 7, etc */
+  conditional?: Maybe<Scalars['String']['output']>;
   /** Dependencies needed to use this asset */
   dependencies?: Maybe<Array<Maybe<EnqueuedScript>>>;
-  /** Extra information needed for the script */
+  /**
+   * Extra information needed for the script
+   * @deprecated Use `EnqueuedScript.extraData` instead.
+   */
   extra?: Maybe<Scalars['String']['output']>;
+  /** Extra data supplied to the enqueued script */
+  extraData?: Maybe<Scalars['String']['output']>;
   /** The handle of the enqueued asset */
   handle?: Maybe<Scalars['String']['output']>;
-  /** The ID of the enqueued asset */
+  /** The global ID of the enqueued script */
   id: Scalars['ID']['output'];
   /** The source of the asset */
   src?: Maybe<Scalars['String']['output']>;
-  /** The version of the enqueued asset */
+  /** The loading strategy to use on the script tag */
+  strategy?: Maybe<ScriptLoadingStrategyEnum>;
+  /** The version of the enqueued script */
   version?: Maybe<Scalars['String']['output']>;
 };
 
@@ -2039,19 +2083,43 @@ export type EnqueuedScriptConnectionPageInfo = {
 /** Stylesheet enqueued by the CMS */
 export type EnqueuedStylesheet = EnqueuedAsset & Node & {
   __typename?: 'EnqueuedStylesheet';
-  /** @todo */
+  /** The inline code to be run after the asset is loaded. */
+  after?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /**
+   * Deprecated
+   * @deprecated Use `EnqueuedAsset.media` instead.
+   */
   args?: Maybe<Scalars['Boolean']['output']>;
+  /** The inline code to be run before the asset is loaded. */
+  before?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /** The HTML conditional comment for the enqueued asset. E.g. IE 6, lte IE 7, etc */
+  conditional?: Maybe<Scalars['String']['output']>;
   /** Dependencies needed to use this asset */
-  dependencies?: Maybe<Array<Maybe<EnqueuedScript>>>;
-  /** Extra information needed for the script */
+  dependencies?: Maybe<Array<Maybe<EnqueuedStylesheet>>>;
+  /**
+   * Extra information needed for the script
+   * @deprecated Use `EnqueuedScript.extraData` instead.
+   */
   extra?: Maybe<Scalars['String']['output']>;
   /** The handle of the enqueued asset */
   handle?: Maybe<Scalars['String']['output']>;
-  /** The ID of the enqueued asset */
+  /** The global ID of the enqueued stylesheet */
   id: Scalars['ID']['output'];
+  /** Whether the enqueued style is RTL or not */
+  isRtl?: Maybe<Scalars['Boolean']['output']>;
+  /** The media attribute to use for the link */
+  media?: Maybe<Scalars['String']['output']>;
+  /** The absolute path to the enqueued style. Set when the stylesheet is meant to load inline. */
+  path?: Maybe<Scalars['String']['output']>;
+  /** The `rel` attribute to use for the link */
+  rel?: Maybe<Scalars['String']['output']>;
   /** The source of the asset */
   src?: Maybe<Scalars['String']['output']>;
-  /** The version of the enqueued asset */
+  /** Optional suffix, used in combination with RTL */
+  suffix?: Maybe<Scalars['String']['output']>;
+  /** The title of the enqueued style. Used for preferred/alternate stylesheets. */
+  title?: Maybe<Scalars['String']['output']>;
+  /** The version of the enqueued style */
   version?: Maybe<Scalars['String']['output']>;
 };
 
@@ -2436,6 +2504,43 @@ export type HierarchicalTermNodeEnqueuedStylesheetsArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
 };
+
+/** Language (Polylang) */
+export type Language = {
+  __typename?: 'Language';
+  /** Language code (Polylang) */
+  code?: Maybe<LanguageCodeEnum>;
+  /** Language term front page URL */
+  homeUrl?: Maybe<Scalars['String']['output']>;
+  /** Language ID (Polylang) */
+  id: Scalars['ID']['output'];
+  /** Language locale (Polylang) */
+  locale?: Maybe<Scalars['String']['output']>;
+  /** Human readable language name (Polylang) */
+  name?: Maybe<Scalars['String']['output']>;
+  /** Language term slug. Prefer the &quot;code&quot; field if possible (Polylang) */
+  slug?: Maybe<Scalars['String']['output']>;
+};
+
+/** Enum of all available language codes */
+export enum LanguageCodeEnum {
+  Bg = 'BG',
+  El = 'EL',
+  En = 'EN',
+  Es = 'ES',
+  It = 'IT'
+}
+
+/** Filter item by specific language, default language or list all languages */
+export enum LanguageCodeFilterEnum {
+  All = 'ALL',
+  Bg = 'BG',
+  Default = 'DEFAULT',
+  El = 'EL',
+  En = 'EN',
+  Es = 'ES',
+  It = 'IT'
+}
 
 /** Input for the login mutation. */
 export type LoginInput = {
@@ -3058,7 +3163,7 @@ export type MenuItemConnectionPageInfo = {
 export type MenuItemLinkable = {
   /** The unique identifier stored in the database */
   databaseId: Scalars['Int']['output'];
-  /** The unique resource identifier path */
+  /** The globally unique ID for the object */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
   isContentNode: Scalars['Boolean']['output'];
@@ -3219,6 +3324,8 @@ export type MenuToMenuItemConnectionWhereArgs = {
 export enum MimeTypeEnum {
   /** application/java mime type. */
   ApplicationJava = 'APPLICATION_JAVA',
+  /** application/javascript mime type. */
+  ApplicationJavascript = 'APPLICATION_JAVASCRIPT',
   /** application/msword mime type. */
   ApplicationMsword = 'APPLICATION_MSWORD',
   /** application/octet-stream mime type. */
@@ -3357,6 +3464,8 @@ export enum MimeTypeEnum {
   TextCss = 'TEXT_CSS',
   /** text/csv mime type. */
   TextCsv = 'TEXT_CSV',
+  /** text/html mime type. */
+  TextHtml = 'TEXT_HTML',
   /** text/plain mime type. */
   TextPlain = 'TEXT_PLAIN',
   /** text/richtext mime type. */
@@ -3627,6 +3736,8 @@ export type Page = ContentNode & DatabaseIdentifier & HierarchicalContentNode & 
   isRevision?: Maybe<Scalars['Boolean']['output']>;
   /** Whether the node is a Term */
   isTermNode: Scalars['Boolean']['output'];
+  /** Polylang language */
+  language?: Maybe<Language>;
   /** The user that most recently edited the node */
   lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
   /** The permalink of the post */
@@ -3666,6 +3777,10 @@ export type Page = ContentNode & DatabaseIdentifier & HierarchicalContentNode & 
   template?: Maybe<ContentTemplate>;
   /** The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made. */
   title?: Maybe<Scalars['String']['output']>;
+  /** Get specific translation version of this object */
+  translation?: Maybe<Page>;
+  /** List all translated versions of this post */
+  translations?: Maybe<Array<Maybe<Page>>>;
   /** The unique resource identifier path */
   uri?: Maybe<Scalars['String']['output']>;
 };
@@ -3738,6 +3853,12 @@ export type PageRevisionsArgs = {
 /** The page type */
 export type PageTitleArgs = {
   format?: InputMaybe<PostObjectFieldFormatEnum>;
+};
+
+
+/** The page type */
+export type PageTranslationArgs = {
+  language: LanguageCodeEnum;
 };
 
 /** Connection to page Nodes */
@@ -4109,6 +4230,8 @@ export type Post = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & 
   isSticky: Scalars['Boolean']['output'];
   /** Whether the node is a Term */
   isTermNode: Scalars['Boolean']['output'];
+  /** Polylang language */
+  language?: Maybe<Language>;
   /** The user that most recently edited the node */
   lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
   /** The permalink of the post */
@@ -4152,6 +4275,10 @@ export type Post = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & 
   title?: Maybe<Scalars['String']['output']>;
   /** URLs queued to be pinged. */
   toPing?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /** Get specific translation version of this object */
+  translation?: Maybe<Post>;
+  /** List all translated versions of this post */
+  translations?: Maybe<Array<Maybe<Post>>>;
   /** The unique resource identifier path */
   uri?: Maybe<Scalars['String']['output']>;
 };
@@ -4252,6 +4379,12 @@ export type PostTitleArgs = {
   format?: InputMaybe<PostObjectFieldFormatEnum>;
 };
 
+
+/** The post type */
+export type PostTranslationArgs = {
+  language: LanguageCodeEnum;
+};
+
 /** Set relationships between the post to categories */
 export type PostCategoriesInput = {
   /** If true, this will append the category to existing related categories. If false, this will replace existing relationships. Default true. */
@@ -4317,7 +4450,7 @@ export type PostFormat = DatabaseIdentifier & Node & TermNode & UniformResourceI
   enqueuedScripts?: Maybe<TermNodeToEnqueuedScriptConnection>;
   /** Connection between the TermNode type and the EnqueuedStylesheet type */
   enqueuedStylesheets?: Maybe<TermNodeToEnqueuedStylesheetConnection>;
-  /** The unique resource identifier path */
+  /** The globally unique ID for the object */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
   isContentNode: Scalars['Boolean']['output'];
@@ -5762,10 +5895,14 @@ export type RootQuery = {
   contentType?: Maybe<ContentType>;
   /** Connection between the RootQuery type and the ContentType type */
   contentTypes?: Maybe<RootQueryToContentTypeConnection>;
+  /** Get language list */
+  defaultLanguage?: Maybe<Language>;
   /** Fields of the &#039;DiscussionSettings&#039; settings group */
   discussionSettings?: Maybe<DiscussionSettings>;
   /** Fields of the &#039;GeneralSettings&#039; settings group */
   generalSettings?: Maybe<GeneralSettings>;
+  /** List available languages */
+  languages?: Maybe<Array<Maybe<Language>>>;
   /** An object of the mediaItem Type.  */
   mediaItem?: Maybe<MediaItem>;
   /**
@@ -5837,6 +5974,8 @@ export type RootQuery = {
   theme?: Maybe<Theme>;
   /** Connection between the RootQuery type and the Theme type */
   themes?: Maybe<RootQueryToThemeConnection>;
+  /** Translate string using pll_translate_string() (Polylang) */
+  translateString?: Maybe<Scalars['String']['output']>;
   /** Returns a user */
   user?: Maybe<User>;
   /** Returns a user role */
@@ -6184,6 +6323,13 @@ export type RootQueryThemesArgs = {
 
 
 /** The root entry point into the Graph */
+export type RootQueryTranslateStringArgs = {
+  language: LanguageCodeEnum;
+  string: Scalars['String']['input'];
+};
+
+
+/** The root entry point into the Graph */
 export type RootQueryUserArgs = {
   id: Scalars['ID']['input'];
   idType?: InputMaybe<UserNodeIdTypeEnum>;
@@ -6294,6 +6440,10 @@ export type RootQueryToCategoryConnectionWhereArgs = {
   hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
   /** Array of term ids to include. Default empty array. */
   include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Filter by Categorys by language code (Polylang) */
+  language?: InputMaybe<LanguageCodeFilterEnum>;
+  /** Filter Categorys by one or more languages (Polylang) */
+  languages?: InputMaybe<Array<LanguageCodeEnum>>;
   /** Array of names to return term(s) for. Default empty. */
   name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Retrieve terms where the name is LIKE the input value. Default empty. */
@@ -6460,6 +6610,10 @@ export type RootQueryToContentNodeConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Filter content nodes by language code (Polylang) */
+  language?: InputMaybe<LanguageCodeFilterEnum>;
+  /** Filter content nodes by one or more languages (Polylang) */
+  languages?: InputMaybe<Array<LanguageCodeEnum>>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -6746,6 +6900,7 @@ export type RootQueryToMenuItemConnectionPageInfo = MenuItemConnectionPageInfo &
 export type RootQueryToMenuItemConnectionWhereArgs = {
   /** The database ID of the object */
   id?: InputMaybe<Scalars['Int']['input']>;
+  language?: InputMaybe<LanguageCodeFilterEnum>;
   /** The menu location for the menu being queried */
   location?: InputMaybe<MenuLocationEnum>;
   /** The database ID of the parent menu object */
@@ -6805,6 +6960,10 @@ export type RootQueryToPageConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Filter by Pages by language code (Polylang) */
+  language?: InputMaybe<LanguageCodeFilterEnum>;
+  /** Filter Pages by one or more languages (Polylang) */
+  languages?: InputMaybe<Array<LanguageCodeEnum>>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -6935,6 +7094,10 @@ export type RootQueryToPostConnectionWhereArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Array of IDs for the objects to retrieve */
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Filter by Posts by language code (Polylang) */
+  language?: InputMaybe<LanguageCodeFilterEnum>;
+  /** Filter Posts by one or more languages (Polylang) */
+  languages?: InputMaybe<Array<LanguageCodeEnum>>;
   /** Get objects with a specific mimeType property */
   mimeType?: InputMaybe<MimeTypeEnum>;
   /** Slug / post_name of the object */
@@ -7180,6 +7343,10 @@ export type RootQueryToTagConnectionWhereArgs = {
   hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
   /** Array of term ids to include. Default empty array. */
   include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Filter by Tags by language code (Polylang) */
+  language?: InputMaybe<LanguageCodeFilterEnum>;
+  /** Filter Tags by one or more languages (Polylang) */
+  languages?: InputMaybe<Array<LanguageCodeEnum>>;
   /** Array of names to return term(s) for. Default empty. */
   name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Retrieve terms where the name is LIKE the input value. Default empty. */
@@ -7524,6 +7691,14 @@ export type RootQueryToVideoConnectionWhereArgs = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** The strategy to use when loading the script */
+export enum ScriptLoadingStrategyEnum {
+  /** Use the script `async` attribute */
+  Async = 'ASYNC',
+  /** Use the script `defer` attribute */
+  Defer = 'DEFER'
+}
+
 /** Input for the sendPasswordResetEmail mutation. */
 export type SendPasswordResetEmailInput = {
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
@@ -7602,7 +7777,7 @@ export type Tag = DatabaseIdentifier & MenuItemLinkable & Node & TermNode & Unif
   enqueuedScripts?: Maybe<TermNodeToEnqueuedScriptConnection>;
   /** Connection between the TermNode type and the EnqueuedStylesheet type */
   enqueuedStylesheets?: Maybe<TermNodeToEnqueuedStylesheetConnection>;
-  /** The unique resource identifier path */
+  /** The globally unique ID for the object */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
   isContentNode: Scalars['Boolean']['output'];
@@ -7610,6 +7785,8 @@ export type Tag = DatabaseIdentifier & MenuItemLinkable & Node & TermNode & Unif
   isRestricted?: Maybe<Scalars['Boolean']['output']>;
   /** Whether the node is a Term */
   isTermNode: Scalars['Boolean']['output'];
+  /** List available translations for this post */
+  language?: Maybe<Language>;
   /** The link to the term */
   link?: Maybe<Scalars['String']['output']>;
   /** The human friendly name of the object. */
@@ -7631,6 +7808,10 @@ export type Tag = DatabaseIdentifier & MenuItemLinkable & Node & TermNode & Unif
   termGroupId?: Maybe<Scalars['Int']['output']>;
   /** The taxonomy ID that the object is associated with */
   termTaxonomyId?: Maybe<Scalars['Int']['output']>;
+  /** Get specific translation version of this object */
+  translation?: Maybe<Tag>;
+  /** List all translated versions of this term */
+  translations?: Maybe<Array<Maybe<Tag>>>;
   /** The unique resource identifier path */
   uri?: Maybe<Scalars['String']['output']>;
 };
@@ -7671,6 +7852,12 @@ export type TagPostsArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<TagToPostConnectionWhereArgs>;
+};
+
+
+/** The tag type */
+export type TagTranslationArgs = {
+  language: LanguageCodeEnum;
 };
 
 /** Connection to tag Nodes */
@@ -8089,7 +8276,7 @@ export type TermNode = {
   enqueuedScripts?: Maybe<TermNodeToEnqueuedScriptConnection>;
   /** Connection between the TermNode type and the EnqueuedStylesheet type */
   enqueuedStylesheets?: Maybe<TermNodeToEnqueuedStylesheetConnection>;
-  /** The unique resource identifier path */
+  /** The globally unique ID for the object */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
   isContentNode: Scalars['Boolean']['output'];
@@ -8318,7 +8505,7 @@ export type ThemeConnectionPageInfo = {
 
 /** Any node that has a URI */
 export type UniformResourceIdentifiable = {
-  /** The unique resource identifier path */
+  /** The globally unique ID for the object */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
   isContentNode: Scalars['Boolean']['output'];
@@ -8338,6 +8525,7 @@ export type UpdateCategoryInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   /** The ID of the category object to update */
   id: Scalars['ID']['input'];
+  language?: InputMaybe<LanguageCodeEnum>;
   /** The name of the category object to mutate */
   name?: InputMaybe<Scalars['String']['input']>;
   /** The ID of the category that should be set as the parent */
@@ -8455,6 +8643,7 @@ export type UpdatePageInput = {
   id: Scalars['ID']['input'];
   /** Override the edit lock when another user is editing the post */
   ignoreEditLock?: InputMaybe<Scalars['Boolean']['input']>;
+  language?: InputMaybe<LanguageCodeEnum>;
   /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
   menuOrder?: InputMaybe<Scalars['Int']['input']>;
   /** The ID of the parent object */
@@ -8523,6 +8712,7 @@ export type UpdatePostInput = {
   id: Scalars['ID']['input'];
   /** Override the edit lock when another user is editing the post */
   ignoreEditLock?: InputMaybe<Scalars['Boolean']['input']>;
+  language?: InputMaybe<LanguageCodeEnum>;
   /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
   menuOrder?: InputMaybe<Scalars['Int']['input']>;
   /** The password used to protect the content of the object */
@@ -8623,6 +8813,7 @@ export type UpdateTagInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   /** The ID of the tag object to update */
   id: Scalars['ID']['input'];
+  language?: InputMaybe<LanguageCodeEnum>;
   /** The name of the post_tag object to mutate */
   name?: InputMaybe<Scalars['String']['input']>;
   /** If this argument exists then the slug will be checked to see if it is not an existing valid term. If that check succeeds (it is not a valid term), then it is added and the term id is given. If it fails, then a check is made to whether the taxonomy is hierarchical and the parent argument is not empty. If the second check succeeds, the term will be inserted and the term id will be given. If the slug argument is empty, then it will be calculated from the term name. */
@@ -9738,10 +9929,12 @@ export type PreviewPostQueryVariables = Exact<{
 
 export type PreviewPostQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', databaseId: number, slug?: string | null, status?: string | null } | null };
 
-export type PostsForNewsQueryVariables = Exact<{ [key: string]: never; }>;
+export type PostsForNewsQueryVariables = Exact<{
+  language: LanguageCodeFilterEnum;
+}>;
 
 
-export type PostsForNewsQuery = { __typename?: 'RootQuery', posts?: { __typename?: 'RootQueryToPostConnection', edges: Array<{ __typename?: 'RootQueryToPostConnectionEdge', node: { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null } }> } | null };
+export type PostsForNewsQuery = { __typename?: 'RootQuery', posts?: { __typename?: 'RootQueryToPostConnection', edges: Array<{ __typename?: 'RootQueryToPostConnectionEdge', node: { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null, language?: { __typename?: 'Language', code?: LanguageCodeEnum | null } | null } }> } | null };
 
 export type VideosForResourcesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -9754,7 +9947,7 @@ export type PostBySlugQueryVariables = Exact<{
 }>;
 
 
-export type PostBySlugQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null } | null };
+export type PostBySlugQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null, translations?: Array<{ __typename?: 'Post', slug?: string | null, language?: { __typename?: 'Language', code?: LanguageCodeEnum | null } | null } | null> | null, language?: { __typename?: 'Language', code?: LanguageCodeEnum | null } | null } | null };
 
 export type AuthorFieldsFragment = { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null };
 
@@ -9843,8 +10036,8 @@ export const PreviewPostDocument = new TypedDocumentString(`
 }
     `) as unknown as TypedDocumentString<PreviewPostQuery, PreviewPostQueryVariables>;
 export const PostsForNewsDocument = new TypedDocumentString(`
-    query PostsForNews {
-  posts(where: {orderby: {field: DATE, order: DESC}}) {
+    query PostsForNews($language: LanguageCodeFilterEnum!) {
+  posts(where: {language: $language, orderby: {field: DATE, order: DESC}}) {
     edges {
       node {
         title
@@ -9856,6 +10049,9 @@ export const PostsForNewsDocument = new TypedDocumentString(`
             sourceUrl
             altText
           }
+        }
+        language {
+          code
         }
       }
     }
@@ -9889,6 +10085,15 @@ export const PostBySlugDocument = new TypedDocumentString(`
         sourceUrl
         altText
       }
+    }
+    translations {
+      slug
+      language {
+        code
+      }
+    }
+    language {
+      code
     }
   }
 }

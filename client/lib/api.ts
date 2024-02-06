@@ -3,7 +3,9 @@ import { graphql } from '../lib/gql'
 import {
   PostIdType,
   PreviewPostQueryVariables,
+  PostsForNewsQueryVariables,
   TypedDocumentString,
+  LanguageCodeEnum,
 } from './gql/graphql'
 
 const headers = {
@@ -48,10 +50,14 @@ export async function getPreviewPost({
   return data.post
 }
 
-export async function getPostsForNews() {
+export async function getPostsForNews({
+  language,
+}: PostsForNewsQueryVariables) {
   const document = graphql(`
-    query PostsForNews {
-      posts(where: { orderby: { field: DATE, order: DESC } }) {
+    query PostsForNews($language: LanguageCodeFilterEnum!) {
+      posts(
+        where: { language: $language, orderby: { field: DATE, order: DESC } }
+      ) {
         edges {
           node {
             title
@@ -64,12 +70,15 @@ export async function getPostsForNews() {
                 altText
               }
             }
+            language {
+              code
+            }
           }
         }
       }
     }
   `)
-  const data = await fetchAPI(document)
+  const data = await fetchAPI(document, { language })
   return data?.posts.edges.map((edge) => edge.node)
 }
 
@@ -94,6 +103,7 @@ export async function getVideosForResources() {
 
 export async function getPost(
   id: number | string,
+  language: LanguageCodeEnum,
   previewData?: { post: PreviewPostData },
 ) {
   const postPreview = previewData?.post
@@ -119,11 +129,20 @@ export async function getPost(
             altText
           }
         }
+        translations {
+          slug
+          language {
+            code
+          }
+        }
+        language {
+          code
+        }
       }
     }
   `)
   const data = await fetchAPI(document, {
-    id: isDraft ? postPreview.databaseId : id,
+    id: isDraft ? postPreview.databaseId.toString() : id.toString(),
     idType: isDraft ? PostIdType.DatabaseId : PostIdType.Slug,
   })
   if (data.post) {

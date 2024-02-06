@@ -15,9 +15,8 @@ import {
   AbsoluteCenter,
   useBreakpointValue,
 } from '@chakra-ui/react'
-import { LinkProps } from '@chakra-ui/next-js'
+import { Link, LinkProps } from '@chakra-ui/next-js'
 import NextImage from 'next/image'
-import { usePathname } from 'next/navigation'
 
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import {
@@ -26,37 +25,29 @@ import {
   BsYoutube as YoutubeIcon,
 } from 'react-icons/bs'
 
-import Link from './link-as-next-link'
-import { LANGUAGES } from '../lib/constants'
-
 import wesLogoFull from '../public/images/wes-logo-full.svg'
 import wesLogoEmpty from '../public/images/wes-logo-empty.svg'
+import { useRouter } from 'next/router'
+import {
+  LocalizedStrings,
+  LocalizedTitles,
+  languages,
+  titles,
+} from '../lib/localized-strings'
+import { codeToLocale, localeToCode } from '../lib/util'
+import { LanguageCodeEnum } from '../lib/gql/graphql'
 
 // TODO: Submit issue about href warning when using Chakra UI Link and localization
 // TODO: Fix button color for _active socials
 // TODO: Fix flicker during first load
 
-interface NavLinkProps extends LinkProps {
-  title: string
-  href: string
+const paths: Record<keyof LocalizedTitles, string> = {
+  home: '/',
+  news: '/news',
+  resources: '/resources',
 }
 
-const pages: NavLinkProps[] = [
-  {
-    title: 'Home',
-    href: '/',
-  },
-  {
-    title: 'News',
-    href: '/news',
-  },
-  {
-    title: 'Resources',
-    href: '/resources',
-  },
-]
-
-const NavLink = ({ title, href, ...props }: NavLinkProps) => {
+const NavLink = ({ title, href, ...props }: LinkProps) => {
   return (
     <Link
       px={2}
@@ -73,8 +64,13 @@ const NavLink = ({ title, href, ...props }: NavLinkProps) => {
   )
 }
 
-export default function Header() {
-  const pathname = usePathname()
+interface HeaderProps {
+  translationsLinks?: Partial<LocalizedStrings>
+}
+
+export default function Header({ translationsLinks }: HeaderProps) {
+  const { locale, asPath } = useRouter()
+  const languageCode = localeToCode(locale)
   const {
     isOpen: isMobileNavOpen,
     onOpen: onMobileNavOpen,
@@ -99,7 +95,6 @@ export default function Header() {
         alt='WomEmpSports Logo'
         w={16}
         as={NextImage}
-        loading='eager'
       />
     </Link>
   )
@@ -158,18 +153,18 @@ export default function Header() {
             pr={7}
             aria-label='Desktop Navigation'
           >
-            {pages.map((page) => (
+            {Object.entries(paths).map(([titleKey, path]) => (
               <NavLink
-                key={page.title}
+                key={titleKey}
                 color='primary.700'
                 _hover={{ color: 'secondary.500' }}
                 _active={{ bg: 'primary.100' }}
-                {...(page.href === pathname && {
+                {...(path === asPath && {
                   textDecoration: 'underline 2px',
                   textDecorationColor: 'secondary.500',
                 })}
-                title={page.title}
-                href={page.href}
+                title={titles[titleKey as keyof LocalizedTitles][languageCode]}
+                href={path}
               />
             ))}
           </HStack>
@@ -193,12 +188,14 @@ export default function Header() {
               _hover={buttonActive}
               _active={{ bg: 'secondary.brand' }}
               aria-label='Facebook Project Page'
+              isExternal
             />
             <IconButton
               size='md'
               variant='ghost'
               as={Link}
-              href=''
+              //TODO: Add youtube link
+              href='https://www.youtube.com'
               icon={
                 <Icon
                   as={YoutubeIcon}
@@ -211,6 +208,7 @@ export default function Header() {
               _hover={buttonActive}
               _active={{ bg: 'secondary.brand' }}
               aria-label='YouTube Project Page'
+              isExternal
             />
           </HStack>
           {/* Language Switcher */}
@@ -239,12 +237,15 @@ export default function Header() {
               aria-label='Language Switcher'
             />
             <MenuList w={100} aria-label='Language Menu'>
-              {Object.entries(LANGUAGES).map(([locale, language]) => (
+              {Object.entries(languages).map(([languageCode, language]) => (
                 <Link
-                  key={locale}
-                  locale={locale}
+                  key={languageCode}
+                  locale={codeToLocale(languageCode as LanguageCodeEnum)}
                   _hover={{ textDecoration: 'none' }}
-                  href={pathname}
+                  href={
+                    translationsLinks?.[languageCode as LanguageCodeEnum] ??
+                    asPath
+                  }
                 >
                   <MenuItem
                     _focus={{ bg: 'secondary.200' }}
@@ -271,18 +272,21 @@ export default function Header() {
             borderColor='primary.400'
           >
             <VStack as='nav' spacing={4} w='min' align='left'>
-              {pages.map((page) => (
+              {Object.entries(paths).map(([titleKey, path]) => (
                 <NavLink
-                  key={page.title}
+                  key={titleKey}
                   color='white'
                   _hover={{ color: 'black', bg: 'secondary.500' }}
-                  {...(page.href === pathname
+                  {...(path === asPath
                     ? {
                         textDecoration: 'underline 2px',
                         textDecorationColor: 'secondary.500',
                       }
                     : null)}
-                  {...page}
+                  href={path}
+                  title={
+                    titles[titleKey as keyof LocalizedTitles][languageCode]
+                  }
                 />
               ))}
             </VStack>

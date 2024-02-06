@@ -1,7 +1,12 @@
 import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Head from 'next/head'
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  InferGetStaticPropsType,
+} from 'next'
 import Layout from '../../components/layout'
 
 import { AspectRatio, Flex } from '@chakra-ui/react'
@@ -18,6 +23,9 @@ import {
 
 import { ParsedUrlQuery } from 'querystring'
 import SectionWithHeading from '../../components/section-with-heading'
+import { LanguageCodeFilterEnum } from '../../lib/gql/graphql'
+import { codeToLocale, localeToCode } from '../../lib/util'
+import { headings, missingContent } from '../../lib/localized-strings'
 
 interface PostProps {
   post: PostData
@@ -28,13 +36,24 @@ export default function Post({
   post,
   preview,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const router = useRouter()
-
-  if (!router.isFallback && !post?.slug) {
+  const { locale, isFallback } = useRouter()
+  const languageCode = localeToCode(locale)
+  // TODO: Add better redirect page for missing translations
+  if (!isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />
   }
+
+  const translationsLinks = {}
+  for (const translation of post.translations) {
+    translationsLinks[translation.language.code] = translation.slug
+  }
   return (
-    <Layout preview={preview}>
+    <Layout
+      preview={preview}
+      translationsLinks={
+        Object.keys(translationsLinks).length && translationsLinks
+      }
+    >
       <Head>
         <title>{`WomEmpSports Home`}</title>
       </Head>
@@ -47,27 +66,38 @@ export default function Post({
           />
         </AspectRatio>
         <FixedWidthContainer>
-          <SectionWithHeading id='article-body' title={post.title}>
-            <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
-          </SectionWithHeading>
+          {codeToLocale(post.language.code) === locale ? (
+            <SectionWithHeading id='article-body' title={post.title}>
+              <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
+            </SectionWithHeading>
+          ) : (
+            <SectionWithHeading
+              id='article-body'
+              title={headings.missingTranslation[languageCode]}
+            >
+              <div>{missingContent.translation[languageCode]}</div>
+            </SectionWithHeading>
+          )}
         </FixedWidthContainer>
       </Flex>
     </Layout>
   )
 }
 
-interface Context {
-  params: ParsedUrlQuery
-  preview: boolean
-  previewData: { post: PreviewPostData }
+interface PreviewData {
+  post: PreviewPostData
 }
-
+interface Params extends ParsedUrlQuery {
+  slug: string
+}
 export const getStaticProps: GetStaticProps<PostProps> = async ({
   params,
   preview = false,
   previewData,
-}: Context) => {
+  locale,
+}: GetStaticPropsContext<Params, PreviewData>) => {
   // TODO: refactor out with preview.ts?
+  // TODO: preview only works for drafts, not revisions
   const { slug, db_id } = params
   let id: string | number
   // Check that a well-formed db_id or slug was provided
@@ -81,7 +111,7 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({
     }
   }
 
-  const post = await getPost(id, previewData)
+  const post = await getPost(id, localeToCode(locale), previewData)
 
   if (!post) {
     return {
@@ -97,11 +127,22 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({
   }
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const allPosts = await getPostsForNews()
+export const getStaticPaths: GetStaticPaths = (async () => {
+  const allPosts = await getPostsForNews({
+    language: LanguageCodeFilterEnum.All,
+  })
+  const posts = allPosts.map((post) => {
+    return {
+      params: {
+        slug: post.slug,
+      },
+      locale: codeToLocale(post.language.code),
+    }
+  })
+  console.dir(posts, { depth: null })
 
   return {
-    paths: allPosts.map((post) => `/posts/${post.slug}`) || [],
+    paths: posts,
     fallback: 'blocking',
   }
-}
+}) satisfies GetStaticPaths

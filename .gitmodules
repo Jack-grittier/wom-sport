@@ -1,0 +1,7 @@
+[submodule "server/app/public/wp-content/themes/blank"]
+	path = server/app/public/wp-content/themes/blank
+	url = git@github.com:moiri-gamboni/wp-blank-theme.git
+[submodule "server/app/public/wp-content/plugins/wp-graphql-polylang"]
+	path = server/app/public/wp-content/plugins/wp-graphql-polylang
+	url = https://github.com/valu-digital/wp-graphql-polylang.git
+	branch = stable

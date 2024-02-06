@@ -1,11 +1,17 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 import { loadEnvConfig } from '@next/env'
 
-const _env = loadEnvConfig(process.cwd())
+loadEnvConfig(process.cwd())
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: process.env.WORDPRESS_API_URL,
+  schema: {
+    [process.env.WORDPRESS_API_URL]: {
+      headers: {
+        Authorization: `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`,
+      },
+    },
+  },
   documents: 'lib/api.ts',
   ignoreNoDocuments: true,
   generates: {
