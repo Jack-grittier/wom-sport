@@ -10,10 +10,12 @@ export interface LocalizedTitles {
 export interface LocalizedHeadings {
   description: LocalizedStrings
   partners: LocalizedStrings
+  missingTranslation: LocalizedStrings
 }
 export interface LocalizedMissingContent {
   articles: LocalizedStrings
   resources: LocalizedStrings
+  translation: LocalizedStrings
 }
 
 export const titles: LocalizedTitles = {
@@ -55,6 +57,13 @@ export const headings: LocalizedHeadings = {
     BG: `Нашите партньори`,
     EL: `Οι συνεργάτες μας`,
   },
+  missingTranslation: {
+    EN: `Translation Missing`,
+    IT: `Traduzione mancante`,
+    ES: `Falta traducción`,
+    BG: `Липсващ превод`,
+    EL: `Λείπει η μετάφραση`,
+  },
 }
 
 export const missingContent: LocalizedMissingContent = {
@@ -71,6 +80,13 @@ export const missingContent: LocalizedMissingContent = {
     ES: `Actualmente no hay recursos que mostrar.`,
     BG: `В момента няма ресурси за показване.`,
     EL: `Προς το παρόν δεν υπάρχουν πόροι για προβολή.`,
+  },
+  translation: {
+    EN: `This article has not been translated yet, please check back later.`,
+    IT: `Questo articolo non è ancora stato tradotto, si prega di controllare più tardi.`,
+    ES: `Este artículo aún no ha sido traducido, vuelva a consultarlo más tarde.`,
+    BG: `Тази статия все още не е преведена, моля, проверете по-късно.`,
+    EL: `Αυτό το άρθρο δεν έχει μεταφραστεί ακόμα, παρακαλούμε επισκεφθείτε το αργότερα.`,
   },
 }
 

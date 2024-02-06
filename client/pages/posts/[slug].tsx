@@ -25,6 +25,7 @@ import { ParsedUrlQuery } from 'querystring'
 import SectionWithHeading from '../../components/section-with-heading'
 import { LanguageCodeFilterEnum } from '../../lib/gql/graphql'
 import { codeToLocale, localeToCode } from '../../lib/util'
+import { headings, missingContent } from '../../lib/localized-strings'
 
 interface PostProps {
   post: PostData
@@ -35,14 +36,24 @@ export default function Post({
   post,
   preview,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  // const router = useRouter()
-  const { isFallback } = useRouter()
+  const { locale, isFallback } = useRouter()
+  const languageCode = localeToCode(locale)
   // TODO: Add better redirect page for missing translations
   if (!isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />
   }
+
+  const translationsLinks = {}
+  for (const translation of post.translations) {
+    translationsLinks[translation.language.code] = translation.slug
+  }
   return (
-    <Layout preview={preview}>
+    <Layout
+      preview={preview}
+      translationsLinks={
+        Object.keys(translationsLinks).length && translationsLinks
+      }
+    >
       <Head>
         <title>{`WomEmpSports Home`}</title>
       </Head>
@@ -55,9 +66,18 @@ export default function Post({
           />
         </AspectRatio>
         <FixedWidthContainer>
-          <SectionWithHeading id='article-body' title={post.title}>
-            <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
-          </SectionWithHeading>
+          {codeToLocale(post.language.code) === locale ? (
+            <SectionWithHeading id='article-body' title={post.title}>
+              <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
+            </SectionWithHeading>
+          ) : (
+            <SectionWithHeading
+              id='article-body'
+              title={headings.missingTranslation[languageCode]}
+            >
+              <div>{missingContent.translation[languageCode]}</div>
+            </SectionWithHeading>
+          )}
         </FixedWidthContainer>
       </Flex>
     </Layout>
@@ -68,7 +88,6 @@ interface PreviewData {
   post: PreviewPostData
 }
 interface Params extends ParsedUrlQuery {
-  db_id: string
   slug: string
 }
 export const getStaticProps: GetStaticProps<PostProps> = async ({
@@ -76,7 +95,6 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({
   preview = false,
   previewData,
   locale,
-  defaultLocale,
 }: GetStaticPropsContext<Params, PreviewData>) => {
   // TODO: refactor out with preview.ts?
   // TODO: preview only works for drafts, not revisions
@@ -93,15 +111,11 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({
     }
   }
 
-  let post = await getPost(id, localeToCode(locale), previewData)
+  const post = await getPost(id, localeToCode(locale), previewData)
 
   if (!post) {
-    post = await getPost(id, localeToCode(defaultLocale), previewData)
-    // TODO: Add better redirect page
-    if (!post) {
-      return {
-        notFound: true,
-      }
+    return {
+      notFound: true,
     }
   }
   return {
@@ -113,33 +127,22 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({
   }
 }
 
-export const getStaticPaths: GetStaticPaths = (async ({ locales }) => {
+export const getStaticPaths: GetStaticPaths = (async () => {
   const allPosts = await getPostsForNews({
     language: LanguageCodeFilterEnum.All,
   })
-  // console.log(allPosts)
-  const paths =
-    allPosts.map((post) => ({
+  const posts = allPosts.map((post) => {
+    return {
       params: {
         slug: post.slug,
       },
       locale: codeToLocale(post.language.code),
-    })) || []
-  // console.log(paths)
+    }
+  })
+  console.dir(posts, { depth: null })
 
-  const allLocalizedPaths = [
-    ...paths.flatMap((path) => {
-      return locales.map((locale) => {
-        return {
-          ...path,
-          locale,
-        }
-      })
-    }),
-  ]
-  // console.log(nestedPaths)
   return {
-    paths: allLocalizedPaths,
-    fallback: false,
+    paths: posts,
+    fallback: 'blocking',
   }
 }) satisfies GetStaticPaths

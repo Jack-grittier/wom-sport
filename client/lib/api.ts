@@ -116,36 +116,38 @@ export async function getPost(
   // const isRevision = isSamePost && postPreview?.status === 'publish'
 
   const document = graphql(`
-    query PostBySlug(
-      $id: ID!
-      $idType: PostIdType!
-      $language: LanguageCodeEnum!
-    ) {
+    query PostBySlug($id: ID!, $idType: PostIdType!) {
       post(id: $id, idType: $idType) {
-        translation(language: $language) {
-          title
-          excerpt
-          slug
-          date
-          content
-          featuredImage {
-            node {
-              sourceUrl
-              altText
-            }
+        title
+        excerpt
+        slug
+        date
+        content
+        featuredImage {
+          node {
+            sourceUrl
+            altText
           }
+        }
+        translations {
+          slug
+          language {
+            code
+          }
+        }
+        language {
+          code
         }
       }
     }
   `)
   const data = await fetchAPI(document, {
-    id: isDraft ? postPreview.databaseId : id,
+    id: isDraft ? postPreview.databaseId.toString() : id.toString(),
     idType: isDraft ? PostIdType.DatabaseId : PostIdType.Slug,
-    language,
   })
-  if (data.post.translation) {
+  if (data.post) {
     // Draft posts may not have an slug
-    if (isDraft) data.post.translation.slug = String(postPreview.databaseId)
+    if (isDraft) data.post.slug = String(postPreview.databaseId)
     // Apply a revision (changes in a published post)
     // if (isRevision && data.post.revisions) {
     //   const revision = data.post.revisions.edges[0]?.node
@@ -154,7 +156,7 @@ export async function getPost(
     //   delete data.post.revisions
     // }
   }
-  return data?.post.translation
+  return data?.post
 }
 
 export async function getPostAndMorePosts(

@@ -28,7 +28,12 @@ import {
 import wesLogoFull from '../public/images/wes-logo-full.svg'
 import wesLogoEmpty from '../public/images/wes-logo-empty.svg'
 import { useRouter } from 'next/router'
-import { LocalizedTitles, languages, titles } from '../lib/localized-strings'
+import {
+  LocalizedStrings,
+  LocalizedTitles,
+  languages,
+  titles,
+} from '../lib/localized-strings'
 import { codeToLocale, localeToCode } from '../lib/util'
 import { LanguageCodeEnum } from '../lib/gql/graphql'
 
@@ -59,7 +64,11 @@ const NavLink = ({ title, href, ...props }: LinkProps) => {
   )
 }
 
-export default function Header() {
+interface HeaderProps {
+  translationsLinks?: Partial<LocalizedStrings>
+}
+
+export default function Header({ translationsLinks }: HeaderProps) {
   const { locale, asPath } = useRouter()
   const languageCode = localeToCode(locale)
   const {
@@ -233,7 +242,10 @@ export default function Header() {
                   key={languageCode}
                   locale={codeToLocale(languageCode as LanguageCodeEnum)}
                   _hover={{ textDecoration: 'none' }}
-                  href={asPath}
+                  href={
+                    translationsLinks?.[languageCode as LanguageCodeEnum] ??
+                    asPath
+                  }
                 >
                   <MenuItem
                     _focus={{ bg: 'secondary.200' }}
