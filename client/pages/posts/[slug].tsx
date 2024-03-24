@@ -9,7 +9,7 @@ import {
 } from 'next'
 import Layout from '../../components/layout'
 
-import { AspectRatio, Flex } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 
 import FixedWidthContainer from '../../components/fixed-width-container'
 import Banner from '../../components/banner'
