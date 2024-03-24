@@ -9,7 +9,7 @@ import {
 } from 'next'
 import Layout from '../../components/layout'
 
-import { AspectRatio, Flex } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 
 import FixedWidthContainer from '../../components/fixed-width-container'
 import Banner from '../../components/banner'
@@ -47,6 +47,7 @@ export default function Post({
   for (const translation of post.translations) {
     translationsLinks[translation.language.code] = translation.slug
   }
+
   return (
     <Layout
       preview={preview}
@@ -57,15 +58,31 @@ export default function Post({
       <Head>
         <title>{`WomEmpSports Home`}</title>
       </Head>
-      <Flex align='center' as='article' direction='column' w='full'>
-        <AspectRatio maxW='full' w='full' ratio={32 / 9}>
-          <Banner
-            src={post.featuredImage?.node.sourceUrl}
-            alt={post.featuredImage?.node.altText}
-            imageProps={{ fill: true, sx: { objectFit: 'cover' } }}
-          />
-        </AspectRatio>
-        <FixedWidthContainer>
+      <Flex
+        align='center'
+        as='article'
+        direction='column'
+        w='full'
+        alignItems='stretch'
+      >
+        <Banner
+          src={post.featuredImage?.node.sourceUrl}
+          alt={post.featuredImage?.node.altText}
+          imageProps={{
+            width: post.featuredImage?.node.mediaDetails.width,
+            height: post.featuredImage?.node.mediaDetails.height,
+            sx: {
+              objectFit: 'cover',
+              // 2269/562 is the default banner size
+              // this ensures the taller images aren't too large and don't get clipped
+              maxH: 'max(calc(var(--chakra-sizes-5xl)/(2269/562)), calc(100vw/(2269/562)))',
+              height: 'auto',
+              width: 'full',
+            },
+          }}
+        />
+
+        <FixedWidthContainer alignSelf='center'>
           {codeToLocale(post.language.code) === locale ? (
             <SectionWithHeading id='article-body' title={post.title}>
               <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
@@ -139,7 +156,6 @@ export const getStaticPaths: GetStaticPaths = (async () => {
       locale: codeToLocale(post.language.code),
     }
   })
-  console.dir(posts, { depth: null })
 
   return {
     paths: posts,

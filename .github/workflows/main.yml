@@ -13,7 +13,7 @@ jobs:
       with:
         submodules: 'true'
     - name: Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.ftp_server }}
         username: ${{ secrets.ftp_username }}

@@ -17,7 +17,6 @@ export default function Banner({
   imageProps,
   ...props
 }: BannerProps) {
-  const sx = imageProps?.sx ?? { objectFit: 'contain' }
   return (
     <Flex
       w='full'
@@ -33,7 +32,6 @@ export default function Banner({
         alt={alt}
         minW='5xl'
         as={NextImage}
-        sx={sx}
         {...imageProps}
         priority={true}
       />

@@ -54,9 +54,9 @@ export default function News({
       <Head>
         <title>{`WomEmpSports ${title}`}</title>
       </Head>
-      <Flex align='center' direction='column'>
+      <Flex align='center' direction='column' alignItems='stretch' w='full'>
         <Banner />
-        <FixedWidthContainer>
+        <FixedWidthContainer alignSelf='center'>
           <SectionWithHeading id='news' title={title}>
             <Section id='article-grid'>
               {posts.length == 0 && (
