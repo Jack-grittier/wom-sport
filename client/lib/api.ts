@@ -126,7 +126,12 @@ export async function getPost(
         featuredImage {
           node {
             sourceUrl
+            srcSet
             altText
+            mediaDetails {
+              width
+              height
+            }
           }
         }
         translations {

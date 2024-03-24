@@ -44,9 +44,9 @@ export default function Resources({
       <Head>
         <title>{`WomEmpSports ${title}`}</title>
       </Head>
-      <Flex align='center' direction='column'>
+      <Flex align='center' direction='column' alignItems='stretch' w='full'>
         <Banner />
-        <FixedWidthContainer>
+        <FixedWidthContainer alignSelf='center'>
           <SectionWithHeading id='resources' title={title}>
             <Section id='video-grid'>
               {videos.length == 0 && (

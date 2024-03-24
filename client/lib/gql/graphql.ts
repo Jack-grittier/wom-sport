@@ -9947,7 +9947,7 @@ export type PostBySlugQueryVariables = Exact<{
 }>;
 
 
-export type PostBySlugQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null, translations?: Array<{ __typename?: 'Post', slug?: string | null, language?: { __typename?: 'Language', code?: LanguageCodeEnum | null } | null } | null> | null, language?: { __typename?: 'Language', code?: LanguageCodeEnum | null } | null } | null };
+export type PostBySlugQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', title?: string | null, excerpt?: string | null, slug?: string | null, date?: string | null, content?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, srcSet?: string | null, altText?: string | null, mediaDetails?: { __typename?: 'MediaDetails', width?: number | null, height?: number | null } | null } } | null, translations?: Array<{ __typename?: 'Post', slug?: string | null, language?: { __typename?: 'Language', code?: LanguageCodeEnum | null } | null } | null> | null, language?: { __typename?: 'Language', code?: LanguageCodeEnum | null } | null } | null };
 
 export type AuthorFieldsFragment = { __typename?: 'User', name?: string | null, firstName?: string | null, lastName?: string | null, avatar?: { __typename?: 'Avatar', url?: string | null } | null };
 
@@ -10083,7 +10083,12 @@ export const PostBySlugDocument = new TypedDocumentString(`
     featuredImage {
       node {
         sourceUrl
+        srcSet
         altText
+        mediaDetails {
+          width
+          height
+        }
       }
     }
     translations {

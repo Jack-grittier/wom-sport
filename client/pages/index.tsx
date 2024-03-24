@@ -29,9 +29,15 @@ export default function Index({ preview }: IndexProps) {
       <Head>
         <title>{`WomEmpSports ${titles.home[languageCode]}`}</title>
       </Head>
-      <Flex align='center' as='article' direction='column'>
+      <Flex
+        align='center'
+        as='article'
+        direction='column'
+        alignItems='stretch'
+        w='full'
+      >
         <Banner />
-        <FixedWidthContainer>
+        <FixedWidthContainer alignSelf='center'>
           <SectionWithHeading
             id='project-description'
             title={headings.description[languageCode]}

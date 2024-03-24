@@ -47,6 +47,7 @@ export default function Post({
   for (const translation of post.translations) {
     translationsLinks[translation.language.code] = translation.slug
   }
+
   return (
     <Layout
       preview={preview}
@@ -57,15 +58,31 @@ export default function Post({
       <Head>
         <title>{`WomEmpSports Home`}</title>
       </Head>
-      <Flex align='center' as='article' direction='column' w='full'>
-        <AspectRatio maxW='full' w='full' ratio={32 / 9}>
-          <Banner
-            src={post.featuredImage?.node.sourceUrl}
-            alt={post.featuredImage?.node.altText}
-            imageProps={{ fill: true, sx: { objectFit: 'cover' } }}
-          />
-        </AspectRatio>
-        <FixedWidthContainer>
+      <Flex
+        align='center'
+        as='article'
+        direction='column'
+        w='full'
+        alignItems='stretch'
+      >
+        <Banner
+          src={post.featuredImage?.node.sourceUrl}
+          alt={post.featuredImage?.node.altText}
+          imageProps={{
+            width: post.featuredImage?.node.mediaDetails.width,
+            height: post.featuredImage?.node.mediaDetails.height,
+            sx: {
+              objectFit: 'cover',
+              // 2269/562 is the default banner size
+              maxH: 'calc(100vw/(2269/562))',
+              height: 'auto',
+              width: 'full',
+            },
+            minW: 'unset',
+          }}
+        />
+
+        <FixedWidthContainer alignSelf='center'>
           {codeToLocale(post.language.code) === locale ? (
             <SectionWithHeading id='article-body' title={post.title}>
               <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
