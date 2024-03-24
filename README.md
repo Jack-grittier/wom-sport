@@ -6,9 +6,9 @@ Website for the international WomEmpSports non-profit project.
 - Backend: WordPress Headless CMS
 - Frontend: Next.js w/ Chakra UI in Typescript
 - Data Fetching: GraphQL w/ WPGraphQL, GraphQL Code Generator, and Next.js Incremental Static Regeneration
-- Localization: Next.js Internationalization (i18n)
+- Localization: Next.js Internationalization (i18n) and Polylang
 - Linting & Formatting: ESlint and Prettier
-- Hosting: Vercel & 000webhost
+- Hosting: Vercel (front-end) and Hostinger (back-end)
 - CI: Automatic FTP deploy to WordPress host and Vercel
 
 ## Contents:
@@ -28,3 +28,45 @@ Website for the international WomEmpSports non-profit project.
 
 - Localization: 
   - Homepage in 5 languages: English, Italian, Greek, Spanish, Bulgarian.
+
+## Setup
+
+### Environment variables/files
+client/.env.local
+server/app/public/wp-config.php
+server/app/public/wp-content/themes/blank/.env
+
+### Instructions
+1. duplicate client/.env.local.example and rename to .env.local
+2. generate two secrets with:
+```bash
+python3 - <<EOF
+import secrets
+for r in range(2): print(secrets.token_urlsafe(64))
+EOF
+```
+2. add the first secret for jwt in wp-config.php:
+```php
+define( 'GRAPHQL_JWT_AUTH_SECRET_KEY', 'YOUR_STRONG_SECRET' );
+```
+3. run this mutation in the GraphQL IDE to get a refresh token (replace username and password with credentials of a WordPress Administrator):
+```gql
+mutation Login {
+    login(
+        input: {
+        password: "your_password"
+        username: "your_username"
+        }
+    ) {
+        refreshToken
+    }
+}
+```
+4. copy refresh token from GraphQL IDE into .env.local (WORDPRESS_AUTH_REFRESH_TOKEN)
+5. add the second secret in .env.local (WORDPRESS_PREVIEW_SECRET)
+6. set the redirect url in the theme (see server/app/public/wp-content/themes/blank/readme.MD)
+
+## TODO:
+- Add privacy policy
+- Add video lightbox
+- Add lighthouse testing
