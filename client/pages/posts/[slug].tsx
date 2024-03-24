@@ -139,7 +139,6 @@ export const getStaticPaths: GetStaticPaths = (async () => {
       locale: codeToLocale(post.language.code),
     }
   })
-  console.dir(posts, { depth: null })
 
   return {
     paths: posts,
