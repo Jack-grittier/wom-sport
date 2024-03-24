@@ -74,11 +74,11 @@ export default function Post({
             sx: {
               objectFit: 'cover',
               // 2269/562 is the default banner size
-              maxH: 'calc(100vw/(2269/562))',
+              // this ensures the taller images aren't too large and don't get clipped
+              maxH: 'max(calc(var(--chakra-sizes-5xl)/(2269/562)), calc(100vw/(2269/562)))',
               height: 'auto',
               width: 'full',
             },
-            minW: 'unset',
           }}
         />
 
